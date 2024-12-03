@@ -119,22 +119,22 @@ Inside `text-annotator-client`'s folder, run:
     ```
 
 - Copy the following files in your client's `src` folder:
-    - Cartella src:
-        - Cartella components:
-            - cartella annotatorViews: 
+    - src folder:
+        - components folder:
+            - annotatorViews folder: 
                 - BookView.tsx 
                 - NotesView.tsx
-            - cartella pop-ups: 
+            - pop-ups folder: 
                 - Modal.tsx
                 - Warning.tsx 
             - TextAnnotator.tsx
-        - Cartella css:
+        - css folder:
             - app.css
             - bookView.css 
             - modal.css
             - notesView.css 
             - warning.css
-        - Cartella images:
+        - images folder:
             - blank-profile-picture.png
         - types.d.ts
 
