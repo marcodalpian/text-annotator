@@ -1,0 +1,56 @@
+.bookView{
+  height: 100vh;
+  overflow: scroll;
+  cursor: auto;
+  flex: 1;
+  padding-left: 0.6cap;
+  padding-right: 0.6cap;
+  padding-top: 4%;
+  word-spacing: 2px;
+  line-height: 30px;
+  white-space: normal;
+  background-color: #ededed;
+}
+
+.introductionTop{
+  background-color:rgb(210, 210, 210);
+  border-radius: 6px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+.h3Presentation{
+  padding: 0%;
+  margin-top: 1cap;
+  margin-bottom: 1cap;
+  padding-top: 1.5%;
+  padding-bottom: 1.5%
+}
+
+.introduction{
+  background-color:rgb(210, 210, 210);
+  border-radius: 6px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1%;
+}
+
+.h3Note{
+  margin-top: -0.5cap;
+}
+
+.list1{
+  margin-top: -2.2cap;
+  margin-left: 0.3cap;
+  margin-right: 0.3cap
+}
+
+.list2{
+  margin-top: -0.5cap;
+  margin-left: 0.3cap;
+  margin-right: 0.3cap
+}

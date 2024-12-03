@@ -1,0 +1,101 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #00000099;
+  z-index: 100000;
+}
+
+.modal-main {
+  position: fixed;
+  background: #ededed;
+  width: 35rem;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 6px;
+}
+
+.modal.display-block {
+  display: block;
+}
+
+.modal.display-none {
+  display: none;
+}
+
+.modal-body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  padding: 3%
+}
+
+.buttonsModalDiv{
+  display: flex;
+  flex-direction: row;
+  margin-top: 2cap;
+  align-self: start;
+}
+
+.buttonsModal1{
+  padding-left: 2cap;
+  padding-right: 2cap;
+  flex: 1;
+  height: 4cap;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  white-space: nowrap;
+}
+
+.buttonsModal1:hover {
+  background-color: #eaeaea;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.buttonsModal2{
+  padding-left: 2cap;
+  padding-right: 2cap;
+  margin-left: 111%;
+  flex: 1;
+  height: 4cap;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  white-space: nowrap;
+}
+
+.buttonsModal2:hover {
+  background-color: #eaeaea;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.badgeModal {
+  position: relative;
+  top: 0px;
+  right: 5px;
+  padding: 2px 9px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}

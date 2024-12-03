@@ -1,0 +1,1629 @@
+<html xmlns="http://www.w3.org/1999/xhtml" prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/ dcterms: http://purl.org/dc/terms/">
+  <head>
+    <title property="dcterms:title">Informal Ontology Design</title>
+  </head>
+  <body>
+      <section role="doc-abstract" data-docudipity-id="e0" data-docudipity-pattern="container"><h1 data-docudipity-id="e10" data-docudipity-pattern="block">Abstract</h1><p id="idp1983099016" data-docudipity-id="e11" data-docudipity-pattern="block">
+     Wiki software has historically provided little support for any form of
+     organizational structure. Even given the assumption that the majority of wiki
+     users have previous experience with file system-like hierarchies, most wiki
+     systems keep things simple (as is the wiki way) and employ a flat page structure.
+     As a wiki grows beyond a few dozen pages, some form of organization becomes
+     increasingly necessary. This has typically been accomplished by adding
+     “category links” to each page, essentially
+     <em data-docudipity-id="e81" data-docudipity-pattern="inline">ad hoc</em> terms from an unstructured and
+     uncontrolled vocabulary. Because these terms are themselves
+     often undefined it can be difficult to ascertain the reason why a given page
+     belongs to a category. Even when this is done carefully, as the number of terms
+     in the categorization grows a classification scheme for the terms themselves
+     likewise becomes increasingly necessary.</p>
+     <p id="idp1983099656" data-docudipity-id="e12" data-docudipity-pattern="block">This paper describes problems with existing wiki and “semantic
+     wiki” categorization schemes and outlines an approach to information
+     organization that avoids the pitfalls of computer-based ontologies by instead
+     looking to library science for solutions. It describes the design and
+     implementation of a wiki system permitting user-authored
+     <em data-docudipity-id="e82" data-docudipity-pattern="inline">assertions</em>, which are dynamically harvested to
+     create a Topic Map graph mirroring the explicit structure of the wiki and providing
+     it with an underlying classification system.
+     </p></section>
+      <section class="tableofcontents" data-docudipity-id="e1" data-docudipity-pattern="container"><h1 data-docudipity-id="e13" data-docudipity-pattern="block">Table of Contents</h1><ul data-docudipity-id="e14" data-docudipity-pattern="container"><li data-docudipity-id="e83" data-docudipity-pattern="container"><p data-docudipity-id="e359" data-docudipity-pattern="block">
+            
+              <a href="#idp2025510280" class="toc" data-docudipity-id="e637" data-docudipity-pattern="inline">Introduction</a>
+            
+          </p></li>
+            <li data-docudipity-id="e84" data-docudipity-pattern="container"><ul data-docudipity-id="e360" data-docudipity-pattern="container"><li data-docudipity-id="e638" data-docudipity-pattern="container"><p data-docudipity-id="e829" data-docudipity-pattern="block">
+                
+                  <a href="#idp2025509640" class="toc" data-docudipity-id="e925" data-docudipity-pattern="inline">Category Links</a>
+                
+              </p></li><li data-docudipity-id="e639" data-docudipity-pattern="container"><p data-docudipity-id="e830" data-docudipity-pattern="block">
+                
+                  <a href="#idp2025512840" class="toc" data-docudipity-id="e926" data-docudipity-pattern="inline">Classification Systems</a>
+                
+              </p></li><li data-docudipity-id="e640" data-docudipity-pattern="container"><p data-docudipity-id="e831" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024783624" class="toc" data-docudipity-id="e927" data-docudipity-pattern="inline">Knowledge Representation</a>
+                
+              </p></li><li data-docudipity-id="e641" data-docudipity-pattern="container"><p data-docudipity-id="e832" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024791560" class="toc" data-docudipity-id="e928" data-docudipity-pattern="inline">Semantics, Shemantics</a>
+                
+              </p></li><li data-docudipity-id="e642" data-docudipity-pattern="container"><p data-docudipity-id="e833" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024819080" class="toc" data-docudipity-id="e929" data-docudipity-pattern="inline">Informality</a>
+                
+              </p></li><li data-docudipity-id="e643" data-docudipity-pattern="container"><p data-docudipity-id="e834" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024837000" class="toc" data-docudipity-id="e930" data-docudipity-pattern="inline">Semantic Wikis</a>
+                
+              </p></li><li data-docudipity-id="e644" data-docudipity-pattern="container"><p data-docudipity-id="e835" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024856072" class="toc" data-docudipity-id="e931" data-docudipity-pattern="inline">The Wrong Solution to the Wrong Problem</a>
+                
+              </p></li><li data-docudipity-id="e645" data-docudipity-pattern="container"><p data-docudipity-id="e836" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024874520" class="toc" data-docudipity-id="e932" data-docudipity-pattern="inline">Librarians are Sexy</a>
+                
+              </p></li></ul></li>
+          <li data-docudipity-id="e85" data-docudipity-pattern="container"><p data-docudipity-id="e361" data-docudipity-pattern="block">
+            
+              <a href="#idp2024876952" class="toc" data-docudipity-id="e646" data-docudipity-pattern="inline">Background</a>
+            
+          </p></li>
+            <li data-docudipity-id="e86" data-docudipity-pattern="container"><ul data-docudipity-id="e362" data-docudipity-pattern="container"><li data-docudipity-id="e647" data-docudipity-pattern="container"><p data-docudipity-id="e837" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024879768" class="toc" data-docudipity-id="e933" data-docudipity-pattern="inline">The Ceryle Project </a>
+                
+              </p></li><li data-docudipity-id="e648" data-docudipity-pattern="container"><p data-docudipity-id="e838" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024881432" class="toc" data-docudipity-id="e934" data-docudipity-pattern="inline">Māori Subject Headings &amp; the Iwi Hapū List</a>
+                
+              </p></li><li data-docudipity-id="e649" data-docudipity-pattern="container"><p data-docudipity-id="e839" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024903448" class="toc" data-docudipity-id="e935" data-docudipity-pattern="inline">Requirements</a>
+                
+              </p></li></ul></li>
+          <li data-docudipity-id="e87" data-docudipity-pattern="container"><p data-docudipity-id="e363" data-docudipity-pattern="block">
+            
+              <a href="#idp2024915096" class="toc" data-docudipity-id="e650" data-docudipity-pattern="inline">Design</a>
+            
+          </p></li>
+            <li data-docudipity-id="e88" data-docudipity-pattern="container"><ul data-docudipity-id="e364" data-docudipity-pattern="container"><li data-docudipity-id="e651" data-docudipity-pattern="container"><p data-docudipity-id="e840" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024915352" class="toc" data-docudipity-id="e936" data-docudipity-pattern="inline">Classification vs. Ontology</a>
+                
+              </p></li><li data-docudipity-id="e652" data-docudipity-pattern="container"><p data-docudipity-id="e841" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024924952" class="toc" data-docudipity-id="e937" data-docudipity-pattern="inline">Homographs, Polysemes and Other Multireferential Words</a>
+                
+              </p></li><li data-docudipity-id="e653" data-docudipity-pattern="container"><p data-docudipity-id="e842" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024923288" class="toc" data-docudipity-id="e938" data-docudipity-pattern="inline">Faceted Classification</a>
+                
+              </p></li><li data-docudipity-id="e654" data-docudipity-pattern="container"><p data-docudipity-id="e843" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024937112" class="toc" data-docudipity-id="e939" data-docudipity-pattern="inline">User Tagging or “Folksonomies”</a>
+                
+              </p></li><li data-docudipity-id="e655" data-docudipity-pattern="container"><p data-docudipity-id="e844" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024937880" class="toc" data-docudipity-id="e940" data-docudipity-pattern="inline">Assertions</a>
+                
+              </p></li><li data-docudipity-id="e656" data-docudipity-pattern="container"><p data-docudipity-id="e845" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024953272" class="toc" data-docudipity-id="e941" data-docudipity-pattern="inline">Core Predicates</a>
+                
+              </p></li><li data-docudipity-id="e657" data-docudipity-pattern="container"><p data-docudipity-id="e846" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024954424" class="toc" data-docudipity-id="e942" data-docudipity-pattern="inline">Upper Ontology</a>
+                
+              </p></li><li data-docudipity-id="e658" data-docudipity-pattern="container"><p data-docudipity-id="e847" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024959928" class="toc" data-docudipity-id="e943" data-docudipity-pattern="inline">Domain Ontology</a>
+                
+              </p></li><li data-docudipity-id="e659" data-docudipity-pattern="container"><p data-docudipity-id="e848" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024964152" class="toc" data-docudipity-id="e944" data-docudipity-pattern="inline">Relationship to Z39.19</a>
+                
+              </p></li><li data-docudipity-id="e660" data-docudipity-pattern="container"><p data-docudipity-id="e849" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024980664" class="toc" data-docudipity-id="e945" data-docudipity-pattern="inline">Endorsement</a>
+                
+              </p></li></ul></li>
+          <li data-docudipity-id="e89" data-docudipity-pattern="container"><p data-docudipity-id="e365" data-docudipity-pattern="block">
+            
+              <a href="#idp2024980408" class="toc" data-docudipity-id="e661" data-docudipity-pattern="inline">Implementation</a>
+            
+          </p></li>
+            <li data-docudipity-id="e90" data-docudipity-pattern="container"><ul data-docudipity-id="e366" data-docudipity-pattern="container"><li data-docudipity-id="e662" data-docudipity-pattern="container"><p data-docudipity-id="e850" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024988088" class="toc" data-docudipity-id="e946" data-docudipity-pattern="inline">A Software “Framework”</a>
+                
+              </p></li><li data-docudipity-id="e663" data-docudipity-pattern="container"><p data-docudipity-id="e851" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024986936" class="toc" data-docudipity-id="e947" data-docudipity-pattern="inline">Choice of Wiki Software</a>
+                
+              </p></li><li data-docudipity-id="e664" data-docudipity-pattern="container"><p data-docudipity-id="e852" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024991544" class="toc" data-docudipity-id="e948" data-docudipity-pattern="inline">Data Conversion</a>
+                
+              </p></li><li data-docudipity-id="e665" data-docudipity-pattern="container"><p data-docudipity-id="e853" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024994616" class="toc" data-docudipity-id="e949" data-docudipity-pattern="inline">WikiEvents and the WikiEventManager</a>
+                
+              </p></li><li data-docudipity-id="e666" data-docudipity-pattern="container"><p data-docudipity-id="e854" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024996280" class="toc" data-docudipity-id="e950" data-docudipity-pattern="inline">Wiki Plugins</a>
+                
+              </p></li><li data-docudipity-id="e667" data-docudipity-pattern="container"><p data-docudipity-id="e855" data-docudipity-pattern="block">
+                
+                  <a href="#idp2024994744" class="toc" data-docudipity-id="e951" data-docudipity-pattern="inline">Assertion Plugins</a>
+                
+              </p></li><li data-docudipity-id="e668" data-docudipity-pattern="container"><p data-docudipity-id="e856" data-docudipity-pattern="block">
+                
+                  <a href="#idp2025011000" class="toc" data-docudipity-id="e952" data-docudipity-pattern="inline">User Tagging</a>
+                
+              </p></li><li data-docudipity-id="e669" data-docudipity-pattern="container"><p data-docudipity-id="e857" data-docudipity-pattern="block">
+                
+                  <a href="#idp2025015480" class="toc" data-docudipity-id="e953" data-docudipity-pattern="inline">Assertion Framework</a>
+                
+              </p></li><li data-docudipity-id="e670" data-docudipity-pattern="container"><p data-docudipity-id="e858" data-docudipity-pattern="block">
+                
+                  <a href="#idp2025826360" class="toc" data-docudipity-id="e954" data-docudipity-pattern="inline">WikiMapManager</a>
+                
+              </p></li><li data-docudipity-id="e671" data-docudipity-pattern="container"><p data-docudipity-id="e859" data-docudipity-pattern="block">
+                
+                  <a href="#idp2025832120" class="toc" data-docudipity-id="e955" data-docudipity-pattern="inline">Topic Map Interfaces</a>
+                
+              </p></li><li data-docudipity-id="e672" data-docudipity-pattern="container"><p data-docudipity-id="e860" data-docudipity-pattern="block">
+                
+                  <a href="#idp2025833144" class="toc" data-docudipity-id="e956" data-docudipity-pattern="inline">Topic Map Modules</a>
+                
+              </p></li><li data-docudipity-id="e673" data-docudipity-pattern="container"><p data-docudipity-id="e861" data-docudipity-pattern="block">
+                
+                  <a href="#idp2025837496" class="toc" data-docudipity-id="e957" data-docudipity-pattern="inline">Endorsement</a>
+                
+              </p></li><li data-docudipity-id="e674" data-docudipity-pattern="container"><p data-docudipity-id="e862" data-docudipity-pattern="block">
+                
+                  <a href="#idp2025834808" class="toc" data-docudipity-id="e958" data-docudipity-pattern="inline">Wiki Features</a>
+                
+              </p></li></ul></li>
+          <li data-docudipity-id="e91" data-docudipity-pattern="container"><p data-docudipity-id="e367" data-docudipity-pattern="block">
+            
+              <a href="#idp2025835064" class="toc" data-docudipity-id="e675" data-docudipity-pattern="inline">Next Steps</a>
+            
+          </p></li><li data-docudipity-id="e92" data-docudipity-pattern="container"><p data-docudipity-id="e368" data-docudipity-pattern="block">
+            
+              <a href="#idp2025844280" class="toc" data-docudipity-id="e676" data-docudipity-pattern="inline">Conclusion</a>
+            
+          </p></li></ul></section>
+      <section class="section" id="idp2025510280" data-docudipity-id="e2" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e15" data-docudipity-pattern="block">Introduction</h1><p id="idp2025510664" data-docudipity-id="e16" data-docudipity-pattern="block">
+    As with any document collection, as a wiki grows its need for some form of organization increases
+    proportionately. It's not uncommon for wikis to have hundreds or even thousands of pages, without
+    even considering the rather atypical Wikipedia (which as of July 2008 claims “approximately
+    ten million articles in 253 languages”). Yet Wikipedia has no explicit classification scheme.
+    </p><section class="section" id="idp2025509640" data-docudipity-id="e17" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e93" data-docudipity-pattern="block">Category Links</h1>
+            <blockquote class="blockquote" data-docudipity-id="e94" data-docudipity-pattern="container">
+              <p id="idp2025507976" data-docudipity-id="e369" data-docudipity-pattern="block">
+    […] knowledge is all sort of knitted together, or woven, like cloth, and each
+    piece of knowledge is only meaningful or useful because of the other pieces.
+    </p>
+              <p class="attribution" data-docudipity-id="e370" data-docudipity-pattern="block">— Gregory Bateson, Steps to an Ecology of Mind</p>
+            </blockquote>
+          <p id="idp2025507208" data-docudipity-id="e95" data-docudipity-pattern="block">
+    A common (some might say traditional) approach to categorization<sup class="fn-label" data-docudipity-id="e371" data-docudipity-pattern="inline"><a href="#fn01" class="footnoteref" id="fn01-ref" data-docudipity-id="e677" data-docudipity-pattern="inline">[1]</a></sup>
+    on wikis relies on untyped web links,
+    usually camel-case prefixing a category name with the word "Category" (e.g.,
+    “CategoryHomePage”, “CategoryDiscussion”, etc.). Any wiki page containing such a
+    link is considered categorized under that category. There a number of problems with such a system. First,
+    any wiki page containing a given link is categorized accordingly even if that was not the intention of
+    the link author, as the mere presence of a link – not its traversal – establishes the categorization.
+    Another is that as the categorization of a given wiki page must be expressed on the page itself, there is no
+    way to categorize a collection of pages from a different page, via a list or other external structure. The
+    categorization naming scheme is also bound to the link names; there are no synonyms, homographs, equivalent
+    terms; no way of characterizing the relations between terms, no thesaurus-like hierarchy, indeed, no explicit
+    structure at all. One can add or remove categories from a page, but to change the categorization of a page one
+    must change its name, which breaks existing links, and there is no facility for synthetic or combinatory categories
+    apart from creating longer and more complicated wiki page names. It is a simple system and works reasonably well
+    for small document sets.
+    </p><p id="idp2025513864" data-docudipity-id="e96" data-docudipity-pattern="block">
+    In library science, <em data-docudipity-id="e372" data-docudipity-pattern="inline">free language indexing</em> permits the assignment of any word
+    as an indexing term. One type often performed via an automated process, the terms used in
+    <em data-docudipity-id="e373" data-docudipity-pattern="inline">natural language indexing</em> are derived from the natural language of a document
+    rather than a controlled vocabulary of a classification system. Like free language indexing, user-created wiki
+    categorization suffers in the same way due to mismatches between content and search terms and a lack of
+    terminology control. One of the main questions faced in the design of our own system was trying to mitigate
+    these problems.
+    </p></section><section class="section" id="idp2025512840" data-docudipity-id="e18" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e97" data-docudipity-pattern="block">Classification Systems</h1><p id="idp2025512584" data-docudipity-id="e98" data-docudipity-pattern="block">
+    Despite being a Linux user, like most people buying a new laptop I had no choice but to purchase Microsoft
+    Vista. One of the first things I did was remove all of the anti-virus software since it was so horribly
+    annoying, such that subsequently going online would be akin to putting my head in an electric oven. Given that
+    my use of Windows is strictly offline, deciding to write this paper in Word became a matter of discipline.
+    Admittedly it does have rather beautiful typography.</p><p id="idp2025510792" data-docudipity-id="e99" data-docudipity-pattern="block">
+    Now, while scanning the shiny new Vista menus I came upon OneNote, a software application I didn't even
+    know I owned. OneNote is touted as something I might be very interested in:
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e100" data-docudipity-pattern="container">
+              <p id="idp2025511688" data-docudipity-id="e374" data-docudipity-pattern="block">
+    OneNote is an idea processor, a notebook, an information organizer — some even call it
+    an "add-on pack for your brain." … a place for gathering, organizing, searching,
+    and sharing notes, clippings, thoughts, reference materials, and other information. All your
+    notes will be visible here — organized by notebooks, sections, and pages.
+    </p>
+            </blockquote>
+          <p id="idp2025511944" data-docudipity-id="e101" data-docudipity-pattern="block">
+    So how does it organize information? Typical of most software applications devoted to the organization
+    of notes, it uses the staid metaphor of folders, which in the library world might be called an
+    <em data-docudipity-id="e375" data-docudipity-pattern="inline">enumerated classification scheme</em>: every subject gets a folder. In
+    OneNote's case the central innovation is that you can put folders inside folders, and change the
+    folder of an item at will. Even in their introductory documentation one can see a foreshadowing of the
+    unfolding nightmare:
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e102" data-docudipity-pattern="container">
+              <p id="idp2024785544" data-docudipity-id="e376" data-docudipity-pattern="block">
+    As you use OneNote and create more notes, you may want to organize your notes differently:
+    </p>
+              <ul class="itemizedlist" id="idp2024785416" data-docudipity-id="e377" data-docudipity-pattern="container">
+                  <li id="idp2024785672" data-docudipity-id="e678" data-docudipity-pattern="container">
+                    <p id="idp2024783496" data-docudipity-id="e863" data-docudipity-pattern="block">If you find yourself creating a lot of pages for a topic, try dragging them into a new section</p>
+                  </li>
+                  <li id="idp2024783752" data-docudipity-id="e679" data-docudipity-pattern="container">
+                    <p id="idp2024783368" data-docudipity-id="e864" data-docudipity-pattern="block">If you find yourself creating many sections in one notebook, try putting some of them
+              into a separate notebook</p>
+                  </li>
+                  <li id="idp2024781704" data-docudipity-id="e680" data-docudipity-pattern="container">
+                    <p id="idp2024783112" data-docudipity-id="e865" data-docudipity-pattern="block">Make navigation between notes more convenient by creating several notebooks at the
+              top level, rather than putting everything inside one notebook</p>
+                  </li>
+                </ul>
+            </blockquote>
+          <p id="idp2024781832" data-docudipity-id="e103" data-docudipity-pattern="block">
+    As any librarian will tell you, the problem with enumerated schemes is that they are inflexible,
+    don't take account of the fact that most resources don't fit neatly into one category
+    (e.g., a book on 19th century French seascape paintings fits into at least four), and there is no
+    ability to map context. OneNote users go through the same process as a librarian classifying a collection
+    of books in the early 19th century: as a book arrives it gets put on a shelf next to books at that moment
+    deemed similar. If there isn't a suitable shelf a new shelf is created. If a suitable category
+    isn't clear, one doesn't have the time or has abandoned all hope, OneNote includes the obligatory
+    category “Unfiled Notes”.
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e104" data-docudipity-pattern="container">
+              <p id="idp2024783240" data-docudipity-id="e378" data-docudipity-pattern="block">
+    It's okay if this section gets big. You can drag the pages to other sections later,
+    or just use search to find them in this section.
+    </p>
+            </blockquote>
+          <p id="idp2024783880" data-docudipity-id="e105" data-docudipity-pattern="block">
+    Do you get the feeling a lot of people store most of their notes in Unfiled Notes? The perennial question
+    “where did I put that?” is once again answered by search. This is not an innovation.
+    </p></section><section class="section" id="idp2024783624" data-docudipity-id="e19" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e106" data-docudipity-pattern="block">Knowledge Representation</h1>
+            <blockquote class="blockquote" data-docudipity-id="e107" data-docudipity-pattern="container">
+              <p id="idp2024784776" data-docudipity-id="e379" data-docudipity-pattern="block">
+                <em data-docudipity-id="e681" data-docudipity-pattern="inline">Suzy said, "You mean I'm fish?"</em>
+              </p>
+              <p id="idp2024786056" data-docudipity-id="e380" data-docudipity-pattern="block">
+                <em data-docudipity-id="e682" data-docudipity-pattern="inline">"You're fish," said Fauna.</em>
+              </p>
+              <p class="attribution" data-docudipity-id="e381" data-docudipity-pattern="block">— John Steinbeck, Sweet Thursday</p>
+            </blockquote>
+          <p id="idp2024786696" data-docudipity-id="e108" data-docudipity-pattern="block">
+    “Knowledge representation” is a strange concept, when you think about it. What exactly is
+    <em data-docudipity-id="e382" data-docudipity-pattern="inline">knowledge</em>? How does one <em data-docudipity-id="e383" data-docudipity-pattern="inline">represent</em> knowledge?
+    A world of difficulty is opened up by the decomposition of even the simplest statements in
+    <em data-docudipity-id="e384" data-docudipity-pattern="inline">natural language.</em> While one might agree that the above sentences communicate
+    information, do they also represent knowledge? Does the spoken word? How does the word “fish” relate
+    to our conception of the word, its meaning in our minds? How is the concept of the word altered by its being
+    composed within the context of the above statements, with their strange (perhaps erroneous) grammatical
+    constructions? Does what we know about the author or our realization that the characters are fictional influence
+    our understanding of the word? If we've not read the book, might we assume Suzy is a fish, instead of
+    understanding that (in the “reality” or context of the book) Fauna is explaining Suzy's horoscope
+    to her, that she was born under the sign of Pisces, the <em data-docudipity-id="e385" data-docudipity-pattern="inline">sign of the fish</em>? Are
+    the statements <em data-docudipity-id="e386" data-docudipity-pattern="inline">correct</em>, and given any notion of judgment of such correctness,
+    in what context can they be evaluated? And more obliquely, what does "being a Pisces" really mean?
+    </p><p id="idp2024790152" data-docudipity-id="e109" data-docudipity-pattern="block">
+    Apart from astrology, these questions are properly in the realms of <em data-docudipity-id="e387" data-docudipity-pattern="inline">linguistics</em>,
+    <em data-docudipity-id="e388" data-docudipity-pattern="inline">semiotics</em>, and <em data-docudipity-id="e389" data-docudipity-pattern="inline">phenomenology</em>, the study of the
+    relationship between directly-experienced reality and phenomena (i.e., our awareness of reality, as received via
+    our perceptions) and how meaning is imparted to phenomena by culture.
+    </p><p id="idp2024792456" data-docudipity-id="e110" data-docudipity-pattern="block">
+    Any system dealing with the interplay of knowledge representation and phenomenology is also complicated by the
+    presence of ambiguity in natural language. While considered a favorable quality of poets and writers it isn't
+    appropriate for description within the sciences, even though the terminology found in the domains of knowledge
+    representation and ontological engineering is rife with it. As Allen Newell noted in his influential address to
+    the AI community, <em data-docudipity-id="e390" data-docudipity-pattern="inline">The Knowledge Level</em>
+    <a class="xlink" href="#Newell" id="idp2024790536" data-docudipity-id="e391" data-docudipity-pattern="inline">
+      [Newell]
+    </a>, the use of the term
+    “knowledge” within that community is “informal”. Despite people's common anthropomorphization
+    of machines, “intelligent systems” are not actually intelligent in any real sense; “knowledge
+    based systems” do not operate based upon human knowledge but on a fixed program or set of rules;
+    likewise “common sense reasoning” relies on mistaken notions of a “common sense” and
+    “reasoning”. The list goes on. The historical use of seductive marketing language as a means of obtaining
+    grant funding made the introduction of “semantic” to the lexicon of the Web almost inevitable. Now
+    everything is “semantic”.
+    </p></section><section class="section" id="idp2024791560" data-docudipity-id="e20" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e111" data-docudipity-pattern="block">Semantics, Shemantics</h1>
+            <blockquote class="blockquote" data-docudipity-id="e112" data-docudipity-pattern="container">
+              <p id="idp2024792200" data-docudipity-id="e392" data-docudipity-pattern="block">I don't know who invented water, but it wasn't a fish. – </p>
+              <p class="attribution" data-docudipity-id="e393" data-docudipity-pattern="block">— Alan Kay</p>
+            </blockquote>
+          <p id="idp2024796168" data-docudipity-id="e113" data-docudipity-pattern="block">
+    The extant literature on the "Semantic Web" — as promulgated by the World Wide Web Consortium (W3C)
+    and the plethora of academics now beavering away under its auspices — suggests a world populated by engineers
+    with little grasp of the last half-century's progress in either philosophy or library science, designing systems
+    that promise abilities that cannot possibly be delivered, ignoring profound epistemological issues, linguistic and
+    cultural chasms that have never been breached, at the same time passing over the enormous successes within the field
+    of library science in organizing and classifying information.
+    </p><p id="idp2024795656" data-docudipity-id="e114" data-docudipity-pattern="block">
+    In what might be considered part of the ongoing tradition of 1920's visions of bubble cities on Mars, 1970's visions
+    of chatty household robotic butlers enlivened by “artificial intelligence” as they deliver our
+    martinis<sup class="fn-label" data-docudipity-id="e394" data-docudipity-pattern="inline"><a href="#fn02" class="footnoteref" id="fn02-ref" data-docudipity-id="e683" data-docudipity-pattern="inline">[2]</a></sup>,
+    the “Semantic Web” often appears as merely the latest flight of future fantasy (italics courtesy of the
+    author):</p>
+            <blockquote class="blockquote" data-docudipity-id="e115" data-docudipity-pattern="container">
+              <p id="idp2024795016" data-docudipity-id="e395" data-docudipity-pattern="block">
+    The Semantic Web is an evolving extension of the World Wide Web in which the semantics of information
+    and services on the web is <em data-docudipity-id="e684" data-docudipity-pattern="inline">defined</em>, making it possible for the web to
+    <em data-docudipity-id="e685" data-docudipity-pattern="inline">understand</em> and <em data-docudipity-id="e686" data-docudipity-pattern="inline">satisfy</em> the requests
+    of people and machines to use the web content. It derives from W3C director Tim Berners-Lee's vision
+    of the Web as a <em data-docudipity-id="e687" data-docudipity-pattern="inline">universal</em> medium for data, information, and
+    <em data-docudipity-id="e688" data-docudipity-pattern="inline">knowledge exchange</em>.
+    <a class="xlink" href="#WikipediaSW" id="idp2024806152" data-docudipity-id="e689" data-docudipity-pattern="inline">
+      [WikipediaSW]
+    </a></p>
+            </blockquote>
+          <p id="idp2024803848" data-docudipity-id="e116" data-docudipity-pattern="block">
+    Even the short excerpt above, taken from Wikipedia's SW page (and typical of the hype), is riddled with
+    terminological problems. Decomposing any one of these terms raises issues that are never addressed
+    in any except the most hand-waving fashion, not to mention the anthropomorphization of the Web itself. We are meant
+    to understand that machines will “comprehend semantic documents and data”
+    <a class="xlink" href="#BernersLee2001" id="idp2024803592" data-docudipity-id="e396" data-docudipity-pattern="inline">
+      [BernersLee2001]
+    </a>,
+    where “comprehend” is defined by the Random House dictionary as <em data-docudipity-id="e397" data-docudipity-pattern="inline">to understand
+    the nature or meaning of; to grasp with the mind</em>. This is surely the realm of science fiction.
+    </p><p id="idp2024802824" data-docudipity-id="e117" data-docudipity-pattern="block">
+    Other elements of the SW are expressed in a large number of formal specifications; in their entirety they
+    are intended to provide a formal meta-framework for description and use of concepts, terms, and
+    relationships within a given knowledge domain.
+    </p><p id="idp2024804232" data-docudipity-id="e118" data-docudipity-pattern="block">
+    If the language describing these designs is to be believed, the systems themselves must have found
+    solutions to some rather nagging epistemological problems, in particular the connection between
+    informal language usage, computational linguistics and formal logic. The reality of the SW hardly
+    seems to be the following of a unified vision, but merely the ongoing collection of normative
+    specifications for markup syntaxes, several dozen “vocabularies” and roughly fifty
+    technologies and assorted software projects that purport to be part of this grand vision.
+    <a class="xlink" href="#SWOver" id="idp2024803208" data-docudipity-id="e398" data-docudipity-pattern="inline">
+      [SWOver]
+    </a>
+    </p><p id="idp2024805128" data-docudipity-id="e119" data-docudipity-pattern="block">
+    While this profusion of activity might seem to indicate success, there is nothing in any of this work
+    to indicate that <em data-docudipity-id="e399" data-docudipity-pattern="inline">any</em> of it has broached the real problems of
+    <em data-docudipity-id="e400" data-docudipity-pattern="inline">representing knowledge</em>, if indeed that is something that is actually
+    possible. Robert Brandom suggests
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e120" data-docudipity-pattern="container">
+              <p id="idp2024806792" data-docudipity-id="e401" data-docudipity-pattern="block">
+    When we try to understand the thought or discourse of others, the task can be divided initially into
+    two parts: understanding what they are thinking or talking about and understanding what they are
+    thinking or saying about it. My primary aim here is to present a view of the relation between what
+    is <em data-docudipity-id="e690" data-docudipity-pattern="inline">said</em> or <em data-docudipity-id="e691" data-docudipity-pattern="inline">thought</em> and what it is
+    said or thought <em data-docudipity-id="e692" data-docudipity-pattern="inline">about</em>. The former is the propositional dimension of
+    thought and talk, and the latter is its <em data-docudipity-id="e693" data-docudipity-pattern="inline">representational</em> dimension.
+    The question I address is why any state or utterance that has propositional content also should be
+    understood as having representational content. (For this is so much as to be a question, it must be
+    possible to characterize propositional content in nonrepresentational terms.)
+    </p>
+              <p id="idp2024807432" data-docudipity-id="e402" data-docudipity-pattern="block">The answer I defend is that the representational dimension of propositional contents should be
+    understood in terms of their <em data-docudipity-id="e694" data-docudipity-pattern="inline">social</em> articulation – how a
+    propositionally contentful belief or claim can have a different significance from the perspective of
+    the individual or claimer, on the one hand, than it does from the perspective of one who attributes
+    that belief or claim to the individual, on the other. The context within which concern with what is
+    thought and talked <em data-docudipity-id="e695" data-docudipity-pattern="inline">about</em> arises is the assessment of how the judgments
+    of one individual can serve as reasons for another. The representational content of claims and the
+    beliefs they express reflect the social dimension of the game of giving and asking for reasons.
+    <a class="xlink" href="#Brandom" id="idp2024807944" data-docudipity-id="e696" data-docudipity-pattern="inline">
+      [Brandom]
+    </a></p>
+            </blockquote>
+          <p id="idp2024806664" data-docudipity-id="e121" data-docudipity-pattern="block">
+    A key proposition here is that the entire enterprise of shared representation is a form of
+    <em data-docudipity-id="e403" data-docudipity-pattern="inline">social agreement</em>, an instance of human communication, not an expression
+    of a universal truth, and that the value of a proposition is not its truth but its
+    <em data-docudipity-id="e404" data-docudipity-pattern="inline">utility</em>. This viewpoint is not necessarily shared by a unanimity of
+    philosophers but Brandom's argument does reflect a distinct break from analytic philosophy within the
+    ranks of contemporary philosophers following the work of Ludwig Wittgenstein, whose
+    Philosophical Investigations (Philosophische Untersuchungen)
+    was published in 1953, denouncing the “dogma” in the earlier analytic philosophy of his
+    Tractatus Logico-Philosophicus. More generally, this line of pragmatists and
+    “neo-pragmatists” influenced by Wittgenstein includes John Dewey, Wilfred Sellars, Richard Rorty,
+    Jürgen Habermas, and Hilary Putnam, among others.
+    </p></section><section class="section" id="idp2024819080" data-docudipity-id="e21" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e122" data-docudipity-pattern="block">Informality</h1>
+            <blockquote class="blockquote" data-docudipity-id="e123" data-docudipity-pattern="container">
+              <p id="idp2024819848" data-docudipity-id="e405" data-docudipity-pattern="block">
+    Words are not just wind. Words have something to say. But what if what they have to say is not
+    fixed, then do they really say something? Or do they say nothing? People suppose that words are
+    different from the peeps of baby birds, but is there a difference, or isn't there?
+    </p>
+              <p class="attribution" data-docudipity-id="e406" data-docudipity-pattern="block">— Chuang Tzu, ~320 B.C.E (Burton Watson, trans.)</p>
+            </blockquote>
+          <p id="idp2024822024" data-docudipity-id="e124" data-docudipity-pattern="block">
+    It should be noted that as described above, we could hardly design a system that relied on formal logic.
+    The design is therefore distinctly <em data-docudipity-id="e407" data-docudipity-pattern="inline">informal</em>, i.e., it is not backed by
+    a formal model conforming to any foundationalist or otherwise representational logic. Its organizational
+    structure is instead considered as a form of human communication — a classification system with no
+    <em data-docudipity-id="e408" data-docudipity-pattern="inline">a priori</em> terms — where the meaning of a term is identified entirely
+    with its usage, akin to Inferential Role Semantics <a class="xlink" href="#IRS" id="idp2024826120" data-docudipity-id="e409" data-docudipity-pattern="inline">
+      [IRS]
+    </a>.
+    In this regard the system should not be considered formal in any sense; it is by definition a system
+    that supports an <em data-docudipity-id="e410" data-docudipity-pattern="inline">informal ontology</em>.
+    </p><p id="idp2024825096" data-docudipity-id="e125" data-docudipity-pattern="block">
+    That said, the use of terms that in other contexts might denote an expression of logic (e.g.,
+    “type”, “class”, “subclass”, etc.) should not be considered as bridging any
+    logical chasm — they are just convenient natural language terms; no claims are made to Platonic,
+    universal terms or self-justifying beliefs.
+    </p><p id="idp2024824328" data-docudipity-id="e126" data-docudipity-pattern="block">
+    This is epistemologically a delicate balancing act. In what is known as
+    <em data-docudipity-id="e411" data-docudipity-pattern="inline">deductive-nomological</em> theory, the causality of declarative sentences is
+    replaced by what are termed <em data-docudipity-id="e412" data-docudipity-pattern="inline">constant regularities</em>, where rather than say that
+    <code class="code" data-docudipity-id="e413" data-docudipity-pattern="inline">A</code> <em data-docudipity-id="e414" data-docudipity-pattern="inline">causes</em> <code class="code" data-docudipity-id="e415" data-docudipity-pattern="inline">B</code> we only state that
+    <code class="code" data-docudipity-id="e416" data-docudipity-pattern="inline">A</code> is <em data-docudipity-id="e417" data-docudipity-pattern="inline">regularly followed</em> by <code class="code" data-docudipity-id="e418" data-docudipity-pattern="inline">B</code>. As Manuel DeLanda
+    notes, <q data-docudipity-id="e419" data-docudipity-pattern="inline">it is only theory-obsessed philosophies that can afford to forget about causal connections
+    and concentrate exclusively on logical relations.</q> <a class="xlink" href="#DeLanda" id="idp2024834568" data-docudipity-id="e420" data-docudipity-pattern="inline">
+      [DeLanda]
+    </a>
+    We need to be clear that this is not an attempt to subordinate what might otherwise be considered statements
+    of causality or truth claims behind linguistic statements, rather to claim that this is
+    <em data-docudipity-id="e421" data-docudipity-pattern="inline">all</em> they entail – the interpretation (and thus error-checking) of the
+    system is entirely in human hands.
+    </p><p id="idp2024834824" data-docudipity-id="e127" data-docudipity-pattern="block">
+    It could be argued that all computer-based ontological systems such as the SW fall under this same set of
+    constraints; a further discussion is out of scope for this paper. Suffice it to say that I consider the flaws
+    in putatively formal systems due to epistemological issues as so profound as to demonstrably render them
+    useless, or worse, useful (and therefore dangerous). It is much safer to design a system that is by design
+    an informal toy and is delivered with a healthy disclaimer of having no truth conditional claims, again, as
+    <em data-docudipity-id="e422" data-docudipity-pattern="inline">merely</em> to facilitate expressions of human communication.
+    </p><p id="idp2024832776" data-docudipity-id="e128" data-docudipity-pattern="block">
+    One of the central tenets of the philosophical investigation of the past century is an understanding of the
+    failure of logic to describe the world
+    <sup class="fn-label" data-docudipity-id="e423" data-docudipity-pattern="inline"><a href="#fn03" class="footnoteref" id="fn03-ref" data-docudipity-id="e697" data-docudipity-pattern="inline">[3]</a></sup>, and that the role of philosophy is not to provide a framework (logical
+    or otherwise) for understanding the world but, as someone like John Dewey or Jürgen Habermas might advocate,
+    the <em data-docudipity-id="e424" data-docudipity-pattern="inline">therapeutic</em> tools to improve it. This has had a profound effect on the
+    nature of epistemological inquiry, indeed, some to suggest that it, like God, has died. But whether or not
+    epistemology has died, it's perhaps time to pay a bit more attention to it even as it wriggles on the ground.
+    </p></section><section class="section" id="idp2024837000" data-docudipity-id="e22" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e129" data-docudipity-pattern="block">Semantic Wikis</h1><p id="idp2024838408" data-docudipity-id="e130" data-docudipity-pattern="block">
+    There exist a growing number of “structured” and “semantic” wiki projects, many basing
+    their structure on category and/or typed links, others incorporating formal ontology (e.g., RDF or OWL)
+    features directly into the wiki. Some, like Wikipedia's <em data-docudipity-id="e425" data-docudipity-pattern="inline">Semantic MediaWiki</em>
+    <a class="xlink" href="#SMW" id="idp2024836104" data-docudipity-id="e426" data-docudipity-pattern="inline">
+      [SMW]
+    </a>, use “semantic annotations” to characterize content
+    according to an implicit or explicit vocabulary of terms.
+    </p><p id="idp2024838664" data-docudipity-id="e131" data-docudipity-pattern="block">
+    In many cases these “semantic wikis” may provide a logical framework but often no classification scheme
+    whatsoever, so we may have <code class="code" data-docudipity-id="e427" data-docudipity-pattern="inline">IsSubclassOf</code> but nothing to subclass. It's a wiki categorization
+    scheme on steroids, i.e., this is categorization, not classification. There are a number of difficulties with
+    this approach, including the complexity of the augmented wiki syntax; weak or absent metadata; a lack of
+    user-friendly schema documentation; the requirement of user expertise; lack of support for synonymous, homographic
+    and polysemous (multireferential) terms, and other limitations in the available classification schemes (where they
+    exist at all). Categorization terms or annotations are themselves often ungrounded, undefined, or when they are,
+    they force users into a predefined schema, often defined in a formal logic not otherwise followed by, related or
+    appropriate to the user-created structure, such as using set-theoretic language to describe the genealogical
+    relationships.
+    </p><p id="idp2024837640" data-docudipity-id="e132" data-docudipity-pattern="block">
+    This is in addition to the more profound problems of: linguistic/grammatical ambiguity (e.g., homographs,
+    polysemes, unconnected synonymous terms); lack of context (e.g., temporal, spatial, cultural, individual
+    use of language); ill-, undefined, or misspelled terms; ill- or undefined subject identity; the recursive
+    requirement for a core of <em data-docudipity-id="e428" data-docudipity-pattern="inline">a priori </em>terms based on closed-world, monotonic
+    reasoning, or other epistemological and ontological errors. Many if not most of these problems are
+    insurmountable unless one forces users to understand and follow proscriptive rules, lives in ignorance or denial,
+    or throws one's hands up declaring defeat.
+    </p></section><section class="section" id="idp2024856072" data-docudipity-id="e23" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e133" data-docudipity-pattern="block">The Wrong Solution to the Wrong Problem</h1>
+            <blockquote class="blockquote" data-docudipity-id="e134" data-docudipity-pattern="container">
+              <p id="idp2024855816" data-docudipity-id="e429" data-docudipity-pattern="block">When you have an effective enough technology so that you can really act upon your epistemological
+    errors and can create havoc in the world in which you live, then the error is lethal.</p>
+              <p class="attribution" data-docudipity-id="e430" data-docudipity-pattern="block">— Gregory Bateson, Pathologies of Epistemology, Ibid.</p>
+            </blockquote>
+          <p id="idp2024855688" data-docudipity-id="e135" data-docudipity-pattern="block">
+    These ambitious projects are typically “knowledge modeling” tools and are
+    not a suitable fit for use by anyone except those whose expertise and expectations comes
+    from the world of artificial intelligence,  knowledge representation, expert systems and
+    the like, people who already understand and/or at least accept terms and technologies like
+    RDFS, OWL, XSDT, SPARQL, and GRDDL.
+    Even for those who putatively do, how many truly understand the ontological commitments
+    they are making? Given that the entire RDF-based world of the SW is predicated on a
+    principle of <em data-docudipity-id="e431" data-docudipity-pattern="inline">entailment</em>, defined by Pat Hayes in
+    RDF Semantics as
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e136" data-docudipity-pattern="container">
+              <p id="idp2024858120" data-docudipity-id="e432" data-docudipity-pattern="block">
+    the key idea which connects model-theoretic semantics to real-world applications. […] Through the
+    notions of satisfaction, entailment and validity, formal semantics gives a rigorous definition to a notion
+    of "meaning" that can be related directly to computable methods of determining whether or not
+    meaning is preserved by some transformation on a representation of knowledge. (<a class="xlink" href="#RDFSemantics" id="idp2024857352" data-docudipity-id="e698" data-docudipity-pattern="inline">
+      [RDFSemantics]
+    </a>, §2)
+    </p>
+            </blockquote>
+          <p id="idp2024855560" data-docudipity-id="e137" data-docudipity-pattern="block">
+    Should we expect the layperson to understand and accept this? Pat is trying to be
+    <em data-docudipity-id="e433" data-docudipity-pattern="inline">helpful</em> when he writes:
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e138" data-docudipity-pattern="container">
+              <p id="idp2024861064" data-docudipity-id="e434" data-docudipity-pattern="block">
+    Readers who are familiar with conventional logical semantics may find it useful to think of RDF as a
+    version of existential binary relational logic in which relations are first-class entities in the
+    universe of quantification. Such a logic can be obtained by encoding the relational atom <code class="code" data-docudipity-id="e699" data-docudipity-pattern="inline">R(a,b)</code>
+    into a conventional logical syntax, using a notional three-place relation <code class="code" data-docudipity-id="e700" data-docudipity-pattern="inline">Triple(a,R,b)</code>;
+    the basic semantics described here can be reconstructed from this intuition by defining the extension
+    of <code class="code" data-docudipity-id="e701" data-docudipity-pattern="inline">y</code> as the set <code class="code" data-docudipity-id="e702" data-docudipity-pattern="inline">{&lt;x,z> : Triple(x,y,z)}</code> and noting that this would be
+    precisely the denotation of <code class="code" data-docudipity-id="e703" data-docudipity-pattern="inline">R</code> in the conventional Tarskian model theory of the original
+    form <code class="code" data-docudipity-id="e704" data-docudipity-pattern="inline">R(a,b)</code> of the relational atom.
+    (<a class="xlink" href="#RDFSemantics" id="idp2024860296" data-docudipity-id="e705" data-docudipity-pattern="inline">
+      [RDFSemantics]
+    </a>, §1.1)</p>
+            </blockquote>
+          <p id="idp2024861192" data-docudipity-id="e139" data-docudipity-pattern="block">
+    If we build systems for use by the public with the knowledge that those systems seldom define or follow
+    a formal model theory<sup class="fn-label" data-docudipity-id="e435" data-docudipity-pattern="inline"><a href="#fn04" class="footnoteref" id="fn04-ref" data-docudipity-id="e706" data-docudipity-pattern="inline">[4]</a></sup>,
+    and knowing that the average user will hardly pay attention to this, much less
+    understand it, can we be said to be acting responsibly as designers and engineers?
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e140" data-docudipity-pattern="container">
+              <p id="idp2024871576" data-docudipity-id="e436" data-docudipity-pattern="block">
+    First, it's not the Web that is monotonic (whatever that would mean) but the reasoning from
+    Web resources that must be monotonic. […] Nonmonotonic reasoning is therefore inherently
+    unsafe on the Web. In fact, nonmonotonic reasoning is inherently unsafe anywhere, which is
+    why all classical reasoning is monotonic; this isn't anything particularly new. But the
+    open-ended assumption that seems to underlie much thinking about reasoning on the semantic
+    web makes the issue a little more acute than it often is in many of the situations where
+    logic has been put to use in computer science.
+    </p>
+              <p id="idp2024870424" data-docudipity-id="e437" data-docudipity-pattern="block">
+    For example, if you are reasoning with a particular database of information, it is often
+    assumed that the dbase is complete, in the sense that if some item is missing, then it is
+    assumed to be false […]. But open-ended domains are not like this, and it is very dangerous
+    to rely on this kind of reasoning when one has no license to assume that the world is closed
+    in the appropriate way. If there were ever an open-ended domain it is surely the semantic web. […]
+    </p>
+              <p id="idp2024868760" data-docudipity-id="e438" data-docudipity-pattern="block">
+    The global advantages of monotonicity should not be casually tossed aside, but at the same
+    time the computational advantages of nonmonotonic reasoning modes is hard to deny, and they are
+    widely used in the current state of the art. We need ways for them to co-exist smoothly.
+    <a class="xlink" href="#Hayes2001" id="idp2024869144" data-docudipity-id="e707" data-docudipity-pattern="inline">
+      [Hayes2001]
+    </a></p>
+            </blockquote>
+          <p id="idp2024870936" data-docudipity-id="e141" data-docudipity-pattern="block">
+    John McCarthy and Pat Hayes were publishing papers on the situation calculus while Richard
+    Nixon was president of the US <a class="xlink" href="#McCHay69" id="idp2024871064" data-docudipity-id="e439" data-docudipity-pattern="inline">
+      [McCHay69]
+    </a>,
+    and it's not that there hasn't been significant research in knowledge representation
+    in the decades since. The frame problem and calculus accounts for time, concurrency, processes,
+    uncertainty, and decision theory within the situation calculus provide an “embarrassing
+    richness” of proposed solutions (<a class="xlink" href="#Reiter2001" id="idp2024867864" data-docudipity-id="e440" data-docudipity-pattern="inline">
+      [Reiter2001]
+    </a>, 44-46; 149; 283; 335);
+    there has been halting but steady progress in common sense ontologies, including the open source
+    release of the Cyc ontology and associated tools as OpenCyc <a class="xlink" href="#OpenCyc" id="idp2024869656" data-docudipity-id="e441" data-docudipity-pattern="inline">
+      [OpenCyc]
+    </a>;
+    and there is a lively and ongoing bi-yearly conference schedule on context
+    <a class="xlink" href="#Context07" id="idp2024867992" data-docudipity-id="e442" data-docudipity-pattern="inline">
+      [Context07]
+    </a>.
+
+    After all, NASA has a couple of semi-autonomous robots very successfully roaming around Mars.
+    Still, almost nothing has been done to breach the epistemological divide between knowledge
+    representation theory and the real world of language and human culture, and contemporary research
+    in related and relevant disciplines such as computational linguistics, narratology and philosophical
+    inquiry hardly seems to be on SW researchers' radar. Much of the work has been focused on
+    syntax and schema development.
+    </p><p id="idp2024870168" data-docudipity-id="e142" data-docudipity-pattern="block">
+    One approach might be to use these sophisticated tools without fully understanding them, as
+    Tim Berners-Lee writes that <q data-docudipity-id="e443" data-docudipity-pattern="inline">Semantic Web researchers […] accept that paradoxes and unanswerable
+    questions are a price that must be paid to achieve versatility</q>
+    <a class="xlink" href="#BernersLee2001" id="idp2024869400" data-docudipity-id="e444" data-docudipity-pattern="inline">
+      [BernersLee2001]
+    </a>.
+    The problem here is not so much the possibility of paradox, it is the premise that the Web and
+    its users can be made to behave according to rules of entailment rigid enough to produce
+    <em data-docudipity-id="e445" data-docudipity-pattern="inline">satisfactory</em> results. If money, health, safety, or security
+    are involved this hardly seems responsible.
+    </p><p id="idp2024875544" data-docudipity-id="e143" data-docudipity-pattern="block">
+    Another approach might be to chill out, not take life (in particular, machine reasoning and
+    computer-based ontologies) so seriously, or perhaps to stop using formal logic to describe the
+    informal world and go elsewhere for a solution to the problem of organizing information.
+    </p></section><section class="section" id="idp2024874520" data-docudipity-id="e24" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e144" data-docudipity-pattern="block">Librarians are Sexy</h1><p id="idp2024874008" data-docudipity-id="e145" data-docudipity-pattern="block">
+    In addition to not paying much if any attention to epistemology, the SW folks at the W3C
+    don't seem to have paid much attention to the demonstrable success of metadata and
+    classification schemes within the field of library science. Now, not all the problems the
+    SW is trying to address are related to information organization (e.g., “intelligent”
+    agents, military surveillance) but it does seem telling that library science has been so
+    summarily ignored. It's perhaps not as sexy as AI, but is demonstrably a lot more
+    important in this age of <em data-docudipity-id="e446" data-docudipity-pattern="inline">infoglut</em>:  we need information
+    organization a lot more than we need robotic butlers, even if we did have
+    <em data-docudipity-id="e447" data-docudipity-pattern="inline">complete trust</em> in their ability to make important
+    decisions for us.
+    </p><p id="idp2024872856" data-docudipity-id="e146" data-docudipity-pattern="block">
+    Despite the close ties between the W3C and the Online Computer Library Center (OCLC) and
+    its Dublin Core metadata project, a recent search of the over 115,000 pages on the W3C Web
+    site for the word “librarian” returns only 59 hits, and only 324 for
+    “digital library”<sup class="fn-label" data-docudipity-id="e448" data-docudipity-pattern="inline"><a href="#fn05" class="footnoteref" id="fn05-ref" data-docudipity-id="e708" data-docudipity-pattern="inline">[5]</a></sup>. So perhaps it's not too surprising that a site search
+    for an important text on information organization published by the MIT Press – MIT
+    is the founding organization of the W3C – produces no hits. Not a one.
+    </p><p id="idp2024872984" data-docudipity-id="e147" data-docudipity-pattern="block">
+    For those not acquainted with Elaine Svenonius' book
+    <em data-docudipity-id="e449" data-docudipity-pattern="inline">The Intellectual Foundation of Information Organization</em>
+    <a class="xlink" href="#Svenonius2000" id="idp2024879256" data-docudipity-id="e450" data-docudipity-pattern="inline">
+      [Svenonius2000]
+    </a>,
+    they might be surprised to find lucidly stated solutions to many of the thorny
+    “semantic” problems of information systems, vocabulary and metadata design, as
+    well as other issues germane to the SW. This is not simply theory but a description of
+    demonstrably functional approaches to information organization that are current practice
+    within the library world. We'll revisit this later; suffice it to say that Svenonius'
+    book has been highly informative in the design of this project.
+    </p></section></section>
+      <section class="section" id="idp2024876952" data-docudipity-id="e3" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e25" data-docudipity-pattern="block">Background</h1><p id="idp2024878488" data-docudipity-id="e26" data-docudipity-pattern="block">
+    This section describes the goals, history and requirements of the
+    <em data-docudipity-id="e148" data-docudipity-pattern="inline">Ceryle Project</em>, and the requirements that led to its design and
+    implementation of the <em data-docudipity-id="e149" data-docudipity-pattern="inline">Assertion Framework</em>.
+    </p><section class="section" id="idp2024879768" data-docudipity-id="e27" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e150" data-docudipity-pattern="block">The Ceryle Project </h1><p id="idp2024876184" data-docudipity-id="e151" data-docudipity-pattern="block">
+    The original intent of the Ceryle Project – now in development for over seven years, admittedly a bit
+    of a kitchen sink – was to develop a software application to organize notes, planning documents,
+    bibliographic references and other research materials, a document management system that permitted user
+    creation and management of its own classification system, a bounded (but only partly-controlled)
+    vocabulary of terms and relations between those terms, where each term must be defined, and all relations typed,
+    again by a defined term.
+    </p><p id="idp2024878872" data-docudipity-id="e152" data-docudipity-pattern="block">
+    This was simply the next in a long line of attempts at organizing the matériel for a work of historical
+    fiction that had overflowed dozens of paper notebooks since the early 1990s. Transcribing those notes to a
+    computer hadn't solved the problem, as there were still neither any organizational principles nor tools; I
+    found myself spending almost as much time in wading through the morass as I did in research and writing (and as
+    a writer I'm an <em data-docudipity-id="e451" data-docudipity-pattern="inline">expert</em> procrastinator).
+    </p><p id="idp2024883864" data-docudipity-id="e153" data-docudipity-pattern="block">
+    After my involvement with the XML Topic Map 1.0 (XTM) specification, the project was also a means of exploring
+    how XTM and other XML markup might be merged with various types of library classification systems in supporting
+    such a software application.
+    </p><p id="idp2024882072" data-docudipity-id="e154" data-docudipity-pattern="block">
+    The Ceryle Project began as a content management system (CMS) marrying a text editor, an embedded XML database,
+    search engine, various categorization and classification features, and a graph visualization engine. Originally,
+    Ceryle was a standalone UI application, but after a few years an embedded web server and wiki were added –
+    largely to provide a local rich text editing environment as an alternative to the Java Swing UI. It now resembles
+    a digital library application with a relatively sophisticated user interface as well as a web interface and
+    nascent RESTful web services.
+    </p></section><section class="section" id="idp2024881432" data-docudipity-id="e28" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e155" data-docudipity-pattern="block">Māori Subject Headings &amp; the Iwi Hapū List</h1><p id="idp2024883224" data-docudipity-id="e156" data-docudipity-pattern="block">
+    The National Library of New Zealand has been a sponsor in the development of two projects that use a thesaurus
+    database to organize Māori-related cultural materials:
+      </p>
+            <figure data-docudipity-id="e158" data-docudipity-pattern="container"><table class="variablelist" data-docudipity-id="e454" data-docudipity-pattern="container">
+                <tr id="idp2024881944" data-docudipity-id="e710" data-docudipity-pattern="container">
+                  <td class="varlist-term" data-docudipity-id="e866" data-docudipity-pattern="container">
+                    <p data-docudipity-id="e959" data-docudipity-pattern="block">
+                      <span class="term" data-docudipity-id="e993" data-docudipity-pattern="inline">
+                        <strong data-docudipity-id="e1007" data-docudipity-pattern="inline">Ngā Ūpoko Tukutuku / Māori Subject Headings (MSH)</strong>
+                      </span>
+                    </p>
+                  </td>
+                  <td class="varlist-item" data-docudipity-id="e867" data-docudipity-pattern="container">
+                    <p id="idp2024880920" data-docudipity-id="e960" data-docudipity-pattern="block">
+        expresses a set of library subject headings in te reo Māori, with mappings to their English subject
+        heading equivalents. Documentation (scope notes) and relations between terms are expressed in both languages.
+        </p>
+                  </td>
+                </tr>
+                <tr id="idp2024895640" data-docudipity-id="e711" data-docudipity-pattern="container">
+                  <td class="varlist-term" data-docudipity-id="e868" data-docudipity-pattern="container">
+                    <p data-docudipity-id="e961" data-docudipity-pattern="block">
+                      <span class="term" data-docudipity-id="e994" data-docudipity-pattern="inline">
+                        <strong data-docudipity-id="e1008" data-docudipity-pattern="inline">Iwi Hapū Names List (IHL)</strong>
+                      </span>
+                    </p>
+                  </td>
+                  <td class="varlist-item" data-docudipity-id="e869" data-docudipity-pattern="container">
+                    <p id="idp2024895896" data-docudipity-id="e962" data-docudipity-pattern="block">
+        expresses the structure of Māori <em data-docudipity-id="e995" data-docudipity-pattern="inline">whakapapa</em> (genealogy) from
+        <em data-docudipity-id="e996" data-docudipity-pattern="inline">waka</em> (canoe) to <em data-docudipity-id="e997" data-docudipity-pattern="inline">whakaminenga</em> (confederation)
+        to <em data-docudipity-id="e998" data-docudipity-pattern="inline">iwi</em> (tribe) to <em data-docudipity-id="e999" data-docudipity-pattern="inline">hapū</em> (sub-tribe
+        or family group)<sup class="fn-label" data-docudipity-id="e1000" data-docudipity-pattern="inline"><a href="#fn06" class="footnoteref" id="fn06-ref" data-docudipity-id="e1009" data-docudipity-pattern="inline">[6]</a></sup>.
+        </p>
+                  </td>
+                </tr>
+              </table></figure>
+          <p id="idp2024897944" data-docudipity-id="e159" data-docudipity-pattern="block">These databases use the standardized thesaurus structure <a class="xlink" href="#Z3919" id="idp2024899608" data-docudipity-id="e456" data-docudipity-pattern="inline">
+      [Z3919]
+    </a> to represent existing relationships between records (see Domain Ontology below
+    for details).</p><p id="idp2024896664" data-docudipity-id="e161" data-docudipity-pattern="block">
+    The source materials exhibited hierarchical, mereological, collection, and other relation types, which were shoehorned
+    into the existing thesaurus relationships. For example, the reflexive <code class="code" data-docudipity-id="e459" data-docudipity-pattern="inline">HasIwiOf</code> and <code class="code" data-docudipity-id="e460" data-docudipity-pattern="inline">IsIwiOf</code>
+    relations are subclasses of the Z39.19 <em data-docudipity-id="e461" data-docudipity-pattern="inline">Broader Term</em> and
+    <em data-docudipity-id="e462" data-docudipity-pattern="inline">Narrower Term</em> relations, respectively.  The use of thesaurus software as a means of
+    library classification system development is not uncommon (<a class="xlink" href="#Turner" id="idp2024902040" data-docudipity-id="e463" data-docudipity-pattern="inline">
+      [Turner]
+    </a>, 111-117).
+    </p><p id="idp2024902168" data-docudipity-id="e162" data-docudipity-pattern="block">
+    One benefit of the project is that it has permitted these two databases to be merged into one system while still
+    maintaining their respective scopes. We were lucky in that of the thousands of records there were only two name clashes.
+    Had there been a substantial number we may have had to resort to a Wikipedia-like name disambiguation strategy.
+    </p></section><section class="section" id="idp2024903448" data-docudipity-id="e29" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e163" data-docudipity-pattern="block">Requirements</h1><p id="idp2024901144" data-docudipity-id="e164" data-docudipity-pattern="block">
+    In a nutshell, the basic requirements of the Assertion Framework were to provide a wiki environment that permitted
+    expression of an underlying structure using a relatively simple wiki-like syntax. In more detail, the system should:
+    </p><ul class="itemizedlist" id="idp2024902552" data-docudipity-id="e165" data-docudipity-pattern="container">
+              <li id="idp2024900888" data-docudipity-id="e464" data-docudipity-pattern="container">
+                <p id="idp2024901016" data-docudipity-id="e713" data-docudipity-pattern="block">presume no underlying model; that the design be able to declare its semantics over clear and
+                uncluttered ground</p>
+              </li>
+              <li id="idp2024904088" data-docudipity-id="e465" data-docudipity-pattern="container">
+                <p id="idp2024900632" data-docudipity-id="e714" data-docudipity-pattern="block">avoid the problems of the simplistic wiki category links but neither require users to learn a
+                classification scheme, a set of rules for its use, nor any arcane, complicated syntax — the
+                system was to be as "wiki-like" as possible. Any augmentation to wiki functionality
+                should also be “wiki-like” and use a syntax that is easy to learn and understand, an
+                informal system usable by untrained, lay people, not just “knowledge engineers”
+          </p>
+              </li>
+              <li id="idp2024901272" data-docudipity-id="e466" data-docudipity-pattern="container">
+                <p id="idp2024904472" data-docudipity-id="e715" data-docudipity-pattern="block">permit structuring of the wiki based on explicit typed links (relations) between pages (with page
+                names as terms), expressing a graph structure implemented as a user-editable, REST-conforming Web
+                service <a class="xlink" href="#REST" id="idp2024901784" data-docudipity-id="e870" data-docudipity-pattern="inline">
+      [REST]
+    </a>, where each URL could be used as a subject identifier
+          </p>
+              </li>
+              <li id="idp2024902424" data-docudipity-id="e467" data-docudipity-pattern="container">
+                <p id="idp2024902808" data-docudipity-id="e716" data-docudipity-pattern="block">permit the user-modifiable structure to be based on an underlying, unmodifiable
+                <em data-docudipity-id="e871" data-docudipity-pattern="inline">endorsed</em> structure, protecting the endorsed structure while
+                permitting view differentiation of the endorsed- from the user-edited structure. This is not to
+                advocate a set of truths but permit an expression and differentiation of a
+                <em data-docudipity-id="e872" data-docudipity-pattern="inline">corporate</em> and <em data-docudipity-id="e873" data-docudipity-pattern="inline">public</em> opinion.
+          </p>
+              </li>
+              <li id="idp2024907800" data-docudipity-id="e468" data-docudipity-pattern="container">
+                <p id="idp2024907160" data-docudipity-id="e717" data-docudipity-pattern="block">substantial parts of the semantics (particularly domain-specific predicates) should be
+                community-definable
+          </p>
+              </li>
+              <li id="idp2024904728" data-docudipity-id="e469" data-docudipity-pattern="container">
+                <p id="idp2024905880" data-docudipity-id="e718" data-docudipity-pattern="block">all terms in the vocabulary must be defined (and those definitions readily accessible)</p>
+              </li>
+              <li id="idp2024908184" data-docudipity-id="e470" data-docudipity-pattern="container">
+                <p id="idp2024904984" data-docudipity-id="e719" data-docudipity-pattern="block">expose the structure for improved user navigation</p>
+              </li>
+              <li id="idp2024908312" data-docudipity-id="e471" data-docudipity-pattern="container">
+                <p id="idp2024906648" data-docudipity-id="e720" data-docudipity-pattern="block">the underlying ontology (structure) must be exposed and shareable across multiple wikis, and use a
+                standardized notation (in this case, XTM 1.0 was chosen since the wiki structure is maintained as a
+                Topic Map)
+          </p>
+              </li>
+              <li id="idp2024905368" data-docudipity-id="e472" data-docudipity-pattern="container">
+                <p id="idp2024907288" data-docudipity-id="e721" data-docudipity-pattern="block">the overall system must be capable of being archived in such a way as to permit reconstruction of any
+                given moment in its history (so as to be able to reconstruct the context of a given assertion), likewise
+                users must be able to view snapshots of a set of wiki pages at any given point in the wiki's history
+          </p>
+              </li>
+              <li id="idp2024905112" data-docudipity-id="e473" data-docudipity-pattern="container">
+                <p id="idp2024906264" data-docudipity-id="e722" data-docudipity-pattern="block">be based on modifiable, popular (i.e., relatively stable) open source software</p>
+              </li>
+            </ul></section></section>
+      <section class="section" id="idp2024915096" data-docudipity-id="e4" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e30" data-docudipity-pattern="block">Design</h1><p id="idp2024913944" data-docudipity-id="e31" data-docudipity-pattern="block">
+    This section describes the design of an <em data-docudipity-id="e166" data-docudipity-pattern="inline">Assertion Framework</em>, a software library
+    that provides capabilities for categorizing, classifying and organizing a repository or corpus of documents; how
+    <em data-docudipity-id="e167" data-docudipity-pattern="inline">classification</em> and <em data-docudipity-id="e168" data-docudipity-pattern="inline">ontology</em> are defined and used
+    in the project; the abstractions used in creating <em data-docudipity-id="e169" data-docudipity-pattern="inline">assertions</em> and finally how these
+    assertions fit together to create an <em data-docudipity-id="e170" data-docudipity-pattern="inline">informal ontology</em>.
+    </p><p id="idp2024914712" data-docudipity-id="e32" data-docudipity-pattern="block">The following section then describes the implementation of this design.</p><section class="section" id="idp2024915352" data-docudipity-id="e33" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e171" data-docudipity-pattern="block">Classification vs. Ontology</h1><p id="idp2024918296" data-docudipity-id="e172" data-docudipity-pattern="block">
+    We have a readily available solution for an organizational structure that avoids the epistemological conundrums of
+    computer-based ontologies by appealing to the functional (i.e., functionalist) approach of classification systems
+    within library science.
+    </p><p id="idp2024917656" data-docudipity-id="e173" data-docudipity-pattern="block">
+    Svenonius describes a <em data-docudipity-id="e474" data-docudipity-pattern="inline">subject language</em> as an artificial language that is used to
+    depict what a document is <em data-docudipity-id="e475" data-docudipity-pattern="inline">about</em>. It is the language providing the terms used to
+    compose a classification scheme. The chapter <em data-docudipity-id="e476" data-docudipity-pattern="inline">Subject Languages: Referential and Relational
+    Semantics</em> (<a class="xlink" href="#Svenonius2000" id="idp2024920216" data-docudipity-id="e477" data-docudipity-pattern="inline">
+      [Svenonius2000]
+    </a>, 147-171) begins:
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e174" data-docudipity-pattern="container">
+              <p id="idp2024920856" data-docudipity-id="e478" data-docudipity-pattern="block">
+    This chapter looks at the semantic treatment needed to transform a natural language into a
+    subject language. […] a subject language is based on a natural language but differs from
+    it primarily in the semantic structures it uses to normalize vocabulary by setting up a
+    one-to-one relationship between terms and their referents. The referential semantics of a
+    subject language deals with the generalized homonym problem. It consists of methods for
+    restricting term referents so that any given term has one and only one meaning. The relational
+    semantics of a subject language deals with the generalized synonym problem and consists of
+    methods for linking terms within similar or related meanings.
+    </p>
+            </blockquote>
+          <p id="idp2024919320" data-docudipity-id="e175" data-docudipity-pattern="block">
+    If we consider each page on a wiki as the community's “canonical” information about a
+    given subject, with its unique page title serving as a descriptor of that subject, the set of page
+    titles taken as a whole comprises the subject language of the wiki. The wiki page name and its associated
+    URL act as unambiguous subject identifiers; each use of a term is also a link to its reference documentation.
+    </p><p id="idp2024919704" data-docudipity-id="e176" data-docudipity-pattern="block">
+    The terms in a subject language differ referentially from those in ontology or in natural language in that
+    they do not refer to entities or concepts in the real world but to <em data-docudipity-id="e479" data-docudipity-pattern="inline">subjects</em>.
+    The extensional meaning of a term in a subject language does not refer to the class of all entities denoted by
+    the term but to the class of documents that the term denotes. From an inferential role semantics point of view,
+    the evolutionary development of a classification structure based on user design and behavior would (assuming
+    active usage) tend towards validating those terms and relations between terms within the classification system
+    that are frequently traversed, with infrequently or unused assertional links potentially deprecated or at least
+    called into question. This warrants further investigation.
+    </p></section><section class="section" id="idp2024924952" data-docudipity-id="e34" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e177" data-docudipity-pattern="block">Homographs, Polysemes and Other Multireferential Words</h1><p id="idp2024924824" data-docudipity-id="e178" data-docudipity-pattern="block">
+    One of the problems in classification schemes is due to the multireferentiality of words. Briefly,
+    <em data-docudipity-id="e480" data-docudipity-pattern="inline">homographs</em> are words that are spelled the same but have different meanings.
+    <em data-docudipity-id="e481" data-docudipity-pattern="inline">Polysemes</em> are words that are spelled the same, have different meanings, but
+    their meanings are related. These constitute only two of a variety of what are called
+    <em data-docudipity-id="e482" data-docudipity-pattern="inline">multireferential</em> words. Even words that aren't usually considered
+    multireferential may be interpreted with subtly different meanings when used in different contexts, domains of
+    discourse, in different grammatical constructions, or by different people or groups of people (e.g., children
+    vs. adults).
+    </p><p id="idp2024922008" data-docudipity-id="e179" data-docudipity-pattern="block">
+    Library classification systems have dealt with the issue of multireferential terms in various ways. Svenonius
+    notes that this can be accomplished either semantically, via domain specification, qualifiers and/or annotations,
+    or syntactically (<a class="xlink" href="#Svenonius2000" id="idp2024924568" data-docudipity-id="e483" data-docudipity-pattern="inline">
+      [Svenonius2000]
+    </a>, 148-155).
+    The latter, called <em data-docudipity-id="e484" data-docudipity-pattern="inline">nonsemantic disambiguation,</em> is a natural solution for wikis
+    where the use of camel-cased combinatory terms as wiki page names is the norm.
+    </p><p id="idp2024922520" data-docudipity-id="e180" data-docudipity-pattern="block">
+    Over the years wiki communities have discussed at length and less frequently experimented with the use of namespaces,
+    similar to the use of colonized tokens in XML. There are a variety of problems with this, such as the incompatibility
+    between various characters as delimiters and URLs, but even with a functional syntax the biggest deterrent is likely
+    to be the additional complexity for the user.
+    </p></section><section class="section" id="idp2024923288" data-docudipity-id="e35" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e181" data-docudipity-pattern="block">Faceted Classification</h1><p id="idp2024927896" data-docudipity-id="e182" data-docudipity-pattern="block">
+    Classification methodologies used in modern libraries have been profoundly influenced by S.R. Ranganathan's
+    <em data-docudipity-id="e485" data-docudipity-pattern="inline">Colon Classification</em> system <a class="xlink" href="#ISKOI" id="idp2024927384" data-docudipity-id="e486" data-docudipity-pattern="inline">
+      [ISKOI]
+    </a>,
+    developed in the 1930's. While Ranganathan's system<sup class="fn-label" data-docudipity-id="e487" data-docudipity-pattern="inline"><a href="#fn07" class="footnoteref" id="fn07-ref" data-docudipity-id="e723" data-docudipity-pattern="inline">[7]</a></sup>
+    did not itself survive, it was subsequently a profound influence on other classification schemes, including both
+    Dewey Decimal and US Library of Congress (LoC), and led to the development of
+    <em data-docudipity-id="e488" data-docudipity-pattern="inline">Faceted Classification</em> (FC), where the predominant terms of a given domain of
+    knowledge are sorted into homogeneous, mutually exclusive conceptual categories or
+    <em data-docudipity-id="e489" data-docudipity-pattern="inline">facets</em>, each derived from the parent domain by a single characteristic. FC differs
+    from a traditional enumerated scheme in that “it does not assign fixed slots to subjects in sequence, using
+    instead clearly defined, mutually exclusive, and collectively exhaustive aspects, properties or characteristics of a
+    class or given subject.” <a class="xlink" href="#Wynar" id="idp2024927000" data-docudipity-id="e490" data-docudipity-pattern="inline">
+      [Wynar]
+    </a>.
+    </p><p id="idp2024928536" data-docudipity-id="e183" data-docudipity-pattern="block">
+    As an example, Gregory Bateson's seminal work <em data-docudipity-id="e491" data-docudipity-pattern="inline">Steps to an Ecology of Mind</em> contains
+    the US Library of Congress Cataloging-in-Publication (CIP) data on its copyright page, used by libraries in cataloging
+    the book. This includes:
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e184" data-docudipity-pattern="container">
+              <p id="idp2024932632" data-docudipity-id="e492" data-docudipity-pattern="block">
+    1. Anthropology, Cultural – Collected works. 2. Knowledge, Theory of – Collected works.
+    3. Psychiatry – Collected works. 4. Evolution – Collected works. I. Title. II. Series.
+    [DNLM: 1. Anthropology, Cultural – collected works. 2. Ecology – collected works.
+    3. Evolution – collected works. 4. Schizophrenic Psychology – collected works.
+    5. Thinking – collected works. GN 6 B329s 1972a].
+    </p>
+            </blockquote>
+          <p id="idp2024929816" data-docudipity-id="e185" data-docudipity-pattern="block">
+    Anyone interested in this book has a good chance of locating it by subject amongst the plenitude
+    found in a library card catalog, even if they cannot remember the title or author. But it is
+    rather unfortunate that the categories listed for <em data-docudipity-id="e493" data-docudipity-pattern="inline">Steps to an Ecology of Mind</em>
+    don't include cybernetics, cognitive science, and systems theory, though Bateson's ideas have been
+    profoundly influential in the foundation of these sciences. We can perhaps forgive the librarians who classified
+    a book that has broken so many boundaries. All classification schemes have their limitations and failings,
+    including the very human problem of an inability to see into the future. The flexibility of allowing classifications
+    to evolve without breaking is extremely important, especially during the early stages, where categories are still
+    relatively unformed. Notably, this problem plagued expert systems implementations, where later changes to root level
+    concepts were very difficult to accomplish (e.g., a change of logical foundations, such as from first order to modal
+    logic).
+    </p><p id="idp2024932888" data-docudipity-id="e186" data-docudipity-pattern="block">
+    Many of the refinements in the system have been in the approach to defining the interrelationships between terms.
+    There are two fundamental Faceted Classification relationship types: semantic and syntactic.
+    </p><p id="idp2024930072" data-docudipity-id="e187" data-docudipity-pattern="block">
+    A <em data-docudipity-id="e494" data-docudipity-pattern="inline">semantic</em> relationship is independent of context and is by definition a permanent
+    relationship, arising from the subjects involved. Semantic relationships are further divided into three types:
+    <em data-docudipity-id="e495" data-docudipity-pattern="inline">equivalence</em> relationships, where terms are synonyms (and would be cross-referenced
+    under the same category); two types of <em data-docudipity-id="e496" data-docudipity-pattern="inline">hierarchical</em> relationships,
+    <em data-docudipity-id="e497" data-docudipity-pattern="inline">superclass-subclass</em> and <em data-docudipity-id="e498" data-docudipity-pattern="inline">mereological</em> (whole-part);
+    and <em data-docudipity-id="e499" data-docudipity-pattern="inline">affinitive/associative</em> relationships, which are domain-specific relationships
+    such as cause and effect, coordination, sequence, genetic, etc.
+    </p><p id="idp2024933656" data-docudipity-id="e188" data-docudipity-pattern="block">
+    A <em data-docudipity-id="e500" data-docudipity-pattern="inline">syntactic</em> relationship is an <em data-docudipity-id="e501" data-docudipity-pattern="inline">ad hoc</em> relationship
+    denoting otherwise unrelated concepts brought together as a composite subject in a specific context. This is the
+    equivalent of how terms would appear together in a common sentence. It operates similarly to how we use keyword
+    searches on the Web, such as “biblical archaeology”, “poetry by 12th century Japanese authors”,
+    or “medieval weapon manufacture”. This approach is at the heart of the resource organization approach taken
+    by most wikis in their use of camel-cased wiki page names. In the Assertion Framework we didn't set out to avoid
+    the use of wiki page names as subject identifiers, but were looking to supplant the klunky use of category names by
+    use of typed assertions between pages.
+    </p><p id="idp2024935960" data-docudipity-id="e189" data-docudipity-pattern="block">
+    A highly recommended text on library classification schemes is <em data-docudipity-id="e502" data-docudipity-pattern="inline">Essential Classification</em>
+    <a class="xlink" href="#Broughton" id="idp2024936856" data-docudipity-id="e503" data-docudipity-pattern="inline">
+      [Broughton]
+    </a>, whose author is an active researcher in
+    Faceted Classification.
+    </p></section><section class="section" id="idp2024937112" data-docudipity-id="e36" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e190" data-docudipity-pattern="block">User Tagging or “Folksonomies”</h1><p id="idp2024937752" data-docudipity-id="e191" data-docudipity-pattern="block">
+    A <em data-docudipity-id="e504" data-docudipity-pattern="inline">user tag</em> permits the non-hierarchical assignment of a term or keyword to a
+    resource. The syntax of user tagging in most social software sites (e.g., del.icio.us, Flickr) is a simple comma-
+    or whitespace-delimited list of tokens. Whereas on these sites users are generally permitted to add tags to a
+    resource at will (absent any validation or even spell-checking), in our case this would mean that many or most tags
+    would remain undefined and outside the Assertion Framework.
+    </p><p id="idp2024937624" data-docudipity-id="e192" data-docudipity-pattern="block">
+    Tags could be seen as keywords in a Dublin Core list of subjects and would in our implementation be therefore
+    searchable, but we wanted tags to play a larger role than that of metadata given their current popularity.
+    </p><p id="idp2024939544" data-docudipity-id="e193" data-docudipity-pattern="block">
+    While Faceted Classification permits synthetic classification, its facets are still usually derived from a controlled
+    vocabulary. If each tag were represented by a wiki page, where each definition is discoverable, tags could then be seen
+    as facets. The decision was therefore made to require each tag to be represented by a wiki page, even if this may be
+    seen by some users as onerous. We don't yet have feedback that would permit us to evaluate how this may affect
+    the willingness of people to tag resources.
+    </p></section><section class="section" id="idp2024937880" data-docudipity-id="e37" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e194" data-docudipity-pattern="block">Assertions</h1><p id="idp2024939160" data-docudipity-id="e195" data-docudipity-pattern="block">
+    The basic graph design centers around a simple construct called an <em data-docudipity-id="e505" data-docudipity-pattern="inline">Assertion</em>, a
+    form of simple declarative sentence using the Subject-Predicate-Object grammar common to natural
+    language<sup class="fn-label" data-docudipity-id="e506" data-docudipity-pattern="inline"><a href="#fn08" class="footnoteref" id="fn08-ref" data-docudipity-id="e724" data-docudipity-pattern="inline">[8]</a></sup>
+    as well as other abstract syntaxes (e.g., RDF, where it is called a <em data-docudipity-id="e507" data-docudipity-pattern="inline">triple</em>).
+    </p><p id="idp2024941976" data-docudipity-id="e196" data-docudipity-pattern="block">In this model each of the three components of the sentence is a Term:</p><pre class="programlisting" id="idp2024942872" data-docudipity-id="e197" data-docudipity-pattern="block"><code data-docudipity-id="e508" data-docudipity-pattern="inline">Subject Predicate Object</code></pre><p id="idp2024943640" data-docudipity-id="e198" data-docudipity-pattern="block">E.g., an Assertion stating that Gary Snyder is a poet might look like:</p><pre class="programlisting" id="idp2024944664" data-docudipity-id="e199" data-docudipity-pattern="block"><code data-docudipity-id="e509" data-docudipity-pattern="inline">GarySnyder IsA Poet</code></pre><p id="idp2024944920" data-docudipity-id="e200" data-docudipity-pattern="block">
+    The Terms available for use in Assertions are not composed from a controlled vocabulary in the library sense, but
+    given that the validation of a new Assertion uses the set of Terms dynamically derived from the extant wiki pages,
+    the vocabulary may not be controlled but is at least nominally defined. Users may create new wiki pages as necessary
+    to make available the Terms necessary to their Assertions.
+    </p><p id="idp2024941464" data-docudipity-id="e201" data-docudipity-pattern="block">
+    The interpretation of an Assertion is similar (but not equivalent) to the definition in
+    <em data-docudipity-id="e510" data-docudipity-pattern="inline">RDF Semantics</em>:
+    </p>
+            <blockquote class="blockquote" data-docudipity-id="e202" data-docudipity-pattern="container">
+              <p id="idp2024945048" data-docudipity-id="e511" data-docudipity-pattern="block">The basic intuition of model-theoretic semantics is that asserting a sentence makes a claim
+    about the world: it is another way of saying that the world is, in fact, so arranged as to be
+    an interpretation which makes the sentence true. In other words, an assertion amounts to
+    stating a constraint on the possible ways the world might be. (<a class="xlink" href="#RDFSemantics" id="idp2024945176" data-docudipity-id="e725" data-docudipity-pattern="inline">
+      [RDFSemantics]
+    </a>, §1.3)
+    </p>
+            </blockquote>
+          <p id="idp2024943512" data-docudipity-id="e203" data-docudipity-pattern="block">
+    Throwing out the assumption of a model theory and discarding any notion of a universal truth, we
+    may more usefully consider an assertion in a socio-linguistic sense: a statement of belief made
+    by a person about the world. Given that these Assertions are being made by many people in the
+    collaborative environment of a wiki, this is quite a <em data-docudipity-id="e512" data-docudipity-pattern="inline">reasonable</em>
+    stance. In other words, we may infer – based on the stated beliefs of the community –
+    a statement of potentially equal believability.
+    </p><p id="idp2024950712" data-docudipity-id="e204" data-docudipity-pattern="block">
+    The set of the wiki's extant Assertion triples forms a bipartite graph, where each pair of
+    Subject and Object Terms are graph nodes linked by their respective Predicates. This bounded
+    corpus of Assertions taken together is considered a form of <em data-docudipity-id="e513" data-docudipity-pattern="inline">informal
+    ontology</em><sup class="fn-label" data-docudipity-id="e514" data-docudipity-pattern="inline"><a href="#fn09" class="footnoteref" id="fn09-ref" data-docudipity-id="e726" data-docudipity-pattern="inline">[9]</a></sup>.
+    </p></section><section class="section" id="idp2024953272" data-docudipity-id="e38" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e205" data-docudipity-pattern="block">Core Predicates</h1><p id="idp2024951352" data-docudipity-id="e206" data-docudipity-pattern="block">
+    In simple terms, taxonomy is a restricted form of ontology, a hierarchy where all relations
+    share a common ancestor type. Because our design uses hierarchical as well as other relation types
+    it cannot be considered a proper taxonomy, but it does include a taxonomic “layer”.
+    </p><p id="idp2024951608" data-docudipity-id="e207" data-docudipity-pattern="block">
+    Ontological hierarchies can be composed of a variety of formal relations, based on sets,
+    classes, collections, etc. (depending on the underlying logic, derivation, and context of use).
+    Because we are distinctly trying to avoid connoting formal (e.g., set theoretic) foundations as
+    well as promote simple natural language terminology, the names of the predicates avoid formal titles
+    but make reference to a formal, traditional relation type in their documentation.
+    </p><p id="idp2024953528" data-docudipity-id="e208" data-docudipity-pattern="block">
+    There are three fundamental Predicates that compose the core of the ontology:
+    </p>
+            <figure data-docudipity-id="e209" data-docudipity-pattern="container"><table class="variablelist" data-docudipity-id="e515" data-docudipity-pattern="container">
+                <tr id="idp2024949688" data-docudipity-id="e727" data-docudipity-pattern="container">
+                  <td class="varlist-term" data-docudipity-id="e874" data-docudipity-pattern="container">
+                    <p data-docudipity-id="e963" data-docudipity-pattern="block">
+                      <span class="term" data-docudipity-id="e1001" data-docudipity-pattern="inline">Kind Of</span>
+                    </p>
+                  </td>
+                  <td class="varlist-item" data-docudipity-id="e875" data-docudipity-pattern="container">
+                    <p id="idp2024952120" data-docudipity-id="e964" data-docudipity-pattern="block">the superclass-subclass relation</p>
+                  </td>
+                </tr>
+                <tr id="idp2024950200" data-docudipity-id="e728" data-docudipity-pattern="container">
+                  <td class="varlist-term" data-docudipity-id="e876" data-docudipity-pattern="container">
+                    <p data-docudipity-id="e965" data-docudipity-pattern="block">
+                      <span class="term" data-docudipity-id="e1002" data-docudipity-pattern="inline">Is A</span>
+                    </p>
+                  </td>
+                  <td class="varlist-item" data-docudipity-id="e877" data-docudipity-pattern="container">
+                    <p id="idp2024955064" data-docudipity-id="e966" data-docudipity-pattern="block">the class-instance relation</p>
+                  </td>
+                </tr>
+                <tr id="idp2024955192" data-docudipity-id="e729" data-docudipity-pattern="container">
+                  <td class="varlist-term" data-docudipity-id="e878" data-docudipity-pattern="container">
+                    <p data-docudipity-id="e967" data-docudipity-pattern="block">
+                      <span class="term" data-docudipity-id="e1003" data-docudipity-pattern="inline">Part Of</span>
+                    </p>
+                  </td>
+                  <td class="varlist-item" data-docudipity-id="e879" data-docudipity-pattern="container">
+                    <p id="idp2024955320" data-docudipity-id="e968" data-docudipity-pattern="block">the mereological part-whole relation</p>
+                  </td>
+                </tr>
+              </table></figure>
+          <p id="idp2024955448" data-docudipity-id="e210" data-docudipity-pattern="block">
+    The "Kind Of" and "Part Of" assertions together form a hybrid hierarchy,
+    with instances or individuals related via "Is A" Assertions<sup class="fn-label" data-docudipity-id="e517" data-docudipity-pattern="inline"><a href="#fn10" class="footnoteref" id="fn10-ref" data-docudipity-id="e730" data-docudipity-pattern="inline">[10]</a></sup>.
+    </p></section><section class="section" id="idp2024954424" data-docudipity-id="e39" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e211" data-docudipity-pattern="block">Upper Ontology</h1><p id="idp2024955960" data-docudipity-id="e213" data-docudipity-pattern="block">
+    As with many ontological models, all graph nodes are some descendant of a root Term
+    called <em data-docudipity-id="e520" data-docudipity-pattern="inline">Thing</em> (“everything is a kind of thing”),
+    such that the system is composed of a single connected graph. All Predicates are some
+    descendant subclass of an <em data-docudipity-id="e521" data-docudipity-pattern="inline">ur</em>-Predicate called
+    <em data-docudipity-id="e522" data-docudipity-pattern="inline">Relation</em>. The core or base ontology is a very
+    simple, as shown in <a class="xref" href="#fig03" data-docudipity-id="e523" data-docudipity-pattern="inline">Figure 3</a>.
+    </p><p id="idp2024959160" data-docudipity-id="e214" data-docudipity-pattern="block">
+    Most Terms are related via a Kind Of (superclass-subclass) relation. The basic
+    foundation of the ontology is primarily taxonomic, with some additions of mereological
+    components.
+    </p><p id="idp2024960696" data-docudipity-id="e215" data-docudipity-pattern="block">Support for Faceted Classification is provided by the relation</p>
+            <figure data-docudipity-id="e216" data-docudipity-pattern="container"><table class="variablelist" data-docudipity-id="e524" data-docudipity-pattern="container">
+                <tr id="idp2024961336" data-docudipity-id="e732" data-docudipity-pattern="container">
+                  <td class="varlist-term" data-docudipity-id="e880" data-docudipity-pattern="container">
+                    <p data-docudipity-id="e969" data-docudipity-pattern="block">
+                      <span class="term" data-docudipity-id="e1004" data-docudipity-pattern="inline">Has Facet</span>
+                    </p>
+                  </td>
+                  <td class="varlist-item" data-docudipity-id="e881" data-docudipity-pattern="container">
+                    <p id="idp2024958392" data-docudipity-id="e970" data-docudipity-pattern="block">the facet relation</p>
+                  </td>
+                </tr>
+              </table></figure>
+          <p id="idp2024958520" data-docudipity-id="e217" data-docudipity-pattern="block">
+    With the addition of various additional relations the “upper ontology”
+    contains roughly 50 terms and 50 relations.
+    </p></section><section class="section" id="idp2024959928" data-docudipity-id="e40" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e218" data-docudipity-pattern="block">Domain Ontology</h1><p id="idp2024962360" data-docudipity-id="e219" data-docudipity-pattern="block">
+    Domain ontologies using additional affinitive or associative relations are considered
+    as “layers” on the Upper Ontology's taxonomical/mereological structure.
+    Being domain-related, these are the most likely to be augmented and/or modified by
+    users. Syntactic relationships are considered as the coming together of other relationship
+    types, e.g., in constructing a character, a setting, an event, or a scene in a narrative
+    ontology.
+    </p><p id="idp2024962744" data-docudipity-id="e220" data-docudipity-pattern="block">
+    The project currently includes two domain ontologies:
+    </p>
+            <figure data-docudipity-id="e221" data-docudipity-pattern="container"><table class="variablelist" data-docudipity-id="e526" data-docudipity-pattern="container">
+                <tr id="idp2024965560" data-docudipity-id="e733" data-docudipity-pattern="container">
+                  <td class="varlist-term" data-docudipity-id="e882" data-docudipity-pattern="container">
+                    <p data-docudipity-id="e971" data-docudipity-pattern="block">
+                      <span class="term" data-docudipity-id="e1005" data-docudipity-pattern="inline">Z39.19</span>
+                    </p>
+                  </td>
+                  <td class="varlist-item" data-docudipity-id="e883" data-docudipity-pattern="container">
+                    <p id="idp2024964024" data-docudipity-id="e972" data-docudipity-pattern="block">
+        includes the complete set of terms and relations as described by the Z39.19 standard.
+        This includes complete role and relation templates for all Z39.19 predicates actually
+        used by the system. All Z39.19 terms and relations are included as Terms even if
+        currently unused.
+        </p>
+                  </td>
+                </tr>
+                <tr id="idp2024962232" data-docudipity-id="e734" data-docudipity-pattern="container">
+                  <td class="varlist-term" data-docudipity-id="e884" data-docudipity-pattern="container">
+                    <p data-docudipity-id="e973" data-docudipity-pattern="block">
+                      <span class="term" data-docudipity-id="e1006" data-docudipity-pattern="inline">Māori Subject Headings / Iwi Hapū Names List</span>
+                    </p>
+                  </td>
+                  <td class="varlist-item" data-docudipity-id="e885" data-docudipity-pattern="container">
+                    <p id="idp2024964536" data-docudipity-id="e974" data-docudipity-pattern="block">
+        this includes the set of terms and relations used in the Māori Subject Headings and
+        Iwi Hapū List, with mappings to equivalent relations in Z39.19.
+        </p>
+                  </td>
+                </tr>
+              </table></figure>
+          <p id="idp2024965304" data-docudipity-id="e222" data-docudipity-pattern="block">
+    Other domain ontologies developed for the Ceryle Project may be included as needed in the project.
+    </p></section><section class="section" id="idp2024964152" data-docudipity-id="e41" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e223" data-docudipity-pattern="block">Relationship to Z39.19</h1><p id="idp2024963512" data-docudipity-id="e224" data-docudipity-pattern="block">
+    The ANSI/NISO standard Z39.19 <em data-docudipity-id="e528" data-docudipity-pattern="inline">Guidelines for the Construction, Format, and
+    Management of Monolingual Controlled Vocabularies (Z39.19 2005)</em> provides features for
+    support of controlled vocabularies, thesaurus terminology and base relation types.
+    </p><p id="idp2024967480" data-docudipity-id="e225" data-docudipity-pattern="block">
+    This is used in the context of the wiki using the following definitions (where Z39.19
+    definitions are in <strong data-docudipity-id="e529" data-docudipity-pattern="inline">bold</strong>):
+    </p><ul class="itemizedlist" id="idp2024968760" data-docudipity-id="e226" data-docudipity-pattern="container">
+              <li id="idp2024966712" data-docudipity-id="e530" data-docudipity-pattern="container">
+                <p id="idp2024968504" data-docudipity-id="e735" data-docudipity-pattern="block">each wiki page is a precoordinated <strong data-docudipity-id="e886" data-docudipity-pattern="inline">term</strong> reifying a single <strong data-docudipity-id="e887" data-docudipity-pattern="inline">concept</strong> or subject</p>
+              </li>
+              <li id="idp2024967608" data-docudipity-id="e531" data-docudipity-pattern="container">
+                <p id="idp2024969400" data-docudipity-id="e736" data-docudipity-pattern="block">the wiki page name is considered the <strong data-docudipity-id="e888" data-docudipity-pattern="inline">subject heading</strong></p>
+              </li>
+              <li id="idp2024968376" data-docudipity-id="e532" data-docudipity-pattern="container">
+                <p id="idp2024967736" data-docudipity-id="e737" data-docudipity-pattern="block">wiki Assertions are used rather than untyped links between pages to establish <strong data-docudipity-id="e889" data-docudipity-pattern="inline">semantic relationships</strong></p>
+              </li>
+              <li id="idp2024968888" data-docudipity-id="e533" data-docudipity-pattern="container">
+                <p id="idp2024973496" data-docudipity-id="e738" data-docudipity-pattern="block">the inherent predicate of each Z39.19 <strong data-docudipity-id="e890" data-docudipity-pattern="inline">semantic relation</strong> is reified as a wiki page</p>
+              </li>
+              <li id="idp2024972728" data-docudipity-id="e534" data-docudipity-pattern="container">
+                <p id="idp2024972856" data-docudipity-id="e739" data-docudipity-pattern="block">the wiki is considered a <strong data-docudipity-id="e891" data-docudipity-pattern="inline">controlled vocabulary</strong> as dynamically bounded by gamut of wiki pages.
+        </p>
+              </li>
+              <li id="idp2024971192" data-docudipity-id="e535" data-docudipity-pattern="container">
+                <p id="idp2024973624" data-docudipity-id="e740" data-docudipity-pattern="block">all domain-based predicates are likewise defined as wiki pages</p>
+              </li>
+            </ul><p id="idp2024973112" data-docudipity-id="e227" data-docudipity-pattern="block">
+    Z39.19 defines three types of semantic (as opposed to syntactic) relationships used in
+    controlled vocabularies:  Equivalency (§8.2); Hierarchy (§8.3); and Association
+    (§8.4).
+    </p><p id="idp2024972216" data-docudipity-id="e228" data-docudipity-pattern="block">
+    <strong data-docudipity-id="e536" data-docudipity-pattern="inline">Equivalency</strong> relations include synonymy, near synonymy, and lexical variants. This is notably not
+    an equivalency relation under any logic, i.e., it does not relate equivalent concepts or entities but
+    equivalent <em data-docudipity-id="e537" data-docudipity-pattern="inline">terms</em>. Our ontology maps these to <em data-docudipity-id="e538" data-docudipity-pattern="inline">Use</em>
+    and <em data-docudipity-id="e539" data-docudipity-pattern="inline">UsedFor</em>. (This does not map to the logical connective
+    <em data-docudipity-id="e540" data-docudipity-pattern="inline">Equivalent</em> relation found in our middle ontology, which is used only for
+    logical relations.)</p><p id="idp2024975544" data-docudipity-id="e229" data-docudipity-pattern="block">
+    Our project mirrors the <strong data-docudipity-id="e541" data-docudipity-pattern="inline">Hierarchy</strong> relations, though sadly the Z39.19 standard
+    reflects a common error in knowledge representation texts of conflating IsA with a
+    superclass-subclass relation. This results in Z39.19 using the same IsA name for
+    the “Generic Relation” (ostensibly, superclass-subclass) and
+    “Instance” (class-instance) relations. We provide the two Z39.19 generic
+    relations as IsBroaderThan and IsNarrowerThan, with IsRelatedTo used when hierarchy
+    is unknown or otherwise not implied.
+    In our ontology we use <em data-docudipity-id="e542" data-docudipity-pattern="inline">IsA</em> for class-instance and <em data-docudipity-id="e543" data-docudipity-pattern="inline">KindOf</em>
+    for superclass-subclass, where the latter may be seen as a synonym for <em data-docudipity-id="e544" data-docudipity-pattern="inline">IsNarrowerThan</em>.
+    The mereological whole-part relation is in our ontology named <em data-docudipity-id="e545" data-docudipity-pattern="inline">PartOf</em>.
+    Note that we do not differentiate set theoretic from collection-based semantics;
+    this is not a formal system.
+    </p><p id="idp2024975160" data-docudipity-id="e230" data-docudipity-pattern="block">
+    Z39.19 defines eleven <strong data-docudipity-id="e546" data-docudipity-pattern="inline">Associative</strong> relations (e.g., Cause / Effect, Process / Agent),
+    and while they are included in the ontology and instantiated as wiki pages, they are
+    not used in our source materials hence are not described here further, but again,
+    these are considered as relations between vocabulary terms, not logical relations.
+    </p></section><section class="section" id="idp2024980664" data-docudipity-id="e42" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e231" data-docudipity-pattern="block">Endorsement</h1><p id="idp2024980280" data-docudipity-id="e232" data-docudipity-pattern="block">
+    The concept of an <em data-docudipity-id="e547" data-docudipity-pattern="inline">endorsed set</em> means that some Terms and Predicates are
+    protected from being removed or redefined by users, as they are considered part
+    of the required semantics of the application. This was a requirement of the system,
+    in that the set of terms and relations delivered to the public may be seen as a
+    corporate endorsement of their definition or validity. Given that the public is to
+    be permitted the ability to modify portions of this information there must be a
+    way to either protect endorsed content or at least be able to differentiate the
+    endorsed from unendorsed. This is done via <em data-docudipity-id="e548" data-docudipity-pattern="inline">scoping</em> (in the Topic Map sense).
+    </p><p id="idp2024980792" data-docudipity-id="e233" data-docudipity-pattern="block">
+    User-created Assertions (i.e., those made via plugins on wiki pages) currently
+    have no ability to express scope, so their scope in the resulting Topic Map is
+    hardwired by the plugin itself.
+    </p><p id="idp2024980024" data-docudipity-id="e234" data-docudipity-pattern="block">
+    If desired, administrators of the system may wish to develop a workflow-based
+    endorsement process (policies and practices) whereby user-created terms and
+    predicates can be migrated into the endorsed ontology.
+    </p></section></section>
+      <section class="section" id="idp2024980408" data-docudipity-id="e5" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e43" data-docudipity-pattern="block">Implementation</h1><p id="idp2024981304" data-docudipity-id="e44" data-docudipity-pattern="block">
+    While the expression language and the functional implementation of the
+    Assertion Framework is largely tied in this instance to its origins in the
+    Ceryle Project and/or its current wiki implementation, in abstraction most
+    elements of this design could be reused in non-wiki applications.
+    </p><section class="section" id="idp2024988088" data-docudipity-id="e45" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e235" data-docudipity-pattern="block">A Software “Framework”</h1><p id="idp2024989240" data-docudipity-id="e236" data-docudipity-pattern="block">
+    One aspect of Ceryle that was clear early on was that in addition to supporting
+    the stated functional requirements it also needed to serve as its own development
+    laboratory. Over the years there have been a large number of experiments with
+    features, software libraries, conversion tools, visualization capabilities, some
+    of which have survived, though many only in backup archives. As a framework it has
+    gradually matured and now includes user scripting and various extensibility features.
+    The Assertion Framework described in this paper is a module added to the embedded
+    wiki functioning within the Ceryle standalone application, but has also been installed
+    as part of a generic JSPWiki distribution running on Apache Tomcat; in the latter case
+    there are no dependencies on the standalone Ceryle application.
+    </p></section><section class="section" id="idp2024986936" data-docudipity-id="e46" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e237" data-docudipity-pattern="block">Choice of Wiki Software</h1><p id="idp2024989624" data-docudipity-id="e238" data-docudipity-pattern="block">
+    There were two primary requirements that led to the addition of a wiki:  the ability
+    to provide simple formatting markup in a non-WYSIWYG text editor; and to provide an online
+    and/or collaborative editing environment that could function in either a standalone (local)
+    or online environment.
+    </p><p id="idp2024988216" data-docudipity-id="e239" data-docudipity-pattern="block">
+    The availability of software libraries, compatibility with the Ceryle application as a
+    development environment, and my own previous experience made Java the programming language
+    of choice.  An evaluation was made among the offerings of web servers and wiki software,
+    based on features, ease of embedding, extensibility, stability, and the health of their
+    respective communities and/or sponsors. Jetty<sup class="fn-label" data-docudipity-id="e549" data-docudipity-pattern="inline"><a href="#fn11" class="footnoteref" id="fn11-ref" data-docudipity-id="e741" data-docudipity-pattern="inline">[11]</a></sup>
+    was chosen as the embedded web server (there
+    was little competition). No modifications to Jetty were needed apart from some configuration
+    and embedding code. Following an evaluation of available open source wiki software applications,
+    JSPWiki<sup class="fn-label" data-docudipity-id="e550" data-docudipity-pattern="inline"><a href="#fn12" class="footnoteref" id="fn12-ref" data-docudipity-id="e742" data-docudipity-pattern="inline">[12]</a></sup>
+    was chosen as the most versatile and extensible for our purposes. In the past year
+    JSPWiki has been selected by the Apache Foundation as its wiki solution.
+    </p></section><section class="section" id="idp2024991544" data-docudipity-id="e47" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e240" data-docudipity-pattern="block">Data Conversion</h1><p id="idp2024994232" data-docudipity-id="e241" data-docudipity-pattern="block">
+    The initial content for the present implementation was derived from the Māori Subject Headings
+    and Iwi Hapū Names List thesaurus (Z39.19-compliant) databases and converted via Groovy scripts
+    into interim XHTML documents, which were then converted into Linear Topic Map (LTM) source files
+    to provide a backing structure for the wiki as well as generating an individual wiki page for
+    each record.
+    </p><p id="idp2024993848" data-docudipity-id="e242" data-docudipity-pattern="block">
+    Initially, the database export was only available as a plain text format. The MSH database software
+    has been recently upgraded and now supports an XML export, so the Groovy script was updated to
+    process the new format. This could have been accomplished via XSLT but the existing investment
+    and rapid development of the scripting solution was considered important.
+    </p></section><section class="section" id="idp2024994616" data-docudipity-id="e48" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e243" data-docudipity-pattern="block">WikiEvents and the WikiEventManager</h1><p id="idp2024991032" data-docudipity-id="e244" data-docudipity-pattern="block">
+    While JSPWiki was considered a good foundation, earlier versions of JSPWiki did not include any
+    event handling code, so a general purpose WikiEvents API, a number of WikiEvent classes and a
+    WikiEventManager (see Figure 4. WikiEventManager)
+    were developed for this project. This permitted application-level events to be fired as wiki
+    pages were created, edited, renamed, deleted, and displayed. This general purpose wiki events
+    API and implementation are now part of the Apache JSPWiki distribution.
+    </p><p id="idp2024993080" data-docudipity-id="e246" data-docudipity-pattern="block">
+    Each wiki page editing session fires a number of associated WikiEvents. By filtering on event
+    type we can capture specific life cycle events for a wiki page.
+    </p></section><section class="section" id="idp2024996280" data-docudipity-id="e49" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e247" data-docudipity-pattern="block">Wiki Plugins</h1><p id="idp2024996920" data-docudipity-id="e248" data-docudipity-pattern="block">
+    Given that the basic idea was to permit users to make Assertions, we needed a means of
+    expressing them using a simple wiki-like syntax. JSPWiki has a number of extensibility
+    features, the WikiPlugin API being the most suitable for developing syntax-level functionality.
+    </p><p id="idp2024995000" data-docudipity-id="e249" data-docudipity-pattern="block">
+    JSPWiki augments its formatting and linking syntax with a plugin syntax, where a reference
+    to the plugin name is followed by a plugin body, which may contain one or more named parameters.
+    For example, to transclude the wiki page “CopyrightStatement” using the InsertPage
+    plugin one would include the following wiki text:
+    </p><pre class="programlisting" id="idp2024998200" data-docudipity-id="e250" data-docudipity-pattern="block"><code data-docudipity-id="e553" data-docudipity-pattern="inline">[{InsertPage page='CopyrightStatement'}]</code></pre><p id="idp2024996024" data-docudipity-id="e251" data-docudipity-pattern="block">
+    When the WikiEngine encounters this plugin syntax it instantiates a plugin object based on the plugin's name as mapped
+    to a Java class name. The plugin object's  method is called and the plugin then performs its programmed tasks.
+    </p><p id="idp2024996152" data-docudipity-id="e252" data-docudipity-pattern="block">
+    From the user's perspective, our entire system is implemented via a set of custom plugins, as described below. We've
+    therefore augmented the default JSPWiki wiki text syntax with an additional assertion-related vocabulary, this vocabulary
+    in keeping with the rest of JSPWiki's plugin syntax. Users already familiar with other JSPWiki plugins would find nothing
+    unusual using the syntax of these new assertion features, and in fact, some of the plugins simplify the JSPWiki plugin
+    syntax by not requiring use of explicit parameters.
+    </p></section><section class="section" id="idp2024994744" data-docudipity-id="e50" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e253" data-docudipity-pattern="block">Assertion Plugins</h1><p id="idp2024996536" data-docudipity-id="e254" data-docudipity-pattern="block">The implementation provides both assertion expression and query plugins, including:</p><figure data-docudipity-id="e255" data-docudipity-pattern="container"><table class="table" id="idp2024998584" data-docudipity-id="e554" data-docudipity-pattern="container">
+              <tr data-docudipity-id="e744" data-docudipity-pattern="container">
+                <th data-docudipity-id="e892" data-docudipity-pattern="block">Plugin Name</th>
+                <th data-docudipity-id="e893" data-docudipity-pattern="block">Alias</th>
+                <th data-docudipity-id="e894" data-docudipity-pattern="block">Description</th>
+              </tr>
+            <tr data-docudipity-id="e745" data-docudipity-pattern="container">
+              <th data-docudipity-id="e895" data-docudipity-pattern="block">AssertionPlugin</th>
+              <td data-docudipity-id="e896" data-docudipity-pattern="container"><p data-docudipity-id="e975" data-docudipity-pattern="block">Assert</p></td>
+              <td data-docudipity-id="e897" data-docudipity-pattern="container"><p data-docudipity-id="e976" data-docudipity-pattern="block">assert a single Subject-Predicate-Object sentence</p></td>
+            </tr><tr data-docudipity-id="e746" data-docudipity-pattern="container">
+              <th data-docudipity-id="e898" data-docudipity-pattern="block">AssertionFormPlugin</th>
+              <td data-docudipity-id="e899" data-docudipity-pattern="container"><p data-docudipity-id="e977" data-docudipity-pattern="block">AssertForm</p></td>
+              <td data-docudipity-id="e900" data-docudipity-pattern="container"><p data-docudipity-id="e978" data-docudipity-pattern="block">asserts properties based on a form template</p></td>
+            </tr><tr data-docudipity-id="e747" data-docudipity-pattern="container">
+              <th data-docudipity-id="e901" data-docudipity-pattern="block">AssertedPlugin</th>
+              <td data-docudipity-id="e902" data-docudipity-pattern="container"><p data-docudipity-id="e979" data-docudipity-pattern="block">Asserted</p></td>
+              <td data-docudipity-id="e903" data-docudipity-pattern="container"><p data-docudipity-id="e980" data-docudipity-pattern="block">query for Assertions matching a given pattern</p></td>
+            </tr><tr data-docudipity-id="e748" data-docudipity-pattern="container">
+              <th data-docudipity-id="e904" data-docudipity-pattern="block">AssertTagPlugin</th>
+              <td data-docudipity-id="e905" data-docudipity-pattern="container"><p data-docudipity-id="e981" data-docudipity-pattern="block">Tag</p></td>
+              <td data-docudipity-id="e906" data-docudipity-pattern="container"><p data-docudipity-id="e982" data-docudipity-pattern="block">assert one or more tags as properties of the Subject</p></td>
+            </tr><tr data-docudipity-id="e749" data-docudipity-pattern="container">
+              <th data-docudipity-id="e907" data-docudipity-pattern="block">HasAssertedTagOfPlugin</th>
+              <td data-docudipity-id="e908" data-docudipity-pattern="container"><p data-docudipity-id="e983" data-docudipity-pattern="block">HasTagOf</p></td>
+              <td data-docudipity-id="e909" data-docudipity-pattern="container"><p data-docudipity-id="e984" data-docudipity-pattern="block">query for wiki pages matching one or more tags</p></td>
+            </tr><tr data-docudipity-id="e750" data-docudipity-pattern="container">
+              <th data-docudipity-id="e910" data-docudipity-pattern="block">TopicMapPlugin</th>
+              <td data-docudipity-id="e911" data-docudipity-pattern="container"><p data-docudipity-id="e985" data-docudipity-pattern="block">TopicMap</p></td>
+              <td data-docudipity-id="e912" data-docudipity-pattern="container"><p data-docudipity-id="e986" data-docudipity-pattern="block">query the backing Topic Map (administrative use)</p></td>
+            </tr></table></figure><p id="idp2025005240" data-docudipity-id="e256" data-docudipity-pattern="block">The AssertionPlugin syntax is quite simple, just wrapping the abstract assertion syntax:</p><pre class="programlisting" id="idp2025006904" data-docudipity-id="e257" data-docudipity-pattern="block"><code data-docudipity-id="e556" data-docudipity-pattern="inline">[{Assert [GarySnyder] IsA [Poet] }]</code></pre><p id="idp2025004472" data-docudipity-id="e258" data-docudipity-pattern="block">
+    Assertion Templates<sup class="fn-label" data-docudipity-id="e557" data-docudipity-pattern="inline"><a href="#fn13" class="footnoteref" id="fn13-ref" data-docudipity-id="e751" data-docudipity-pattern="inline">[13]</a></sup>
+    use the same syntax but include a flag parameter, using the links to assert the roles
+    played by the subject and object in Assertions of that type:
+    </p><pre class="programlisting" id="idp2025006392" data-docudipity-id="e259" data-docudipity-pattern="block"><code data-docudipity-id="e558" data-docudipity-pattern="inline">[{Assert template='true' [Instance] IsA [Class] }]</code></pre><p id="idp2025006520" data-docudipity-id="e260" data-docudipity-pattern="block">Likewise, the query syntax is similar but uses parameters:</p><pre class="programlisting" id="idp2025005624" data-docudipity-id="e261" data-docudipity-pattern="block"><code data-docudipity-id="e559" data-docudipity-pattern="inline">[{Asserted predicate='IsA' object='Poet' logic='and' }]</code></pre><p id="idp2025006136" data-docudipity-id="e262" data-docudipity-pattern="block">
+    This would return all Assertions having a Predicate “IsA” and an Object of “Poet”. Regular expressions
+    are also supported. The current wiki page can be referenced in the syntax by “[.]”.
+    </p><p id="idp2025009592" data-docudipity-id="e263" data-docudipity-pattern="block">
+    In practice almost all of the plugins developed for the project are domain-specific subclasses of either the
+    AssertionPlugin or AssertedPlugin, developed to provide a specific feature based on a shorthand wiki text syntax.
+    Some plugins are aliased to provide simpler or alternative names or to preset certain default values. For example,
+    the Z39.19 predicates (e.g., “IsNarrowerThan”) were all included by presetting the current wiki page as
+    the Subject and a fixed predicate name so that rather than
+    </p><pre class="programlisting" id="idp2025007928" data-docudipity-id="e264" data-docudipity-pattern="block"><code data-docudipity-id="e560" data-docudipity-pattern="inline">[{Assert [Whare] IsNarrowerThan [WhareT?puna] }]</code></pre><p id="idp2025008056" data-docudipity-id="e265" data-docudipity-pattern="block">the user need only type</p><pre class="programlisting" id="idp2025009208" data-docudipity-id="e266" data-docudipity-pattern="block"><code data-docudipity-id="e561" data-docudipity-pattern="inline">[{IsNarrowerThan WhareT?puna }]</code></pre><p id="idp2025010872" data-docudipity-id="e267" data-docudipity-pattern="block">
+    It is hoped that these types of syntax simplifications will keep users from getting bogged down in the details of the
+    syntax. Even the use of the word “assert” might be seen as overly technical by many. As the terminology
+    used is easily changed we look forward to improving the system via user feedback.
+    </p></section><section class="section" id="idp2025011000" data-docudipity-id="e51" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e268" data-docudipity-pattern="block">User Tagging</h1><p id="idp2025010488" data-docudipity-id="e269" data-docudipity-pattern="block">
+    A <em data-docudipity-id="e562" data-docudipity-pattern="inline">WikiTag</em> feature was developed to provide the ability to tag a wiki page,
+    query pages matching one or more tags, or display a tag cloud. This again uses wiki plugins:
+    </p><figure data-docudipity-id="e270" data-docudipity-pattern="container"><table class="table" id="idp2025008568" data-docudipity-id="e563" data-docudipity-pattern="container">
+              <tr data-docudipity-id="e752" data-docudipity-pattern="container">
+                <th data-docudipity-id="e913" data-docudipity-pattern="block">Plugin Name</th>
+                <th data-docudipity-id="e914" data-docudipity-pattern="block">Alias</th>
+                <th data-docudipity-id="e915" data-docudipity-pattern="block">Description</th>
+              </tr>
+            <tr data-docudipity-id="e753" data-docudipity-pattern="container">
+              <th data-docudipity-id="e916" data-docudipity-pattern="block">TagPlugin</th>
+              <td data-docudipity-id="e917" data-docudipity-pattern="container"><p data-docudipity-id="e987" data-docudipity-pattern="block">Tag</p></td>
+              <td data-docudipity-id="e918" data-docudipity-pattern="container"><p data-docudipity-id="e988" data-docudipity-pattern="block">assert one or more tags as properties of the Subject</p></td>
+            </tr><tr data-docudipity-id="e754" data-docudipity-pattern="container">
+              <th data-docudipity-id="e919" data-docudipity-pattern="block">HasTagOfPlugin</th>
+              <td data-docudipity-id="e920" data-docudipity-pattern="container"><p data-docudipity-id="e989" data-docudipity-pattern="block">HasTagOf</p></td>
+              <td data-docudipity-id="e921" data-docudipity-pattern="container"><p data-docudipity-id="e990" data-docudipity-pattern="block">query for wiki pages matching one or more tags</p></td>
+            </tr><tr data-docudipity-id="e755" data-docudipity-pattern="container">
+              <th data-docudipity-id="e922" data-docudipity-pattern="block">TagCloudPlugin</th>
+              <td data-docudipity-id="e923" data-docudipity-pattern="container"><p data-docudipity-id="e991" data-docudipity-pattern="block">TagCloud</p></td>
+              <td data-docudipity-id="e924" data-docudipity-pattern="container"><p data-docudipity-id="e992" data-docudipity-pattern="block">display a tag cloud based on a query</p></td>
+            </tr></table></figure><p id="idp2025013048" data-docudipity-id="e271" data-docudipity-pattern="block">Users can add tags to a page using a simplified plugin syntax:</p><pre class="programlisting" id="idp2025011128" data-docudipity-id="e272" data-docudipity-pattern="block"><code data-docudipity-id="e565" data-docudipity-pattern="inline">[{Tag Person Actor Honcho }]</code></pre><p id="idp2025013688" data-docudipity-id="e273" data-docudipity-pattern="block">
+    This uses a TagManager that functions independently of the Assertion Framework, so that JSPWiki installations
+    can be provided with a user tagging feature and augment the wiki at a later date with the Assertion Framework
+    without any change in syntax. In this case, the only change necessary is the addition of the Assertion
+    Framework library (jar file) and the re-aliasing of the plugins, e.g., changing the “Tag”
+    alias from the TagPlugin to the AssertTagPlugin, the “HasTagOf” alias from the HasTagOfPlugin
+    to the HasAssertedTagOfPlugin. JSPWiki provides this configuration feature via an XML file.
+    </p><p id="idp2025011384" data-docudipity-id="e274" data-docudipity-pattern="block">
+    User tags are instantiated within the system as facets, such that the actual relationship between
+    a page and one of its tags is a HasFacet relation. While this is a form of typed
+    <em data-docudipity-id="e566" data-docudipity-pattern="inline">property assignment</em>, the system does not currently support property
+    typing of tags, though this can be done using via an assertion, eg.,
+    </p><pre class="programlisting" id="idp2025016760" data-docudipity-id="e275" data-docudipity-pattern="block"><code data-docudipity-id="e567" data-docudipity-pattern="inline">[{Assert [Habermas2006] DC_Title ="The Divided West" }]</code></pre><p id="idp2025015224" data-docudipity-id="e276" data-docudipity-pattern="block">
+    But this kind of thing might be seen as pushing the envelope on a wiki…
+    </p></section><section class="section" id="idp2025015480" data-docudipity-id="e52" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e277" data-docudipity-pattern="block">Assertion Framework</h1><p id="idp2025016376" data-docudipity-id="e278" data-docudipity-pattern="block">
+    When an instance of an AssertionPlugin is parsed on a wiki page it fires a subclass of
+    WikiEvent called an AssertionEvent. An event listener filtering for AssertionEvents passes this on
+    to a parser which generates an Assertion object corresponding to the parameters of the plugin
+    syntax. In addition to Subject, Predicate, and Object we also capture the name of its origin wiki
+    page and a creation timestamp<sup class="fn-label" data-docudipity-id="e568" data-docudipity-pattern="inline"><a href="#fn14" class="footnoteref" id="fn14-ref" data-docudipity-id="e756" data-docudipity-pattern="inline">[14]</a></sup>.
+    </p><p id="idp2025018552" data-docudipity-id="e280" data-docudipity-pattern="block">
+    The system supporting the expression, generation, caching and querying of Assertion objects
+    is called an <em data-docudipity-id="e571" data-docudipity-pattern="inline">Assertion Framework</em>
+    (see <a class="xref" href="#fig05" data-docudipity-id="e572" data-docudipity-pattern="inline">Figure 5</a>),
+    which can be thought of in both static and dynamic terms:  static in the sense that at any point in
+    time a snapshot of the system provides the set of extant Assertions; dynamic in the sense that the
+    system is mutable, continually changing as people create and modify the wiki pages.
+    </p><p id="idp2025829432" data-docudipity-id="e281" data-docudipity-pattern="block">
+    The workhorse of the system is the AssertionHandler, which handles all incoming Assertion objects,
+    and managing a cache containing the set of all Assertions on the wiki. The initial set of Assertions
+    is generated by an AssertionCrawler scan of all pages.
+    </p><p id="idp2025828152" data-docudipity-id="e282" data-docudipity-pattern="block">
+    The AssertionHandler also provides methods to query the set of Assertions.
+    </p></section><section class="section" id="idp2025826360" data-docudipity-id="e53" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e283" data-docudipity-pattern="block">WikiMapManager</h1><p id="idp2025829560" data-docudipity-id="e284" data-docudipity-pattern="block">
+    In the current implementation, the life of the AssertionHandler is very short. While the Assertion
+    Framework using an AssertionHandler is a functional system, our requirements are better met by
+    queries from a Topic Map.
+    </p><p id="idp2025826488" data-docudipity-id="e286" data-docudipity-pattern="block">
+    Following initialization of the WikiEngine on startup, the AssertionCrawler crawls the wiki pages.
+    Once this has finished it fires a completion event which triggers creation of a
+    <em data-docudipity-id="e575" data-docudipity-pattern="inline">WikiMapManager</em>
+    (see <a class="xref" href="#fig06" data-docudipity-id="e576" data-docudipity-pattern="inline">Figure 6</a>),
+    which also implements the AssertionHandler API.
+    </p><p id="idp2025831352" data-docudipity-id="e287" data-docudipity-pattern="block">
+    The WikiMapManager obtains the set of Assertion objects from the existing AssertionHandler and
+    converts them into Topics and Associations in an in-memory TopicMap object using the TM4J Topic Map engine.
+    </p><p id="idp2025833528" data-docudipity-id="e288" data-docudipity-pattern="block">
+    Given our model of Assertions as simple binary relations, the translation to a Topic Map is straightforward.
+    As described previously, the Assertion object contains references to the wiki page names for Subject,
+    Predicate, and Object, the origin wiki page and a creation timestamp. Each wiki page name reference is
+    converted to a Topic whose base name matches the wiki page name, with the page URL as a subject identifier.
+    The Predicate is further typed as some descendant class of Relation within the Topic Map's subsumption
+    hierarchy for relations. The Assertion itself is converted to a Topic Map Association, typed by the
+    Predicate's Topic and also reified as a Topic. The timestamp is added as a property to this Association.
+    If any of the wiki page name references match an existing Topic name the existing Topic is used. We are not
+    currently scoping page names but will likely add scope to all names in the future given the current
+    development project is multilingual.
+    </p><p id="idp2025831480" data-docudipity-id="e289" data-docudipity-pattern="block">
+    Once this conversion is complete the WikiMapManager usurps the functioning of the existing AssertionHandler
+    (which is then destroyed), so that incoming AssertionEvents are now processed as modifications and queries
+    on the Topic Map.
+    </p><p id="idp2025831992" data-docudipity-id="e290" data-docudipity-pattern="block">
+    The author of an Assertion relies upon the ability to read the respective wiki page documentation related
+    to the sentence components at the moment of its expression. Since the system is mutable it must also be
+    possible to view a snapshot of the system at the moment when the expression was made in order for others to
+    interpret the Assertion correctly.
+    </p></section><section class="section" id="idp2025832120" data-docudipity-id="e54" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e291" data-docudipity-pattern="block">Topic Map Interfaces</h1><p id="idp2025831736" data-docudipity-id="e292" data-docudipity-pattern="block">
+    The TopicMapPlugin is currently used to perform diagnostic queries on the Topic Map from a wiki page. The result
+    of a query via a wiki plugin can return an XHTML fragment or content which could be processed via a Java Applet,
+    so this usage is limited to direct display or visualization features.
+    </p><p id="idp2025831864" data-docudipity-id="e293" data-docudipity-pattern="block">
+    There have been a few Web service experiments that return Topic Map (XTM) fragments, e.g., Topic and Association
+    serializations corresponding to a set of Assertion objects. Though an interesting feature, there is no specific
+    application requirement for inter-wiki sharing of structures that can't currently be accomplished via the
+    existing XML-RPC features, so this remains as yet undeveloped.
+    </p><p id="idp2025832888" data-docudipity-id="e294" data-docudipity-pattern="block">
+    Note that “Inferencer” is shown as a small box in the diagram. This is to indicate that this is
+    not some big fancy inference engine, just a single Java class that performs simple queries on the Topic Map,
+    such as returning simple transitive inferences upon relations whose predicates have been marked as transitive,
+    such as ancestor and descendant tests, plus a few utility methods. Most return a boolean value so that they can
+    be chained. As this functionality can easily be accommodated within the current use of wiki plugins no additional
+    interfaces have been developed.
+    </p></section><section class="section" id="idp2025833144" data-docudipity-id="e55" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e295" data-docudipity-pattern="block">Topic Map Modules</h1><p id="idp2025832504" data-docudipity-id="e296" data-docudipity-pattern="block">
+    One of the features of the system is the ability to provide run-time augmentation with the addition of drop-in
+    LTM files as Topic Map modules. For example, if a user creates a wiki page called “Portugal” and
+    asserts that Portugal IsA Country, we look up the
+    page name in the ISO 3166 Country Codes for Topic Maps, as well as making any additional assertions about that
+    Topic based on any Associations in the Topic Map.
+    </p><p id="idp2025830328" data-docudipity-id="e297" data-docudipity-pattern="block">
+    Modules available, in development, or planned include ontologies for languages and countries, places, place
+    names, events, geocode, measurement and datatypes, mappings to other library subject headings, and various other
+    subject domains. One idea in the works incorporates a place names to latitude-longitude database to permit
+    inclusion of Google Maps. For example, any wiki page asserted as a place would look up its wiki page name in
+    the place names database, then use a wiki plugin to insert a Google Map for that location. This remains an area
+    ripe for further exploration, and will likely be determined in part by user feedback.
+    </p></section><section class="section" id="idp2025837496" data-docudipity-id="e56" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e298" data-docudipity-pattern="block">Endorsement</h1><p id="idp2025836728" data-docudipity-id="e299" data-docudipity-pattern="block">
+    Implementation-wise, all <em data-docudipity-id="e577" data-docudipity-pattern="inline">endorsed</em> Topics and Associations within the backing
+    Topic Map are scoped by an endorsing Topic. All user-created content within the Topic Map is either left unscoped,
+    or scoped as "Unendorsed". In the case of the Māori Subject Headings and Iwi Hapū Names List,
+    their Topics are scoped accordingly so that we may in the future extract Topic Maps corresponding to their
+    respective domains.
+    </p></section><section class="section" id="idp2025834808" data-docudipity-id="e57" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e300" data-docudipity-pattern="block">Wiki Features</h1><p id="idp2025838264" data-docudipity-id="e301" data-docudipity-pattern="block">
+    With all of this additional machinery behind the scenes, what effect does this have on the user experience?
+    It must be said that, to reiterate one of the requirements, there is little desire to expose a great deal of
+    complexity, particularly for readers. We likewise have on occasion decided not to implement a feature when it
+    was seen to significantly add to the complexity of either the browsing or editing experience. Thus, most of
+    the Assertion Framework features are experienced as links, structure displays or improved search or navigation.
+    For example, the generated output from an AssertionPlugin shows the Subject, Predicate and Object as active
+    wiki page links. A hideable navigational panel has been added to the page footer that displays any assertions
+    or other information queried from the Topic Map for that wiki page.
+    </p><p id="idp2025837752" data-docudipity-id="e302" data-docudipity-pattern="block">
+    We still have not investigated fully the use of many of these features and look forward to doing so following
+    public release of the service.
+    </p></section></section>
+      <section class="section" id="idp2025835064" data-docudipity-id="e6" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e58" data-docudipity-pattern="block">Next Steps</h1><p id="idp2025838008" data-docudipity-id="e59" data-docudipity-pattern="block">
+    Some future features are planned and/or partially implemented:
+    </p><ul class="itemizedlist" id="idp2025838136" data-docudipity-id="e60" data-docudipity-pattern="container">
+            <li id="idp2025837112" data-docudipity-id="e303" data-docudipity-pattern="container">
+              <p id="idp2025838392" data-docudipity-id="e578" data-docudipity-pattern="block">the project is currently being socialized amongst funding organizations</p>
+            </li>
+            <li id="idp2025839032" data-docudipity-id="e304" data-docudipity-pattern="container">
+              <p id="idp2025840824" data-docudipity-id="e579" data-docudipity-pattern="block">further develop query and inferencing functionality</p>
+            </li>
+            <li id="idp2025838776" data-docudipity-id="e305" data-docudipity-pattern="container">
+              <p id="idp2025842488" data-docudipity-id="e580" data-docudipity-pattern="block">provide term equivalence, related term, term aliasing, and term disambiguation features, both
+                      manual (explicit) and automated (implicit) to deal with both homonyms and polysemes
+                </p>
+            </li>
+            <li id="idp2025842232" data-docudipity-id="e306" data-docudipity-pattern="container">
+              <p id="idp2025839288" data-docudipity-id="e581" data-docudipity-pattern="block">provide enhanced search features based on assertions, tags, and collative terms</p>
+            </li>
+            <li id="idp2025841976" data-docudipity-id="e307" data-docudipity-pattern="container">
+              <p id="idp2025839160" data-docudipity-id="e582" data-docudipity-pattern="block">protect endorsed terms and relations using scope</p>
+            </li>
+            <li id="idp2025840952" data-docudipity-id="e308" data-docudipity-pattern="container">
+              <p id="idp2025839416" data-docudipity-id="e583" data-docudipity-pattern="block">permit scope-based filtering on queries</p>
+            </li>
+            <li id="idp2025838904" data-docudipity-id="e309" data-docudipity-pattern="container">
+              <p id="idp2025841080" data-docudipity-id="e584" data-docudipity-pattern="block">further develop basic ontologies and improve existing documentation</p>
+            </li>
+            <li id="idp2025839672" data-docudipity-id="e310" data-docudipity-pattern="container">
+              <p id="idp2025840184" data-docudipity-id="e585" data-docudipity-pattern="block">create forums for discussion of ontology development</p>
+            </li>
+            <li id="idp2025840312" data-docudipity-id="e311" data-docudipity-pattern="container">
+              <p id="idp2025838648" data-docudipity-id="e586" data-docudipity-pattern="block">with a current reliance on RecentChanges to manually discover errors, develop features for
+                      structural analysis and validation</p>
+            </li>
+            <li id="idp2025841208" data-docudipity-id="e312" data-docudipity-pattern="container">
+              <p id="idp2025841336" data-docudipity-id="e587" data-docudipity-pattern="block">develop features to assist users in classifying new wiki pages (terms)</p>
+            </li>
+            <li id="idp2025841592" data-docudipity-id="e313" data-docudipity-pattern="container">
+              <p id="idp2025841720" data-docudipity-id="e588" data-docudipity-pattern="block">develop drop-in Topic Map-based ontologies</p>
+            </li>
+            <li id="idp2025842360" data-docudipity-id="e314" data-docudipity-pattern="container">
+              <p id="idp2025844024" data-docudipity-id="e589" data-docudipity-pattern="block">wiki hive functionality (sharing classifications across multiple wikis)</p>
+            </li>
+            <li id="idp2025846200" data-docudipity-id="e315" data-docudipity-pattern="container">
+              <p id="idp2025846072" data-docudipity-id="e590" data-docudipity-pattern="block">develop administrative features</p>
+            </li>
+            <li id="idp2025843000" data-docudipity-id="e316" data-docudipity-pattern="container">
+              <p id="idp2025842872" data-docudipity-id="e591" data-docudipity-pattern="block">develop (likely off-line) visualization features for analysis of the wiki structure
+                </p>
+            </li>
+            <li id="idp2025843512" data-docudipity-id="e317" data-docudipity-pattern="container">
+              <p id="idp2025845944" data-docudipity-id="e592" data-docudipity-pattern="block">develop better internationalization/localization support</p>
+            </li>
+            <li id="idp2025844792" data-docudipity-id="e318" data-docudipity-pattern="container">
+              <p id="idp2025843768" data-docudipity-id="e593" data-docudipity-pattern="block">develop a RESTful web service providing queries on the Topic Map</p>
+            </li>
+            <li id="idp2025846456" data-docudipity-id="e319" data-docudipity-pattern="container">
+              <p id="idp2025846584" data-docudipity-id="e594" data-docudipity-pattern="block">performance improvement &amp; scalability testing</p>
+            </li>
+          </ul></section>
+      <section class="section" id="idp2025844280" data-docudipity-id="e7" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e61" data-docudipity-pattern="block">Conclusion</h1><p id="idp2025842744" data-docudipity-id="e62" data-docudipity-pattern="block">
+    The Assertion Framework is still in a prototype state so there are many questions as to the viability of both
+    the approach and implementation. An upcoming National Library of New Zealand project related to the Māori
+    Subject Headings has been proposed that would use two wikis to perform a cross-dialect comparison of terms
+    between the predominant te reo Māori language and a Taranaki dialect. We look forward to testing the
+    system in a semi-controlled environment.
+    </p><p id="idp2025843256" data-docudipity-id="e63" data-docudipity-pattern="block">
+    This paper has put a substantial focus on epistemological and design issues rather than on implementation details.
+    The reason for this is that the central innovation is not seen as the marrying of a Topic Map engine with a wiki
+    – any programmer could accomplish that – but in the investigation into what the use of this
+    <em data-docudipity-id="e320" data-docudipity-pattern="inline">means</em>, i.e., does the expression of declarative statements incur an entailment
+    or not? And if so, of what order? Surely there is no single answer to this question, but in the same way as people
+    commonly anthropomorphize machines (hell, we anthropomorphize <em data-docudipity-id="e321" data-docudipity-pattern="inline">rocks</em>), this paper
+    is, if anything, meant to inject a note of caution into inferring that the systems we develop do more than they do,
+    that our claims notwithstanding we are in large part still playing with toys.
+    </p></section>
+      <section role="doc-bibliography" class="bibliography" id="idp2025847224" data-docudipity-id="e8" data-docudipity-pattern="container"><h1 class="title" data-docudipity-id="e64" data-docudipity-pattern="block">Bibliography<sup class="fn-label" data-docudipity-id="e322" data-docudipity-pattern="inline"><a href="#bibnote" class="footnoteref" id="bibnote-ref" data-docudipity-id="e595" data-docudipity-pattern="inline">[15]</a></sup>
+  </h1><ul data-docudipity-id="e65" data-docudipity-pattern="container"><li role="doc-biblioentry" data-docudipity-id="e323" data-docudipity-pattern="container"><p class="bibliomixed" id="Z3919" data-docudipity-id="e596" data-docudipity-pattern="block"><a href="#idp2024899608" data-docudipity-id="e759" data-docudipity-pattern="inline">[Z3919] </a>
+    “ANSI/NISO Z39.19-2005: Guidelines for the Construction, Format, and Management of Monolingual Controlled Vocabularies.”
+    <em data-docudipity-id="e760" data-docudipity-pattern="inline">U.S.A. National Information Standards Organization.</em>
+    25 July 2005.
+    <a href="http://www.eric.ed.gov/ERICWebPortal/resources/html/help/Z39-19-2005.pdf" class="link" data-docudipity-id="e761" data-docudipity-pattern="inline">http://www.eric.ed.gov/ERICWebPortal/resources/html/help/Z39-19-2005.pdf</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e324" data-docudipity-pattern="container"><p class="bibliomixed" id="BernersLee2001" data-docudipity-id="e597" data-docudipity-pattern="block"><a href="#idp2024803592" data-docudipity-id="e762" data-docudipity-pattern="inline">[BernersLee2001] </a>
+    Berners-Lee, Tim, James Hendler, and Ora Lassila. “The Semantic Web.”
+    <em data-docudipity-id="e763" data-docudipity-pattern="inline">Scientific American.</em> 2001.
+    <a href="http://www.sciam.com/article.cfm?id=the-semantic-web" class="link" data-docudipity-id="e764" data-docudipity-pattern="inline">http://www.sciam.com/article.cfm?id=the-semantic-web</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e325" data-docudipity-pattern="container"><p class="bibliomixed" id="Brandom" data-docudipity-id="e598" data-docudipity-pattern="block"><a href="#idp2024807944" data-docudipity-id="e765" data-docudipity-pattern="inline">[Brandom] </a>
+    Brandom, Robert. “A Social Route from Reasoning to Representing.” In
+    <em data-docudipity-id="e766" data-docudipity-pattern="inline">Articulating Reasons</em>, by Robert Brandom, 157-183.
+    Cambridge, Massachusetts: Harvard University Press, 2000.
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e326" data-docudipity-pattern="container"><p class="bibliomixed" id="Broughton" data-docudipity-id="e599" data-docudipity-pattern="block"><a href="#idp2024936856" data-docudipity-id="e767" data-docudipity-pattern="inline">[Broughton] </a>
+    Broughton, Vanda. <em data-docudipity-id="e768" data-docudipity-pattern="inline">Essential Classification.</em>
+    London: Neal-Schuman Publishers, 2004.
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e327" data-docudipity-pattern="container"><p class="bibliomixed" id="ISKOI" data-docudipity-id="e600" data-docudipity-pattern="block"><a href="#idp2024927384" data-docudipity-id="e769" data-docudipity-pattern="inline">[ISKOI] </a>
+    “Colon classification.”
+    <em data-docudipity-id="e770" data-docudipity-pattern="inline">International Society for Knowledge Organization.</em>
+    <a href="http://www.iskoi.org/doc/colon.htm" class="link" data-docudipity-id="e771" data-docudipity-pattern="inline">http://www.iskoi.org/doc/colon.htm</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e328" data-docudipity-pattern="container"><p class="bibliomixed" id="Context07" data-docudipity-id="e601" data-docudipity-pattern="block"><a href="#idp2024867992" data-docudipity-id="e772" data-docudipity-pattern="inline">[Context07] </a>
+    <em data-docudipity-id="e773" data-docudipity-pattern="inline">International and Interdisciplinary Conferences on Modeling and Using Context (CONTEXT).</em>
+    <a href="http://mainesail.umcs.maine.edu/Context/context-conferences/" class="link" data-docudipity-id="e774" data-docudipity-pattern="inline">http://mainesail.umcs.maine.edu/Context/context-conferences/</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e329" data-docudipity-pattern="container"><p class="bibliomixed" id="DeLanda" data-docudipity-id="e602" data-docudipity-pattern="block"><a href="#idp2024834568" data-docudipity-id="e775" data-docudipity-pattern="inline">[DeLanda] </a>
+    “Virtuality and the Laws of Physics.” In
+    <em data-docudipity-id="e776" data-docudipity-pattern="inline">Intensive Science &amp; Virtual Philosophy</em>,
+    by Manuel DeLanda, 117+. London: Continuum, 2002.
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e330" data-docudipity-pattern="container"><p class="bibliomixed" id="REST" data-docudipity-id="e603" data-docudipity-pattern="block"><a href="#idp2024901784" data-docudipity-id="e777" data-docudipity-pattern="inline">[REST] </a>
+    Fielding, Roy T., and Richard N. Taylor. “Principled Design of the Modern Web Architecture.”
+    <em data-docudipity-id="e778" data-docudipity-pattern="inline">ACM Transactions on Internet Technology (TOIT)</em>
+    (Association for Computing Machinery) 2, no. 2 (2002-2005): 115-150.
+    doi:<a href="http://dx.doi.org/10.1145/514183.514185" class="doi" data-docudipity-id="e779" data-docudipity-pattern="inline">10.1145/514183.514185</a>.
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e331" data-docudipity-pattern="container"><p class="bibliomixed" id="RDFSemantics" data-docudipity-id="e604" data-docudipity-pattern="block"><a href="#idp2024857352" data-docudipity-id="e780" data-docudipity-pattern="inline">[RDFSemantics] </a>
+    Hayes, Pat. “RDF Semantics, W3C Recommendation.”
+    <em data-docudipity-id="e781" data-docudipity-pattern="inline">W3C.</em> 10 February 2004.
+    <a href="http://www.w3.org/TR/rdf-mt/" class="link" data-docudipity-id="e782" data-docudipity-pattern="inline">http://www.w3.org/TR/rdf-mt/</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e332" data-docudipity-pattern="container"><p class="bibliomixed" id="Hayes2001" data-docudipity-id="e605" data-docudipity-pattern="block"><a href="#idp2024869144" data-docudipity-id="e783" data-docudipity-pattern="inline">[Hayes2001] </a>
+    “Re: Why must the web be monotonic ?”
+    <em data-docudipity-id="e784" data-docudipity-pattern="inline">www-rdf-logic mailing list archives.</em> July 2001.
+    <a href="http://lists.w3.org/Archives/Public/www-rdf-logic/2001Jul/0067.html" class="link" data-docudipity-id="e785" data-docudipity-pattern="inline">http://lists.w3.org/Archives/Public/www-rdf-logic/2001Jul/0067.html</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e333" data-docudipity-pattern="container"><p class="bibliomixed" id="IRS" data-docudipity-id="e606" data-docudipity-pattern="block"><a href="#idp2024826120" data-docudipity-id="e786" data-docudipity-pattern="inline">[IRS] </a>
+    “Inferential Role Semantics.”
+    <em data-docudipity-id="e787" data-docudipity-pattern="inline">Wikipedia.</em>
+    <a href="http://en.wikipedia.org/wiki/Inferential_role_semantics" class="link" data-docudipity-id="e788" data-docudipity-pattern="inline">http://en.wikipedia.org/wiki/Inferential_role_semantics</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e334" data-docudipity-pattern="container"><p class="bibliomixed" id="McCHay69" data-docudipity-id="e607" data-docudipity-pattern="block"><a href="#idp2024871064" data-docudipity-id="e789" data-docudipity-pattern="inline">[McCHay69] </a>
+    McCarthy, John, and Pat Hayes. “Some philosophical problems from the Standpoint of Artificial Intelligence.”
+    Edited by B. Meltzer and D. Michie.
+    <em data-docudipity-id="e790" data-docudipity-pattern="inline">Machine Intelligence</em>
+    (Edinburgh University Press) 4 (1969).
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e335" data-docudipity-pattern="container"><p class="bibliomixed" id="Newell" data-docudipity-id="e608" data-docudipity-pattern="block"><a href="#idp2024790536" data-docudipity-id="e791" data-docudipity-pattern="inline">[Newell] </a>
+    Newell, Allen. “The Knowledge Level.”
+    <em data-docudipity-id="e792" data-docudipity-pattern="inline">Artificial Intelligence</em> 18 (1982): 87-127.
+    doi:<a href="http://dx.doi.org/10.1016/0004-3702(82)90012-1" class="doi" data-docudipity-id="e793" data-docudipity-pattern="inline">10.1016/0004-3702(82)90012-1</a>.
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e336" data-docudipity-pattern="container"><p class="bibliomixed" id="OpenCyc" data-docudipity-id="e609" data-docudipity-pattern="block"><a href="#idp2024869656" data-docudipity-id="e794" data-docudipity-pattern="inline">[OpenCyc] </a>
+    <em data-docudipity-id="e795" data-docudipity-pattern="inline">OpenCyc.</em>
+    <a href="http://www.opencyc.org/" class="link" data-docudipity-id="e796" data-docudipity-pattern="inline">http://www.opencyc.org/</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e337" data-docudipity-pattern="container"><p class="bibliomixed" id="Reiter2001" data-docudipity-id="e610" data-docudipity-pattern="block"><a href="#idp2024867864" data-docudipity-id="e797" data-docudipity-pattern="inline">[Reiter2001] </a>
+    Reiter, Raymond.
+    <em data-docudipity-id="e798" data-docudipity-pattern="inline">Knowledge in Action: Logical Foundations for Specifying and Implementing Dynamical Systems.</em>
+    Cambridge, Massachusetts; London, England: The MIT Press, 2001.
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e338" data-docudipity-pattern="container"><p class="bibliomixed" id="SWOver" data-docudipity-id="e611" data-docudipity-pattern="block"><a href="#idp2024803208" data-docudipity-id="e799" data-docudipity-pattern="inline">[SWOver] </a>
+    “Semantic Web Overview.”
+    <em data-docudipity-id="e800" data-docudipity-pattern="inline">semanticweb.org.</em> 2008.
+    <a href="http://semanticweb.org/wiki/Semantic_Web_overview" class="link" data-docudipity-id="e801" data-docudipity-pattern="inline">http://semanticweb.org/wiki/Semantic_Web_overview</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e339" data-docudipity-pattern="container"><p class="bibliomixed" id="SMW" data-docudipity-id="e612" data-docudipity-pattern="block"><a href="#idp2024836104" data-docudipity-id="e802" data-docudipity-pattern="inline">[SMW] </a>
+    <em data-docudipity-id="e803" data-docudipity-pattern="inline">Semantic MediaWiki.</em> 2008.
+    <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki" class="link" data-docudipity-id="e804" data-docudipity-pattern="inline">http://semantic-mediawiki.org/wiki/Semantic_MediaWiki</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e340" data-docudipity-pattern="container"><p class="bibliomixed" id="Svenonius2000" data-docudipity-id="e613" data-docudipity-pattern="block"><a href="#idp2024879256" data-docudipity-id="e805" data-docudipity-pattern="inline">[Svenonius2000] </a>
+    Svenonius, Elaine.
+    <em data-docudipity-id="e806" data-docudipity-pattern="inline">The Intellectual Foundation of Information Organization.</em>
+    Cambridge, Massachusetts: The MIT Press, 2000.
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e341" data-docudipity-pattern="container"><p class="bibliomixed" id="Turner" data-docudipity-id="e614" data-docudipity-pattern="block"><a href="#idp2024902040" data-docudipity-id="e807" data-docudipity-pattern="inline">[Turner] </a>
+    Turner, Christopher.
+    <em data-docudipity-id="e808" data-docudipity-pattern="inline">Organizing Information: principles and practice.</em>
+    London: Clive Bingley, 1987.
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e342" data-docudipity-pattern="container"><p class="bibliomixed" id="WikipediaSW" data-docudipity-id="e615" data-docudipity-pattern="block"><a href="#idp2024806152" data-docudipity-id="e809" data-docudipity-pattern="inline">[WikipediaSW] </a>
+    “Wikipedia:Semantic Web.”
+    <em data-docudipity-id="e810" data-docudipity-pattern="inline">Wikipedia.</em> 2008.
+    <a href="http://en.wikipedia.org/wiki/Semantic_web" class="link" data-docudipity-id="e811" data-docudipity-pattern="inline">http://en.wikipedia.org/wiki/Semantic_web</a>
+    </p></li><li role="doc-biblioentry" data-docudipity-id="e343" data-docudipity-pattern="container"><p class="bibliomixed" id="Wynar" data-docudipity-id="e616" data-docudipity-pattern="block"><a href="#idp2024927000" data-docudipity-id="e812" data-docudipity-pattern="inline">[Wynar] </a>
+    Wynar, Bohdan S.
+    <em data-docudipity-id="e813" data-docudipity-pattern="inline">Introduction to Cataloguing and Classification.</em>
+    Boulder, Colorado: Libraries Unlimited, Inc., 1992.
+    </p></li></ul></section>
+      <section role="doc-endnotes" class="footnotes" data-docudipity-id="e9" data-docudipity-pattern="container"><section role="doc-endnote" id="fn01" class="footnote" data-docudipity-id="e66" data-docudipity-pattern="container"><p data-docudipity-id="e344" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e617" data-docudipity-pattern="inline"><a href="#fn01-ref" class="footnoteref" data-docudipity-id="e814" data-docudipity-pattern="inline">[1]</a></sup> 
+      We define <em data-docudipity-id="e618" data-docudipity-pattern="inline">category</em> as an ad hoc division within a subject domain
+      absent an explicit classification scheme. Whereas classification may be said to be systematic,
+      categorization need not be. Categorization is a preliminary process in the creation of a classification
+      scheme but in informal or colloquial systems may be the only process. In library science a category is
+      sometimes considered synonymous with a <em data-docudipity-id="e619" data-docudipity-pattern="inline">facet</em> (from Faceted Classification).
+      </p></section><section role="doc-endnote" id="fn02" class="footnote" data-docudipity-id="e67" data-docudipity-pattern="container"><p data-docudipity-id="e345" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e620" data-docudipity-pattern="inline"><a href="#fn02-ref" class="footnoteref" data-docudipity-id="e815" data-docudipity-pattern="inline">[2]</a></sup> subsequently, “SW”</p></section><section role="doc-endnote" id="fn03" class="footnote" data-docudipity-id="e68" data-docudipity-pattern="container"><p data-docudipity-id="e346" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e621" data-docudipity-pattern="inline"><a href="#fn03-ref" class="footnoteref" data-docudipity-id="e816" data-docudipity-pattern="inline">[3]</a></sup> 
+      To be fair to the SW folks, these charges are hardly new, and reflect the same issues present over three
+      decades ago with the similar academic flourish of “artificial intelligence”, which assuredly
+      after all these years still deserves quote marks.
+      </p></section><section role="doc-endnote" id="fn04" class="footnote" data-docudipity-id="e69" data-docudipity-pattern="container"><p data-docudipity-id="e347" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e622" data-docudipity-pattern="inline"><a href="#fn04-ref" class="footnoteref" data-docudipity-id="e817" data-docudipity-pattern="inline">[4]</a></sup> 
+      It seems that few researchers and/or developers understand RDF Semantics much less
+      follow it in practice, given that the majority of projects I've reviewed bear little relation to the RDF
+      model theory, either in definition or stated references. Indeed, many seem to be in direct conflict with
+      one or more RDF axioms or have extended it in ways contradictory to the model theory (e.g., reference to
+      non-FOL logics, non-monotonicity). I've long thought that the buzz over RDF is simply a misplaced
+      enthusiasm for basic graph theory.
+      </p></section><section role="doc-endnote" id="fn05" class="footnote" data-docudipity-id="e70" data-docudipity-pattern="container"><p data-docudipity-id="e348" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e623" data-docudipity-pattern="inline"><a href="#fn05-ref" class="footnoteref" data-docudipity-id="e818" data-docudipity-pattern="inline">[5]</a></sup> accessed 21 April 2008</p></section><section role="doc-endnote" id="fn06" class="footnote" data-docudipity-id="e71" data-docudipity-pattern="container"><p data-docudipity-id="e349" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e624" data-docudipity-pattern="inline"><a href="#fn06-ref" class="footnoteref" data-docudipity-id="e819" data-docudipity-pattern="inline">[6]</a></sup> 
+          It does not currently include the <em data-docudipity-id="e625" data-docudipity-pattern="inline">whānau</em> (family unit), but in
+          the future a public version of the site may permit individuals to create pages for their own whānau.
+          ‘wh’ in te reo Māori is pronounced as an ‘f’, e.g., whānau is
+          pronounced “faah′-na-u”.
+          </p></section><section role="doc-endnote" id="fn07" class="footnote" data-docudipity-id="e72" data-docudipity-pattern="container"><p data-docudipity-id="e350" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e626" data-docudipity-pattern="inline"><a href="#fn07-ref" class="footnoteref" data-docudipity-id="e820" data-docudipity-pattern="inline">[7]</a></sup> 
+      Ranganathan's scheme included five “fundamental” facets: Personality, Matter, Energy, Space
+      and Time. Contemporary FC research tends to ignore this archaism but retains the methodology.
+      </p></section><section role="doc-endnote" id="fn08" class="footnote" data-docudipity-id="e73" data-docudipity-pattern="container"><p data-docudipity-id="e351" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e627" data-docudipity-pattern="inline"><a href="#fn08-ref" class="footnoteref" data-docudipity-id="e821" data-docudipity-pattern="inline">[8]</a></sup> This could also be localized for VSO or other grammars as necessary; the specific syntax is unimportant.</p></section><section role="doc-endnote" id="fn09" class="footnote" data-docudipity-id="e74" data-docudipity-pattern="container"><p data-docudipity-id="e352" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e628" data-docudipity-pattern="inline"><a href="#fn09-ref" class="footnoteref" data-docudipity-id="e822" data-docudipity-pattern="inline">[9]</a></sup> 
+      We will subsequently be using the term “ontology” in this context, i.e., without
+      reference to any formalized model theory.
+      </p></section><section role="doc-endnote" id="fn10" class="footnote" data-docudipity-id="e75" data-docudipity-pattern="container"><p data-docudipity-id="e353" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e629" data-docudipity-pattern="inline"><a href="#fn10-ref" class="footnoteref" data-docudipity-id="e823" data-docudipity-pattern="inline">[10]</a></sup> 
+      For brevity' sake, not all details are included here, e.g., the Terms defined for roles
+      played in each relation type have not been included; other ontological structures have been
+      simplified or omitted.
+      </p></section><section role="doc-endnote" id="fn11" class="footnote" data-docudipity-id="e76" data-docudipity-pattern="container"><p data-docudipity-id="e354" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e630" data-docudipity-pattern="inline"><a href="#fn11-ref" class="footnoteref" data-docudipity-id="e824" data-docudipity-pattern="inline">[11]</a></sup> see <a href="http://www.morgbay.org/" class="link" data-docudipity-id="e631" data-docudipity-pattern="inline">http://www.mortbay.org/</a></p></section><section role="doc-endnote" id="fn12" class="footnote" data-docudipity-id="e77" data-docudipity-pattern="container"><p data-docudipity-id="e355" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e632" data-docudipity-pattern="inline"><a href="#fn12-ref" class="footnoteref" data-docudipity-id="e825" data-docudipity-pattern="inline">[12]</a></sup> see <a href="http://www.jspwiki.org/" class="link" data-docudipity-id="e633" data-docudipity-pattern="inline">http://www.jspwiki.org/</a></p></section><section role="doc-endnote" id="fn13" class="footnote" data-docudipity-id="e78" data-docudipity-pattern="container"><p data-docudipity-id="e356" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e634" data-docudipity-pattern="inline"><a href="#fn13-ref" class="footnoteref" data-docudipity-id="e826" data-docudipity-pattern="inline">[13]</a></sup> i.e., a template for all Assertions using that Predicate.</p></section><section role="doc-endnote" id="fn14" class="footnote" data-docudipity-id="e79" data-docudipity-pattern="container"><p data-docudipity-id="e357" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e635" data-docudipity-pattern="inline"><a href="#fn14-ref" class="footnoteref" data-docudipity-id="e827" data-docudipity-pattern="inline">[14]</a></sup> as described in the previous section, name-value property assertions are supported.</p></section><section role="doc-endnote" id="bibnote" class="footnote" data-docudipity-id="e80" data-docudipity-pattern="container"><p data-docudipity-id="e358" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e636" data-docudipity-pattern="inline"><a href="#bibnote-ref" class="footnoteref" data-docudipity-id="e828" data-docudipity-pattern="inline">[15]</a></sup> Note: all Web references accessed as of 18 April 2008.</p></section></section>
+    </body>
+</html>

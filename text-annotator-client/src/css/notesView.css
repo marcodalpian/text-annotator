@@ -1,0 +1,102 @@
+.notesView{
+  flex: 0.4;
+  height: 100vh;
+  background-color: rgba(130, 130, 130, 0.9);
+  overflow: scroll;
+  line-height: 25px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding-left: 1cap;
+  padding-right: 1cap;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.floppySettingsDiv{
+  flex:1;
+  margin-top: 2.1cap;
+}
+
+.sessionIcons{
+  padding: 0;
+  border-width: 0;
+  background-color: transparent; 
+  cursor: pointer;
+  height:fit-content;
+  margin-left: 0.3cap
+}
+
+.sessionIconsSave{
+  padding: 0;
+  border-width: 0;
+  background-color: transparent; 
+  cursor: pointer;
+  height:fit-content;
+  margin-left: -1.7cap
+}
+
+.sessionIconsTrash{
+  padding: 0;
+  border-width: 0;
+  background-color: transparent; 
+  cursor: pointer;
+  height:fit-content;
+  margin-left: 0.1cap
+}
+
+.allAnnotationsTitle{
+  margin-bottom: 0.4cap;
+}
+
+.filterSection{
+  margin-bottom: -2.3cap;
+}
+
+.noteCard{
+  border-radius: 6px;
+  width: 98%;
+  margin: 0 auto;
+  padding: 1%;
+  margin-bottom: 5%;
+  margin-top: 2%;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  background-color: rgb(210, 210, 210);
+}
+
+.authorNote{
+  white-space: nowrap;
+  overflow: hidden;              
+  -o-text-overflow: ellipsis;    
+  text-overflow:    ellipsis;
+  flex: 1;
+  height: 2.5cap;
+}
+
+.noteDiv{
+  background-color: #ffffff;
+  border-radius: 6px;
+  width: 96%;
+  padding: 2%;
+}
+
+.cardText{
+  white-space: nowrap;
+  overflow: hidden;              
+  -o-text-overflow: ellipsis;    
+  text-overflow:    ellipsis;
+}
+.cardText:hover{
+  white-space:unset;
+}
+
+.commentsDiv{
+  background-color: #ffffff;
+  border-radius: 6px;
+  width: 96%;
+  padding: 2%;
+  margin-top: 1%;
+}
+
+.sessionNoNotes{
+  margin-top: 0cap;
+}

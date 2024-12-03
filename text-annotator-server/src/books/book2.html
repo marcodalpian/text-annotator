@@ -1,0 +1,1088 @@
+<html xmlns="http://www.w3.org/1999/xhtml" prefix="schema: http://schema.org/ prism: http://prismstandard.org/namespaces/basic/2.0/ dcterms: http://purl.org/dc/terms/">
+  <head>
+    <title property="dcterms:title">Freedom to Constrain</title>
+  </head>
+  <body>
+    <section role="doc-abstract" data-docudipity-id="e0" data-docudipity-pattern="container">
+      <h1 data-docudipity-id="e12" data-docudipity-pattern="block">Abstract</h1>
+      <p id="idp1983099528" data-docudipity-id="e13" data-docudipity-pattern="block">Where should attribute constraints live? In an external schema? In the document’s own
+        metadata? In a separate file? Several possibilities are examined, raising lots of questions
+        and offering a few answers.</p>
+    </section>
+    <section class="tableofcontents" data-docudipity-id="e1" data-docudipity-pattern="container">
+      <h1 data-docudipity-id="e14" data-docudipity-pattern="block">Table of Contents</h1>
+      <ul data-docudipity-id="e15" data-docudipity-pattern="container"><li data-docudipity-id="e92" data-docudipity-pattern="container"><p data-docudipity-id="e274" data-docudipity-pattern="block">
+            
+              <a href="#uc" class="toc" data-docudipity-id="e391" data-docudipity-pattern="inline">Use Case</a>
+            
+          </p></li><li data-docudipity-id="e93" data-docudipity-pattern="container"><p data-docudipity-id="e275" data-docudipity-pattern="block">
+            
+              <a href="#idp2027559944" class="toc" data-docudipity-id="e392" data-docudipity-pattern="inline">Background</a>
+            
+          </p></li>
+            <li data-docudipity-id="e94" data-docudipity-pattern="container"><ul data-docudipity-id="e276" data-docudipity-pattern="container"><li data-docudipity-id="e393" data-docudipity-pattern="container"><p data-docudipity-id="e438" data-docudipity-pattern="block">
+                
+                  <a href="#idp2027560200" class="toc" data-docudipity-id="e457" data-docudipity-pattern="inline">Open vs Closed vs Extensible Schemas</a>
+                
+              </p></li><li data-docudipity-id="e394" data-docudipity-pattern="container"><p data-docudipity-id="e439" data-docudipity-pattern="block">
+                
+                  <a href="#idp2027566088" class="toc" data-docudipity-id="e458" data-docudipity-pattern="inline">Literate Encoding</a>
+                
+              </p></li></ul></li>
+          <li data-docudipity-id="e95" data-docudipity-pattern="container"><p data-docudipity-id="e277" data-docudipity-pattern="block">
+            
+              <a href="#idp2027568392" class="toc" data-docudipity-id="e395" data-docudipity-pattern="inline">In the Closed Schema (RELAX NG file)</a>
+            
+          </p></li>
+            <li data-docudipity-id="e96" data-docudipity-pattern="container"><ul data-docudipity-id="e278" data-docudipity-pattern="container"><li data-docudipity-id="e396" data-docudipity-pattern="container"><p data-docudipity-id="e440" data-docudipity-pattern="block">
+                
+                  <a href="#idp2027570696" class="toc" data-docudipity-id="e459" data-docudipity-pattern="inline">how</a>
+                
+              </p></li><li data-docudipity-id="e397" data-docudipity-pattern="container"><p data-docudipity-id="e441" data-docudipity-pattern="block">
+                
+                  <a href="#idp2027568904" class="toc" data-docudipity-id="e460" data-docudipity-pattern="inline">advantages</a>
+                
+              </p></li><li data-docudipity-id="e398" data-docudipity-pattern="container"><p data-docudipity-id="e442" data-docudipity-pattern="block">
+                
+                  <a href="#idp2027595656" class="toc" data-docudipity-id="e461" data-docudipity-pattern="inline">disadvantages</a>
+                
+              </p></li></ul></li>
+          <li data-docudipity-id="e97" data-docudipity-pattern="container"><p data-docudipity-id="e279" data-docudipity-pattern="block">
+            
+              <a href="#idp2027596296" class="toc" data-docudipity-id="e399" data-docudipity-pattern="inline">In the Open Schema (ISO Schematron)</a>
+            
+          </p></li><li data-docudipity-id="e98" data-docudipity-pattern="container"><p data-docudipity-id="e280" data-docudipity-pattern="block">
+            
+              <a href="#idp2027603976" class="toc" data-docudipity-id="e400" data-docudipity-pattern="inline">In the Metaschema (ODD file)</a>
+            
+          </p></li>
+            <li data-docudipity-id="e99" data-docudipity-pattern="container"><ul data-docudipity-id="e281" data-docudipity-pattern="container"><li data-docudipity-id="e401" data-docudipity-pattern="container"><p data-docudipity-id="e443" data-docudipity-pattern="block">
+                
+                  <a href="#idp2027605640" class="toc" data-docudipity-id="e462" data-docudipity-pattern="inline">how</a>
+                
+              </p></li><li data-docudipity-id="e402" data-docudipity-pattern="container"><p data-docudipity-id="e444" data-docudipity-pattern="block">
+                
+                  <a href="#idp2027609352" class="toc" data-docudipity-id="e463" data-docudipity-pattern="inline">advantages</a>
+                
+              </p></li><li data-docudipity-id="e403" data-docudipity-pattern="container"><p data-docudipity-id="e445" data-docudipity-pattern="block">
+                
+                  <a href="#idp2026488712" class="toc" data-docudipity-id="e464" data-docudipity-pattern="inline">disadvantages</a>
+                
+              </p></li></ul></li>
+          <li data-docudipity-id="e100" data-docudipity-pattern="container"><p data-docudipity-id="e282" data-docudipity-pattern="block">
+            
+              <a href="#idp2026485768" class="toc" data-docudipity-id="e404" data-docudipity-pattern="inline">In the Metadata (<code class="code" data-docudipity-id="e446" data-docudipity-pattern="inline">&lt;teiHeader></code>)</a>
+            
+          </p></li>
+            <li data-docudipity-id="e101" data-docudipity-pattern="container"><ul data-docudipity-id="e283" data-docudipity-pattern="container"><li data-docudipity-id="e405" data-docudipity-pattern="container"><p data-docudipity-id="e447" data-docudipity-pattern="block">
+                
+                  <a href="#pointing" class="toc" data-docudipity-id="e465" data-docudipity-pattern="inline">how — pointing</a>
+                
+              </p></li><li data-docudipity-id="e406" data-docudipity-pattern="container"><p data-docudipity-id="e448" data-docudipity-pattern="block">
+                
+                  <a href="#idp2026496920" class="toc" data-docudipity-id="e466" data-docudipity-pattern="inline">advantages</a>
+                
+              </p></li><li data-docudipity-id="e407" data-docudipity-pattern="container"><p data-docudipity-id="e449" data-docudipity-pattern="block">
+                
+                  <a href="#idp2026494360" class="toc" data-docudipity-id="e467" data-docudipity-pattern="inline">disadvantages</a>
+                
+              </p></li><li data-docudipity-id="e408" data-docudipity-pattern="container"><p data-docudipity-id="e450" data-docudipity-pattern="block">
+                
+                  <a href="#idp2026502424" class="toc" data-docudipity-id="e468" data-docudipity-pattern="inline">how — co-reference</a>
+                
+              </p></li></ul></li>
+          <li data-docudipity-id="e102" data-docudipity-pattern="container"><p data-docudipity-id="e284" data-docudipity-pattern="block">
+            
+              <a href="#separate" class="toc" data-docudipity-id="e409" data-docudipity-pattern="inline">In the Metadata (separate file)</a>
+            
+          </p></li><li data-docudipity-id="e103" data-docudipity-pattern="container"><p data-docudipity-id="e285" data-docudipity-pattern="block">
+            <span class="appendix" data-docudipity-id="e410" data-docudipity-pattern="inline">
+              <a href="#codeGrp2Schematron" class="toc" data-docudipity-id="e451" data-docudipity-pattern="inline">Appendix A. &lt;codeGrp> to Schematron</a>
+            </span>
+          </p></li></ul>
+    </section>
+    <section data-docudipity-id="e2" data-docudipity-pattern="container">
+      <h1 data-docudipity-id="e16" data-docudipity-pattern="block">Introduction</h1>
+      <p id="idp1983101704" data-docudipity-id="e17" data-docudipity-pattern="block">It is clear that constraining document structure is a very
+  important part of document production. We test whether or not our
+  XML documents are properly constrained through the process of
+  validation. <q data-docudipity-id="e104" data-docudipity-pattern="inline">The … purpose of validation is to subject a
+  document … to a test, to determine whether it conforms to a given
+  set of external criteria. … Our need to test is simply explained and
+  understood (so much so that it rarely needs to be explicated): if
+  there exists a point in a process where it is less expensive to
+  discover and correct problems than it is to save the work of testing
+  and fix at later points, it is profitable to introduce a
+  test.</q><sup class="fn-label" data-docudipity-id="e105" data-docudipity-pattern="inline"><a href="#idp1983102216" class="footnoteref" id="idp1983102216-ref" data-docudipity-id="e286" data-docudipity-pattern="inline">[1]</a></sup>
+  </p>
+      <p id="idp2025507848" data-docudipity-id="e18" data-docudipity-pattern="block">Michael Sperberg-McQueen may have summed this importance up
+  best when he advised <q data-docudipity-id="e106" data-docudipity-pattern="inline">constrain your data early and
+  often</q>, which he often did.<sup class="fn-label" data-docudipity-id="e107" data-docudipity-pattern="inline"><a href="#idp2025510536" class="footnoteref" id="idp2025510536-ref" data-docudipity-id="e287" data-docudipity-pattern="inline">[2]</a></sup>
+  (It helped that he lived in Chicago at the time.)</p>
+      <p id="idp2025509896" data-docudipity-id="e19" data-docudipity-pattern="block">So it is obvious that constraints need to be expressed in a
+  formal language of some sort. Many such general-purpose formal
+  languages are available, including closed schema languages like DTDs
+  and RELAX NG, and open schema languages like Schematron and CLiX.
+  Furthermore at least one literate encoding language exists in which
+  such constraints along with documentation about them can be
+  expressed. This language is called ODD (for “one document does it
+  all”) — constraints expressed in other languages (DTDs, RELAX NG, or
+  XML Schema; in theory others as well) can be derived from a set of
+  constraints expressed in ODD.<sup class="fn-label" data-docudipity-id="e108" data-docudipity-pattern="inline"><a href="#idp2025507720" class="footnoteref" id="idp2025507720-ref" data-docudipity-id="e288" data-docudipity-pattern="inline">[3]</a></sup><sup class="fn-label" data-docudipity-id="e109" data-docudipity-pattern="inline"><a href="#idp2025511432" class="footnoteref" id="idp2025511432-ref" data-docudipity-id="e289" data-docudipity-pattern="inline">[4]</a></sup><sup class="fn-label" data-docudipity-id="e110" data-docudipity-pattern="inline"><a href="#idp2025511176" class="footnoteref" id="idp2025511176-ref" data-docudipity-id="e290" data-docudipity-pattern="inline">[5]</a></sup><sup class="fn-label" data-docudipity-id="e111" data-docudipity-pattern="inline"><a href="#idp2025512584" class="footnoteref" id="idp2025512584-ref" data-docudipity-id="e291" data-docudipity-pattern="inline">[6]</a></sup>
+  Furthermore there are systems of constraint based on special-purpose
+  languages, rather than general-purpose languages. The feature system
+  declaration created by the Text Encoding Initiative (TEI) and now
+  being incorporated into ISO 24610-2 is an example — a set of XML
+  elements (the feature system declaration) that can be used to
+  constrain the expression of another set of XML elements (the feature
+  structure itself).<sup class="fn-label" data-docudipity-id="e112" data-docudipity-pattern="inline"><a href="#idp2025021960" class="footnoteref" id="idp2025021960-ref" data-docudipity-id="e292" data-docudipity-pattern="inline">[7]</a></sup></p>
+      <p id="idp2025022088" data-docudipity-id="e20" data-docudipity-pattern="block">So the choice of <em data-docudipity-id="e113" data-docudipity-pattern="inline">how</em> to express a
+  particular constraint is not always obvious. But a related question
+  is perhaps just as important: <em data-docudipity-id="e114" data-docudipity-pattern="inline">where</em> should
+  these constraints be expressed? What are the consequences of
+  expressing them in different places?</p>
+      <p data-docudipity-id="e21" data-docudipity-pattern="block">This paper will attempt to shed light on these general
+  questions by taking an in-depth look at the possible locations for
+  the expression of one particular kind of constraint, and the
+  consequences of those different locations. The constraint discussed
+  will be that of limiting the value an attribute may take to one of
+  an enumerated list of possible values. For simplicity the presumed
+  setting for this constraint will be in a TEI document, but the
+  principles should be equally applicable to any other encoding
+  language that separates the document from its metadata, including
+  DocBook or XHTML. The locations considered will be
+  </p>
+      <ul class="itemizedlist" id="idp2025021448" data-docudipity-id="e22" data-docudipity-pattern="container">
+        <li id="idp2025019912" data-docudipity-id="e115" data-docudipity-pattern="container">
+          <p id="idp2025020296" data-docudipity-id="e293" data-docudipity-pattern="block">the “normal” way, in the formal closed schema (RELAX NG
+    will be used as the example)</p>
+        </li>
+        <li id="idp2025025288" data-docudipity-id="e116" data-docudipity-pattern="container">
+          <p id="idp2025025672" data-docudipity-id="e294" data-docudipity-pattern="block">in a formal open schema (ISO Schematron will be used as the example)</p>
+        </li>
+        <li id="idp2025025800" data-docudipity-id="e117" data-docudipity-pattern="container">
+          <p id="idp2025025416" data-docudipity-id="e295" data-docudipity-pattern="block">in the metadata element (i.e.
+    <code class="code" data-docudipity-id="e411" data-docudipity-pattern="inline">&lt;teiHeader></code>)</p>
+        </li>
+        <li id="idp2025026184" data-docudipity-id="e118" data-docudipity-pattern="container">
+          <p id="idp2025023496" data-docudipity-id="e296" data-docudipity-pattern="block">in a separate metadata file</p>
+        </li>
+        <li id="idp2025025032" data-docudipity-id="e119" data-docudipity-pattern="container">
+          <p id="idp2025025928" data-docudipity-id="e297" data-docudipity-pattern="block">in the metaschema file (i.e. the ODD file)</p>
+        </li>
+        <li id="idp2025023880" data-docudipity-id="e120" data-docudipity-pattern="container">
+          <p id="idp2025023624" data-docudipity-id="e298" data-docudipity-pattern="block">no formal constraint</p>
+        </li>
+      </ul>
+      <p data-docudipity-id="e23" data-docudipity-pattern="block">
+  Each of the latter methods will be compared to and contrasted with
+  the first.</p>
+    </section>
+    <section class="section" id="uc" data-docudipity-id="e3" data-docudipity-pattern="container">
+      <h1 class="title" data-docudipity-id="e24" data-docudipity-pattern="block">Use Case</h1>
+      <p id="idp2025026312" data-docudipity-id="e25" data-docudipity-pattern="block">There are lots of reasons to wish to constrain markup
+    constructs, in particular attribute values. One case worth
+    considering is the markup project which has tens or hundreds of
+    occurrences of a particular attribute in each of tens or hundreds
+    of files, where the list of possible values for the attribute is
+    different for each file.</p>
+      <p id="idp2025026696" data-docudipity-id="e26" data-docudipity-pattern="block">Imagine, e.g., an epigraphy project transcribing thousands
+    of inscriptions on various objects. Imagine further that the
+    inscriptions are divided among 27 separate files, organized by
+    some criteria other than the kind of object that bears the
+    inscription (e.g. date the object was discovered, current museum in
+    which it is held, whatever). That which the text bearing object is
+    made of is recorded in a TEI manuscript description on the
+    <code class="code" data-docudipity-id="e121" data-docudipity-pattern="inline">material=</code> attribute of the
+    <code class="code" data-docudipity-id="e122" data-docudipity-pattern="inline">&lt;supportDesc></code> element. Possible values might
+    include <code class="code" data-docudipity-id="e123" data-docudipity-pattern="inline">"bronze"</code>, <code class="code" data-docudipity-id="e124" data-docudipity-pattern="inline">"marble"</code>,
+    <code class="code" data-docudipity-id="e125" data-docudipity-pattern="inline">"limestone"</code>, <code class="code" data-docudipity-id="e126" data-docudipity-pattern="inline">"plaster"</code>,
+    <code class="code" data-docudipity-id="e127" data-docudipity-pattern="inline">"wood"</code>, etc.</p>
+      <p data-docudipity-id="e27" data-docudipity-pattern="block">Such a typical humanities computing project is likely to have:
+    </p>
+      <ul class="itemizedlist" id="idp2027558280" data-docudipity-id="e28" data-docudipity-pattern="container">
+        <li id="idp2027555208" data-docudipity-id="e128" data-docudipity-pattern="container">
+          <p id="idp2027554952" data-docudipity-id="e299" data-docudipity-pattern="block">a subject matter expert</p>
+        </li>
+        <li id="idp2027555848" data-docudipity-id="e129" data-docudipity-pattern="container">
+          <p id="idp2027558408" data-docudipity-id="e300" data-docudipity-pattern="block">an XML expert</p>
+        </li>
+        <li id="idp2027558664" data-docudipity-id="e130" data-docudipity-pattern="container">
+          <p data-docudipity-id="e301" data-docudipity-pattern="block">encoders — getting the extant text into
+      XML-encoded digital form may be accomplished in a variety of
+      ways:
+      </p>
+          <ul class="itemizedlist" id="idp2027557000" data-docudipity-id="e302" data-docudipity-pattern="container">
+            <li id="idp2027556232" data-docudipity-id="e412" data-docudipity-pattern="container">
+              <p id="idp2027556744" data-docudipity-id="e452" data-docudipity-pattern="block">typed from source</p>
+            </li>
+            <li id="idp2027561352" data-docudipity-id="e413" data-docudipity-pattern="container">
+              <p id="idp2027559688" data-docudipity-id="e453" data-docudipity-pattern="block">post-OCR editing</p>
+            </li>
+            <li id="idp2027561224" data-docudipity-id="e414" data-docudipity-pattern="container">
+              <p id="idp2027561480" data-docudipity-id="e454" data-docudipity-pattern="block">via an external vendor</p>
+            </li>
+          </ul>
+        </li>
+        <li id="idp2027561608" data-docudipity-id="e131" data-docudipity-pattern="container">
+          <p id="idp2027559560" data-docudipity-id="e303" data-docudipity-pattern="block">proofreaders, managers, web designers, research assistants, etc.</p>
+        </li>
+      </ul>
+      <p data-docudipity-id="e29" data-docudipity-pattern="block">
+    </p>
+    </section>
+    <section class="section" id="idp2027559944" data-docudipity-id="e4" data-docudipity-pattern="container">
+      <h1 class="title" data-docudipity-id="e30" data-docudipity-pattern="block">Background</h1>
+      <section class="section" id="idp2027560200" data-docudipity-id="e31" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e132" data-docudipity-pattern="block">Open vs Closed vs Extensible Schemas</h1>
+        <p id="idp2027561864" data-docudipity-id="e133" data-docudipity-pattern="block">Formal schema languages can generally be categorized into
+      one of two types: open or closed. A closed schema language like
+      RELAX NG specifies a complete document grammar. Only those
+      documents that meet all of the constraints of the grammar are
+      considered valid; all others are rejected as invalid.</p>
+        <p id="idp2027560072" data-docudipity-id="e134" data-docudipity-pattern="block">An open schema language, like Schematron, specifies
+      particular rules. Documents that violate the specified rules are
+      rejected as invalid; all others are accepted as valid.</p>
+        <p id="idp2027561736" data-docudipity-id="e135" data-docudipity-pattern="block">One can think of closed schema languages as a white list
+      spam filter, and closed schema languages as a black list spam
+      filter. Using a white list (closed schema language) only e-mail
+      from the addresses specified get through, all others are
+      rejected as spam. Using a black list (open schema language) any
+      e-mail that is on the list of problematic addresses is rejected
+      as spam, all others are allowed through.</p>
+        <p id="idp2027561992" data-docudipity-id="e136" data-docudipity-pattern="block">Of course the situation is not as simple as that. One can
+      specify some open constructs in many closed schema languages,
+      and one can write sufficiently tight rules in most open
+      languages that they behave like a closed language.</p>
+        <p data-docudipity-id="e137" data-docudipity-pattern="block">For example, validation against the following complete
+      RELAX NG grammar will permit any XML document as long as it has
+      a </p>
+        <p data-docudipity-id="e138" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e304" data-docudipity-pattern="inline">&lt;foo></code>
+        </p>
+        <p data-docudipity-id="e139" data-docudipity-pattern="block"> element with a </p>
+        <p data-docudipity-id="e140" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e305" data-docudipity-pattern="inline">bar=</code>
+        </p>
+        <p data-docudipity-id="e141" data-docudipity-pattern="block">
+      attribute as the first child of the root element.
+      </p>
+        <pre class="programlisting" id="idp2027563272" data-docudipity-id="e142" data-docudipity-pattern="block">
+          <code data-docudipity-id="e306" data-docudipity-pattern="inline">start = element * { any_attribute*, foo, any_element* }
+any_attribute = attribute * { text }
+any_element = element * { any* }
+any = ( any_attribute | any_element | text )
+any_sans_bar = ( attribute * - ( bar ) { text } | any_element | text )
+foo = element foo { attribute bar { text }, any_sans_bar* }</code>
+        </pre>
+        <p data-docudipity-id="e143" data-docudipity-pattern="block">
+      </p>
+        <p data-docudipity-id="e144" data-docudipity-pattern="block">Conversely, validation against the following Schematron
+      rule will permit only those documents that have one
+      </p>
+        <p data-docudipity-id="e145" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e307" data-docudipity-pattern="inline">&lt;platypus></code>
+        </p>
+        <p data-docudipity-id="e146" data-docudipity-pattern="block"> element with a </p>
+        <p data-docudipity-id="e147" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e308" data-docudipity-pattern="inline">bill=</code>
+        </p>
+        <p data-docudipity-id="e148" data-docudipity-pattern="block">
+      attribute that has the value </p>
+        <p data-docudipity-id="e149" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e309" data-docudipity-pattern="inline">"duck"</code>
+        </p>
+        <p data-docudipity-id="e150" data-docudipity-pattern="block"> as the only
+      child of the root </p>
+        <p data-docudipity-id="e151" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e310" data-docudipity-pattern="inline">&lt;enigma></code>
+        </p>
+        <p data-docudipity-id="e152" data-docudipity-pattern="block"> element.
+      </p>
+        <pre class="programlisting" id="idp2027564168" data-docudipity-id="e153" data-docudipity-pattern="block">
+          <code data-docudipity-id="e311" data-docudipity-pattern="inline">  &lt;pattern>
+    &lt;rule context="/*">
+      &lt;assert test="name(.)='enigma'">Root element must be "enigma"&lt;/assert>
+      &lt;report test="@*">Root "enigma" element can not have attributes&lt;/report>
+      &lt;assert test="count(child::*)=1">"enigma" can only have one child 
+      ("platypus")&lt;/assert>
+      &lt;assert test="count(child::platypus)=1">"enigma" can only have one 
+      "platypus" child&lt;/assert>
+      &lt;report test="child::text()[not(normalize-space(.)='')]">"enigma" is 
+      not allowed to have text, just "platypus"&lt;/report>
+    &lt;/rule>
+    &lt;rule context="/enigma/platypus">
+      &lt;assert test="@*[name(.)='bill']">"platypus" must have a bill= 
+      attribute&lt;/assert>
+      &lt;report test="@*[not(name(.)='bill')]">"platypus" must not have any 
+      attributes other than bill=&lt;/report>
+      &lt;report test="child::*">"platypus" must be empty (i.e., can not have 
+      child elements)&lt;/report>
+      &lt;assert test="string-length( normalize-space(.) ) = 0">"platypus" 
+      must be empty (i.e., can not contain text)&lt;/assert>
+    &lt;/rule>
+    &lt;rule context="/enigma/platypus/@bill">
+      &lt;assert test="normalize-space(.)='duck'">The value of bill= of 
+      "platypus" must be 'duck'&lt;/assert>
+    &lt;/rule>
+  &lt;/pattern></code>
+        </pre>
+        <p data-docudipity-id="e154" data-docudipity-pattern="block">
+      </p>
+        <p id="idp2027565960" data-docudipity-id="e155" data-docudipity-pattern="block">These reverse uses of open and closed schema languages may
+      be thought of as analogous to black-list or white-list spam
+      filters that permit wildcards.</p>
+        <p id="idp2027564680" data-docudipity-id="e156" data-docudipity-pattern="block">Neither of the above examples are particularly good ways
+      of performing the desired validation, but they serve as
+      proofs-of-concept that when we refer to a schema language as
+      “open” or “closed”, we may be referring to its default, and not
+      its only, behavior.</p>
+        <p id="idp2027564936" data-docudipity-id="e157" data-docudipity-pattern="block">There is one further twist worth mentioning. Some modular
+      XML document systems, including DocBook and TEI, permit a user
+      of the system to generate (closed) schemas that contain not only
+      the element and attribute declarations native to the system, but
+      also additional declarations for constructs added by the
+      user.</p>
+      </section>
+      <section class="section" id="idp2027566088" data-docudipity-id="e32" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e158" data-docudipity-pattern="block">Literate Encoding</h1>
+        <p id="idp2027568136" data-docudipity-id="e159" data-docudipity-pattern="block">Literate programming is a style of programming intended to
+      make computer documentation better by, among other things,
+      placing the documentation and source code in the same computer
+      file. The TEI has applied this concept to the schemas used to
+      validate documents to help ascertain whether or not they conform
+      to the TEI Guidelines. The source code from which the schemas
+      are generated and the prose documentation that make up the bulk
+      of the TEI Guidelines are stored in one computer
+      document.</p>
+        <p id="idp2027566984" data-docudipity-id="e160" data-docudipity-pattern="block">In order to facilitate this, and in order to help make it
+      easy to extract formal schemas in any of a variety of popular
+      languages, the formal constraints are (for the most part)
+      expressed in the TEI language, rather than any particular schema
+      language.</p>
+        <p id="idp2027570056" data-docudipity-id="e161" data-docudipity-pattern="block">Thus the TEI Guidelines proper (some 32 chapters of prose
+      documentation), formal schemas expressed in RELAX NG, the XML
+      DTD language, or the W3C Schema language, and reference
+      documentation for those schemas, are all extracted from the same
+      single document. We say that this “one document does” it all,
+      and thus it is referred to as an ODD document.</p>
+      </section>
+    </section>
+    <section class="section" id="idp2027568392" data-docudipity-id="e5" data-docudipity-pattern="container">
+      <h1 class="title" data-docudipity-id="e33" data-docudipity-pattern="block">In the Closed Schema (RELAX NG file)</h1>
+      <section class="section" id="idp2027570696" data-docudipity-id="e34" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e162" data-docudipity-pattern="block">how</h1>
+        <p data-docudipity-id="e163" data-docudipity-pattern="block">Many are probably quite familiar with the mechanism for
+      constraining an enumerated attribute in a formal closed schema
+      language. E.g., in RELAX NG (compact syntax), the possible
+      values of the </p>
+        <p data-docudipity-id="e164" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e312" data-docudipity-pattern="inline">type=</code>
+        </p>
+        <p data-docudipity-id="e165" data-docudipity-pattern="block"> attribute (in this case, of the
+      </p>
+        <p data-docudipity-id="e166" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e313" data-docudipity-pattern="inline">&lt;name></code>
+        </p>
+        <p data-docudipity-id="e167" data-docudipity-pattern="block"> element) could be constrained with a
+      construct like
+      </p>
+        <pre class="programlisting" id="idp2027567880" data-docudipity-id="e168" data-docudipity-pattern="block">
+          <code data-docudipity-id="e314" data-docudipity-pattern="inline">attribute type { "person" | "place" | "ship" | "sword" }</code>
+        </pre>
+        <p data-docudipity-id="e169" data-docudipity-pattern="block">
+      A variety of readily available off-the-shelf software will test
+      whether or not a document is valid with respect to a RELAX NG
+      schema.</p>
+      </section>
+      <section class="section" id="idp2027568904" data-docudipity-id="e35" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e170" data-docudipity-pattern="block">advantages</h1>
+        <p id="idp2027569032" data-docudipity-id="e171" data-docudipity-pattern="block">This method is extremely common for a reason: it makes a
+      lot of sense. In many, many cases XML document structure is
+      already governed by an external closed schema. These external
+      schemas, at least when written in one of the three major
+      languages (DTD, RELAX NG, W3C XML Schema) are generally easy to
+      read and process. They describe the constraint in a standard
+      formal language that has wide software support, including open
+      source validators.</p>
+        <p id="idp2027599496" data-docudipity-id="e172" data-docudipity-pattern="block">These languages typically provide the capability to
+      specify a variety of structural and content constraints on XML
+      documents. In particular, they provide the capability needed
+      here: to constrain the set of possible values of the
+      <code class="code" data-docudipity-id="e315" data-docudipity-pattern="inline">type=</code> attribute to one of a list of possibilities.
+      <sup class="fn-label" data-docudipity-id="e316" data-docudipity-pattern="inline"><a href="#idp2027597704" class="footnoteref" id="idp2027597704-ref" data-docudipity-id="e415" data-docudipity-pattern="inline">[8]</a></sup></p>
+      </section>
+      <section class="section" id="idp2027595656" data-docudipity-id="e36" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e173" data-docudipity-pattern="block">disadvantages</h1>
+        <p id="idp2027596168" data-docudipity-id="e174" data-docudipity-pattern="block">In many cases, the person or persons who write and
+      maintain the external schema is not the same as the person or
+      persons who create the XML instances (or the programs that write
+      the XML instances) that conform to it. In these cases, those who
+      create the instances often do not have either the necessary
+      knowledge (e.g., knowing the schema language) or capability
+      (e.g., having read-write access to the schema) to make changes
+      to it.</p>
+        <p id="idp2027598216" data-docudipity-id="e175" data-docudipity-pattern="block">Furthermore in many cases (whether the instance creator is
+      the same as the schema maintainer or not), a single external
+      schema governs the validity of dozens or even tens of thousands
+      of XML instances. But the desired constraints on a particular
+      attribute may be different in different instances. Typically in
+      these cases the schema limits the attribute to one of a set
+      that is the union of all possible values in all governed
+      documents. Here adding the additional constraint of <q data-docudipity-id="e317" data-docudipity-pattern="inline">only
+      these values in <em data-docudipity-id="e416" data-docudipity-pattern="inline">this</em> document</q>
+      requires making a separate schema that is like the original in
+      all respects except for the declaration of the
+      <code class="code" data-docudipity-id="e318" data-docudipity-pattern="inline">type=</code> attribute of <code class="code" data-docudipity-id="e319" data-docudipity-pattern="inline">&lt;name></code>.</p>
+      </section>
+    </section>
+    <section class="section" id="idp2027596296" data-docudipity-id="e6" data-docudipity-pattern="container">
+      <h1 class="title" data-docudipity-id="e37" data-docudipity-pattern="block">In the Open Schema (ISO Schematron)</h1>
+      <p data-docudipity-id="e38" data-docudipity-pattern="block">Many are probably quite familiar with the mechanism for
+      constraining an enumerated attribute in a formal open schema
+      language. E.g., in Schematron (DSDL part 4), the possible values
+      of the </p>
+      <p data-docudipity-id="e39" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e176" data-docudipity-pattern="inline">type=</code>
+      </p>
+      <p data-docudipity-id="e40" data-docudipity-pattern="block"> attribute of the TEI
+      </p>
+      <p data-docudipity-id="e41" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e177" data-docudipity-pattern="inline">&lt;name></code>
+      </p>
+      <p data-docudipity-id="e42" data-docudipity-pattern="block"> element could be constrained with a
+      construct like
+      </p>
+      <pre class="programlisting" id="idp2027602184" data-docudipity-id="e43" data-docudipity-pattern="block">
+        <code data-docudipity-id="e178" data-docudipity-pattern="inline">&lt;pattern>
+  &lt;rule context="tei:name/@type">
+    &lt;assert test="normalize-space(.)='person'
+               or normalize-space(.)='place'
+               or normalize-space(.)='ship'
+               or normalize-space(.)='sword'">
+      Names can only be of people, places, ships, or swords
+    &lt;/assert>
+  &lt;/rule>
+&lt;/pattern></code>
+      </pre>
+      <p data-docudipity-id="e44" data-docudipity-pattern="block">
+      </p>
+      <p id="idp2027601928" data-docudipity-id="e45" data-docudipity-pattern="block">While the use of open vs closed schemas have a lot of
+    advantages and disadvantages to the schema designer, with respect
+    to this particular question, the advantages and disadvantages are
+    primarily the same: while the constraint can be expressed in a
+    formal, widely supported language, and can be tested with readily
+    available tools, it is still in a separate file that may support
+    many documents, that may not be accessible, and that uses a
+    language that may be foreign to those who would like to change it.</p>
+      <p data-docudipity-id="e46" data-docudipity-pattern="block">There is one additional disadvantage of Schematron in
+    particular with respect to RELAX NG: it is harder to annotate the
+    Schematron schema than the RELAX NG schema. RELAX NG deliberately
+    permits elements from other namespaces to be mixed in with the
+    RELAX NG specifications, and defines where annotations relating to
+    particular structures should go. Furthermore, because the four
+    tokens against which we are trying to validate are expressed as
+    four separate elements (in the XML syntax), there is a place to
+    annotate each separately (the </p>
+      <p data-docudipity-id="e47" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e179" data-docudipity-pattern="inline">&lt;a:documentation></code>
+      </p>
+      <p data-docudipity-id="e48" data-docudipity-pattern="block">
+    element follows the </p>
+      <p data-docudipity-id="e49" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e180" data-docudipity-pattern="inline">&lt;rng:value></code>
+      </p>
+      <p data-docudipity-id="e50" data-docudipity-pattern="block"> element to which it
+    refers). Schematron also has a built-in documentation feature (a
+    </p>
+      <p data-docudipity-id="e51" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e181" data-docudipity-pattern="inline">&lt;p></code>
+      </p>
+      <p data-docudipity-id="e52" data-docudipity-pattern="block"> element), but because all four tokens are
+    tucked into a single XPath expression, it is a bit harder to
+    discuss them individually. This is partially confounded because
+    </p>
+      <p data-docudipity-id="e53" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e182" data-docudipity-pattern="inline">&lt;p></code>
+      </p>
+      <p data-docudipity-id="e54" data-docudipity-pattern="block"> is not permitted in </p>
+      <p data-docudipity-id="e55" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e183" data-docudipity-pattern="inline">&lt;rule></code>
+      </p>
+      <p data-docudipity-id="e56" data-docudipity-pattern="block">,
+    </p>
+      <p data-docudipity-id="e57" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e184" data-docudipity-pattern="inline">&lt;assert></code>
+      </p>
+      <p data-docudipity-id="e58" data-docudipity-pattern="block">, or </p>
+      <p data-docudipity-id="e59" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e185" data-docudipity-pattern="inline">&lt;report></code>
+      </p>
+      <p data-docudipity-id="e60" data-docudipity-pattern="block">, making it
+    difficult to put the documentation close to the code. This is
+    partially alleviated because elements from foreign namespaces are
+    permitted in those spaces, and inside </p>
+      <p data-docudipity-id="e61" data-docudipity-pattern="block">
+        <code class="code" data-docudipity-id="e186" data-docudipity-pattern="inline">&lt;p></code>
+      </p>
+      <p data-docudipity-id="e62" data-docudipity-pattern="block">. Thus
+    something like the following construct could be used to provide
+    documentation of such a constraint.
+</p>
+      <pre class="programlisting" id="idp2027607816" data-docudipity-id="e63" data-docudipity-pattern="block">
+        <code data-docudipity-id="e187" data-docudipity-pattern="inline">&lt;pattern>
+  &lt;p class="annotation">The various values for &lt;tei:att>type&lt;/tei:att> of 
+    &lt;tei:gi>name&lt;/tei:gi> came about as follows: &lt;tei:list type="gloss">
+      &lt;tei:label>
+        &lt;tei:val>person&lt;/tei:val>
+      &lt;/tei:label>
+      &lt;tei:item>Added 2007-04-17 when we removed &lt;tei:gi>persName&lt;/tei:gi>&lt;/tei:item>
+      &lt;tei:label>
+        &lt;tei:val>place&lt;/tei:val>
+      &lt;/tei:label>
+      &lt;tei:item>Added 2007-04-17 when we removed &lt;tei:gi>placeName&lt;/tei:gi>&lt;/tei:item>
+      &lt;tei:label>
+        &lt;tei:val>ship&lt;/tei:val>
+      &lt;/tei:label>
+      &lt;tei:item>Added 2007-04-17 in order to accommodate the various ship names&lt;/tei:item>
+      &lt;tei:label>
+        &lt;tei:val>ship&lt;/tei:val>
+      &lt;/tei:label>
+      &lt;tei:item>Added 2007-10-02 when we found a reference to "Excalibur" that the
+        professor needed to annotate&lt;/tei:item>
+    &lt;/tei:list>
+  &lt;/p>
+  &lt;rule context="tei:name/@type">
+    &lt;tei:note>&lt;tei:att>type&lt;/tei:att> of &lt;tei:gi>rs&lt;/tei:gi> is matched elsewhere.&lt;/tei:note>
+    &lt;assert test=".='person' or .='place' or .='ship' or .='sword'"> Names may only be 
+      of people, places, ships, or swords &lt;/assert>
+  &lt;/rule>
+&lt;/pattern></code>
+      </pre>
+      <p data-docudipity-id="e64" data-docudipity-pattern="block">
+</p>
+    </section>
+    <section class="section" id="idp2027603976" data-docudipity-id="e7" data-docudipity-pattern="container">
+      <h1 class="title" data-docudipity-id="e65" data-docudipity-pattern="block">In the Metaschema (ODD file)</h1>
+      <section class="section" id="idp2027605640" data-docudipity-id="e66" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e188" data-docudipity-pattern="block">how</h1>
+        <p data-docudipity-id="e189" data-docudipity-pattern="block">The same constraint might be expressed, at a slightly
+      higher level of abstraction and combined with some
+      documentation, using the ODD literate encoding language:
+      </p>
+        <pre class="programlisting" id="idp2027607176" data-docudipity-id="e190" data-docudipity-pattern="block">
+          <code data-docudipity-id="e320" data-docudipity-pattern="inline">
+&lt;attDef ident="<strong data-docudipity-id="e417" data-docudipity-pattern="inline">type</strong>">
+  &lt;valList type="closed">
+    &lt;valItem ident="<strong data-docudipity-id="e418" data-docudipity-pattern="inline">person</strong>">
+      &lt;desc>The name refers to a person&lt;/desc>
+    &lt;/valItem>
+    &lt;valItem ident="<strong data-docudipity-id="e419" data-docudipity-pattern="inline">place</strong>">
+      &lt;desc>The name refers to a political or man-made region, for example
+        a city, country, hamlet, town, or neighborhood. For geographical
+        places such as rivers or valleys, use &lt;gi>geogName&lt;/gi>&lt;/desc>
+    &lt;/valItem>
+    &lt;valItem ident="<strong data-docudipity-id="e420" data-docudipity-pattern="inline">ship</strong>">
+      &lt;desc>The name refers to a ship, whether sea-worthy, interplanetary,
+        or interstellar&lt;/desc>
+    &lt;/valItem>
+    &lt;valItem ident="<strong data-docudipity-id="e421" data-docudipity-pattern="inline">sword</strong>">
+      &lt;desc>The name refers to a sword&lt;/desc>
+    &lt;/valItem>
+  &lt;/valList>
+&lt;/attDef></code>
+        </pre>
+        <p data-docudipity-id="e191" data-docudipity-pattern="block">
+      There exists software that will </p>
+        <p data-docudipity-id="e192" data-docudipity-pattern="block">
+          <q data-docudipity-id="e321" data-docudipity-pattern="inline">tangle</q>
+        </p>
+        <p data-docudipity-id="e193" data-docudipity-pattern="block"> ODD
+      specifications like the above into formal declarations in one of
+      several schema languages, including RELAX NG. Then any of the
+      same variety of readily available off-the-shelf software could
+      be used to test validity.</p>
+        <p id="idp2027608200" data-docudipity-id="e194" data-docudipity-pattern="block">Furthermore, there exists software that will
+      <q data-docudipity-id="e322" data-docudipity-pattern="inline">weave</q> the same specification above into easily
+      readable hyperlinked documentation.</p>
+      </section>
+      <section class="section" id="idp2027609352" data-docudipity-id="e67" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e195" data-docudipity-pattern="block">advantages</h1>
+        <p id="idp2027611784" data-docudipity-id="e196" data-docudipity-pattern="block">The advantages of literate programming are well
+      understood, and include more easily readable and understandable
+      source code, and that documentation (because it is right next to
+      the source code) is more likely to match the program and be
+      updated when the source code changes.<sup class="fn-label" data-docudipity-id="e323" data-docudipity-pattern="inline"><a href="#idp2027608968" class="footnoteref" id="idp2027608968-ref" data-docudipity-id="e422" data-docudipity-pattern="inline">[9]</a></sup> These advantages apply here as well.
+      In addition, at least for those familiar with TEI, there is the
+      advantage that the language used to describe the constraints is
+      a TEI language, so schema designers are likely to be familiar
+      with at least the documentation paradigm for the specialized
+      schema-description elements, if not the elements themselves; in
+      addition, they are likely familiar with the generic TEI elements
+      (like <code class="code" data-docudipity-id="e324" data-docudipity-pattern="inline">&lt;desc></code>, above) that are used in addition
+      to the specialized elements.</p>
+      </section>
+      <section class="section" id="idp2026488712" data-docudipity-id="e68" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e197" data-docudipity-pattern="block">disadvantages</h1>
+        <p id="idp2026488200" data-docudipity-id="e198" data-docudipity-pattern="block">The disadvantages of the external schema (whether open or
+      closed) are present here as well. Furthermore, an extra
+      processing step is required to generate (i.e.
+      <q data-docudipity-id="e325" data-docudipity-pattern="inline">tangle</q>) a schema that itself can be used to
+      validate instances using off-the-shelf software. In addition, at
+      least for those who are not intimately familiar with TEI, there
+      is the disadvantage that the language used to describe the
+      constraints is primarily a TEI language, so schema designers may
+      not be familiar with the specialized schema-description
+      elements.</p>
+      </section>
+    </section>
+    <section class="section" id="idp2026485768" data-docudipity-id="e8" data-docudipity-pattern="container">
+      <h1 class="title" data-docudipity-id="e69" data-docudipity-pattern="block">In the Metadata (<code class="code" data-docudipity-id="e199" data-docudipity-pattern="inline">&lt;teiHeader></code>)</h1>
+      <section class="section" id="pointing" data-docudipity-id="e70" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e200" data-docudipity-pattern="block">how — pointing</h1>
+        <p data-docudipity-id="e201" data-docudipity-pattern="block">It should be quite feasible to develop a mechanism for
+      expressing the list of possible values of an attribute in the
+      same document in a rather abstract way. For
+      example:</p>
+        <pre class="programlisting" id="idp2026486920" data-docudipity-id="e202" data-docudipity-pattern="block">
+          <code data-docudipity-id="e326" data-docudipity-pattern="inline">&lt;codeGrp elementTypes="name rs" attributes="type">
+  &lt;codeDef xml:id="person">The name or string refers to a
+    person&lt;/codeDef>
+  &lt;codeDef xml:id="place">The name or string refers to a
+    political or man-made region, for example a city, country,
+    hamlet, town, or neighborhood. For geographical places such as
+    rivers or valleys, use &lt;gi>geogName&lt;/gi>&lt;/codeDef>
+  &lt;codeDef xml:id="ship">The name or string refers to a ship,
+    whether sea-worthy, interplanetary, or
+    interstellar&lt;/codeDef>
+  &lt;codeDef xml:id="sword">The name or string refers to a
+    sword, &lt;foreign xml:lang="fr">main-gauche&lt;/foreign>, switchblade,
+    or other edged weapon&lt;/codeDef>
+&lt;/codeGrp></code>
+        </pre>
+        <p data-docudipity-id="e203" data-docudipity-pattern="block">
+      Given this encoding in the </p>
+        <p data-docudipity-id="e204" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e327" data-docudipity-pattern="inline">&lt;teiHeader></code>
+        </p>
+        <p data-docudipity-id="e205" data-docudipity-pattern="block">, the
+      </p>
+        <p data-docudipity-id="e206" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e328" data-docudipity-pattern="inline">&lt;name></code>
+        </p>
+        <p data-docudipity-id="e207" data-docudipity-pattern="block"> element could have </p>
+        <p data-docudipity-id="e208" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e329" data-docudipity-pattern="inline">type=</code>
+        </p>
+        <p data-docudipity-id="e209" data-docudipity-pattern="block">
+      values of </p>
+        <p data-docudipity-id="e210" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e330" data-docudipity-pattern="inline">"#person"</code>
+        </p>
+        <p data-docudipity-id="e211" data-docudipity-pattern="block">, </p>
+        <p data-docudipity-id="e212" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e331" data-docudipity-pattern="inline">"#place"</code>
+        </p>
+        <p data-docudipity-id="e213" data-docudipity-pattern="block">, etc.
+      Software could be developed to validate that the value of
+      </p>
+        <p data-docudipity-id="e214" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e332" data-docudipity-pattern="inline">type=</code>
+        </p>
+        <p data-docudipity-id="e215" data-docudipity-pattern="block"> of </p>
+        <p data-docudipity-id="e216" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e333" data-docudipity-pattern="inline">&lt;name></code>
+        </p>
+        <p data-docudipity-id="e217" data-docudipity-pattern="block"> is a URI that
+      points to an element whose parent </p>
+        <p data-docudipity-id="e218" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e334" data-docudipity-pattern="inline">&lt;codeGrp></code>
+        </p>
+        <p data-docudipity-id="e219" data-docudipity-pattern="block"> has
+      </p>
+        <p data-docudipity-id="e220" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e335" data-docudipity-pattern="inline">"name"</code>
+        </p>
+        <p data-docudipity-id="e221" data-docudipity-pattern="block"> in its </p>
+        <p data-docudipity-id="e222" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e336" data-docudipity-pattern="inline">elementTypes=</code>
+        </p>
+        <p data-docudipity-id="e223" data-docudipity-pattern="block"> list and
+      </p>
+        <p data-docudipity-id="e224" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e337" data-docudipity-pattern="inline">"type"</code>
+        </p>
+        <p data-docudipity-id="e225" data-docudipity-pattern="block"> in its </p>
+        <p data-docudipity-id="e226" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e338" data-docudipity-pattern="inline">attributes=</code>
+        </p>
+        <p data-docudipity-id="e227" data-docudipity-pattern="block"> list. (I
+      believe that Schematron code could probably be used for this
+      test, but have not yet demonstrated this.) Note that the check
+      does not specify the element type of the child of
+      </p>
+        <p data-docudipity-id="e228" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e339" data-docudipity-pattern="inline">&lt;codeGrp></code>
+        </p>
+        <p data-docudipity-id="e229" data-docudipity-pattern="block">. This gives the flexibility to have
+      special-purpose </p>
+        <p data-docudipity-id="e230" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e340" data-docudipity-pattern="inline">&lt;codeDef></code>
+        </p>
+        <p data-docudipity-id="e231" data-docudipity-pattern="block">-like elements that
+      might provide structured information about the value. E.g., one
+      can well imagine the TEI’s </p>
+        <p data-docudipity-id="e232" data-docudipity-pattern="block">
+          <code class="code" data-docudipity-id="e341" data-docudipity-pattern="inline">&lt;handNote></code>
+        </p>
+        <p data-docudipity-id="e233" data-docudipity-pattern="block"> element being
+      used in this way.</p>
+      </section>
+      <section class="section" id="idp2026496920" data-docudipity-id="e71" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e234" data-docudipity-pattern="block">advantages</h1>
+        <p id="idp2026497560" data-docudipity-id="e235" data-docudipity-pattern="block">This mechanism has significant potential advantages,
+      particularly in cases where one schema is used for many files
+      which may have different attribute constraint requirements. For
+      most users it is much easier to change something in the same
+      file they are working on, rather then needing to make changes to
+      an external schema, particularly an external schema that may be
+      in a language the user does not know or in a file to which the
+      user does not have write access, and particularly changes that
+      might inadvertently invalidate other existing instances. Thus
+      the encoder, as opposed to the schema-designer, can add, remove,
+      or change a value quite easily.</p>
+        <p id="idp2026494104" data-docudipity-id="e236" data-docudipity-pattern="block">Another advantage is that the information about to what
+      values the attribute is constrained, and what those values mean,
+      is an integral part of the document. This means that this
+      information will survive in the situation where a document
+      instance is sent along without its schema or documentation.
+      Furthermore the list of values in different files at a given
+      project could be slightly different.</p>
+        <p id="idp2026495128" data-docudipity-id="e237" data-docudipity-pattern="block">Moreover, the particular system shown here has the
+      advantage that it uses a mechanism most users are already
+      familiar with: <code class="code" data-docudipity-id="e342" data-docudipity-pattern="inline">xml:id=</code> and relative URIs (i.e.,
+      bare name fragment identifiers). It is worth noting, though,
+      that there is no requirement that the URIs be bare name
+      fragment identifiers, which permits this system to quickly and
+      easily be changed to that which is discussed in <a class="xref" href="#separate" data-docudipity-id="e343" data-docudipity-pattern="inline">section “In the Metadata (separate file)”</a>.</p>
+      </section>
+      <section class="section" id="idp2026494360" data-docudipity-id="e72" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e238" data-docudipity-pattern="block">disadvantages</h1>
+        <p id="idp2026495384" data-docudipity-id="e239" data-docudipity-pattern="block">This system has obvious inefficiencies when multiple,
+      perhaps thousands, of document instances share the same
+      constraints — the same information is repeated in each
+      file.</p>
+        <p id="idp2026495512" data-docudipity-id="e240" data-docudipity-pattern="block">Another significant disadvantage of this method is that we
+      are using a non-standard language for constraint and
+      documentation. The question, then, is whether or not this system
+      is demonstrably significantly better than what can be obtained
+      using standard languages.<sup class="fn-label" data-docudipity-id="e344" data-docudipity-pattern="inline"><a href="#idp2026501784" class="footnoteref" id="idp2026501784-ref" data-docudipity-id="e423" data-docudipity-pattern="inline">[10]</a></sup></p>
+        <p data-docudipity-id="e241" data-docudipity-pattern="block">Lastly the fact that this system uses the URI pointing
+      mechanism produces a disadvantages, one of which is
+      severely problematic:
+      </p>
+        <ul class="itemizedlist" id="idp2026499864" data-docudipity-id="e242" data-docudipity-pattern="container">
+          <li id="idp2026501656" data-docudipity-id="e345" data-docudipity-pattern="container">
+            <p id="idp2026500120" data-docudipity-id="e424" data-docudipity-pattern="block">of minor annoyance is that the user needs to
+  encode a hash-mark (<q data-docudipity-id="e455" data-docudipity-pattern="inline"><code class="code" data-docudipity-id="e469" data-docudipity-pattern="inline">#</code></q>, U+0023) at
+  the beginning of each value;</p>
+          </li>
+          <li id="idp2026501912" data-docudipity-id="e346" data-docudipity-pattern="container">
+            <p id="idp2026498328" data-docudipity-id="e425" data-docudipity-pattern="block">the fact that values are restricted to XML
+  Names could be a problem in some situations;</p>
+          </li>
+          <li id="idp2026498712" data-docudipity-id="e347" data-docudipity-pattern="container">
+            <p id="idp2026498456" data-docudipity-id="e426" data-docudipity-pattern="block">but far more problematic, because
+  <code class="code" data-docudipity-id="e456" data-docudipity-pattern="inline">xml:id=</code> needs to be unique within the document,
+  any given possible attribute value can only occur on one
+  attribute (although that attribute could be on multiple
+  elements) — furthermore, no other element elsewhere in
+      the document can use the same string as one of these attribute
+      values as its identifier.</p>
+          </li>
+        </ul>
+        <p data-docudipity-id="e243" data-docudipity-pattern="block">
+      </p>
+      </section>
+      <section class="section" id="idp2026502424" data-docudipity-id="e73" data-docudipity-pattern="container">
+        <h1 class="title" data-docudipity-id="e244" data-docudipity-pattern="block">how — co-reference</h1>
+        <p id="idp2026504088" data-docudipity-id="e245" data-docudipity-pattern="block">Those last disadvantages that are the result of using
+      <code class="code" data-docudipity-id="e348" data-docudipity-pattern="inline">xml:id=</code> and URIs could be circumvented by matching
+      the attribute values, rather than using a true pointer (e.g.
+      ID/IDREF or URI). In the <code class="code" data-docudipity-id="e349" data-docudipity-pattern="inline">&lt;teiHeader></code> the enumeration
+      of the possible attribute values would look almost the same, but
+      would use a different attribute for storing the actual
+      value.</p>
+        <pre class="programlisting" id="idp2026503064" data-docudipity-id="e246" data-docudipity-pattern="block">
+          <code data-docudipity-id="e350" data-docudipity-pattern="inline">&lt;codeGrp elementTypes="name rs" attributes="type">
+  &lt;codeDef attrVal="person">The name or string refers to a
+    person&lt;/codeDef>
+  &lt;codeDef attrVal="place">The name or string refers to a
+    political or man-made region, for example a city, country,
+    hamlet, town, or neighborhood. For geographical places such as
+    rivers or valleys, use &lt;gi>geogName&lt;/gi>&lt;/codeDef>
+  &lt;codeDef attrVal="ship">The name or string refers to a ship,
+    whether sea-worthy, interplanetary, or
+    interstellar&lt;/codeDef>
+  &lt;codeDef attrVal="sword">The name or string refers to a
+    sword, &lt;foreign xml:lang="fr">main-gauche&lt;/foreign>, switchblade,
+    or other edged weapon&lt;/codeDef>
+&lt;/codeGrp></code>
+        </pre>
+        <p id="idp2026505112" data-docudipity-id="e247" data-docudipity-pattern="block">Software could be developed to validate that the value of
+      <code class="code" data-docudipity-id="e351" data-docudipity-pattern="inline">type=</code> of <code class="code" data-docudipity-id="e352" data-docudipity-pattern="inline">&lt;name></code> is a string that
+      matches the <code class="code" data-docudipity-id="e353" data-docudipity-pattern="inline">attrVal=</code> attribute of an element whose
+      parent <code class="code" data-docudipity-id="e354" data-docudipity-pattern="inline">&lt;codeGrp></code> has <code class="code" data-docudipity-id="e355" data-docudipity-pattern="inline">"name"</code> in its
+      <code class="code" data-docudipity-id="e356" data-docudipity-pattern="inline">elementTypes=</code> list and <code class="code" data-docudipity-id="e357" data-docudipity-pattern="inline">"type"</code> in its
+      <code class="code" data-docudipity-id="e358" data-docudipity-pattern="inline">attribute=</code> list. (I believe that Schematron code
+      could probably be used for this test, but have not yet
+      demonstrated this. Certainly XSLT 1.0 can transform this into
+      simple Schematron; this I have demonstrated, see <a class="xref" href="#codeGrp2Schematron" data-docudipity-id="e359" data-docudipity-pattern="inline">Appendix A</a>.) Note that the check does not
+      specify the element type of the child of
+      <code class="code" data-docudipity-id="e360" data-docudipity-pattern="inline">&lt;codeGrp></code>. This gives the flexibility to have
+      special-purpose <code class="code" data-docudipity-id="e361" data-docudipity-pattern="inline">&lt;codeDef></code>-like elements that
+      might provide structured information about the value. E.g., one
+      can well imagine the TEI’s <code class="code" data-docudipity-id="e362" data-docudipity-pattern="inline">&lt;handNote></code> element
+      being used in this way.</p>
+        <p id="idp2026508952" data-docudipity-id="e248" data-docudipity-pattern="block">This system avoids the disadvantages of using
+      <code class="code" data-docudipity-id="e363" data-docudipity-pattern="inline">xml:id=</code>, and yet has several advantages over
+      external schema files. E.g., encoders can quickly and easily add
+      values to closed lists, in a manner that does not run the the
+      risk that they might break the rest of the schema. I find the
+      case of the encoder who wishes to quickly and easily express
+      stricter constraints on her attribute values in a given file
+      than those that come with the generic external schema very
+      compelling.</p>
+      </section>
+    </section>
+    <section class="section" id="separate" data-docudipity-id="e9" data-docudipity-pattern="container">
+      <h1 class="title" data-docudipity-id="e74" data-docudipity-pattern="block">In the Metadata (separate file)</h1>
+      <p id="idp2026515864" data-docudipity-id="e75" data-docudipity-pattern="block">In the method described in <a class="xref" href="#pointing" data-docudipity-id="e249" data-docudipity-pattern="inline">section “how — pointing”</a>
+    the values of the <code class="code" data-docudipity-id="e250" data-docudipity-pattern="inline">type=</code> attribute of
+    <code class="code" data-docudipity-id="e251" data-docudipity-pattern="inline">&lt;name></code> are URIs. Because of this, it would be
+    feasible to store the <code class="code" data-docudipity-id="e252" data-docudipity-pattern="inline">&lt;codeGrp></code> element with
+    <code class="code" data-docudipity-id="e253" data-docudipity-pattern="inline">xml:id=</code> attributes in a project-wide
+    “attribute_definitions.xml” file. While this has the advantage
+    of flexibility and reusability, it presents the sizable
+    disadvantage that the attribute values would now depend on
+    details of system features external to the document. E.g., the
+    ability to validate <code class="code" data-docudipity-id="e254" data-docudipity-pattern="inline">&lt;name
+    type="../attribute_definitions.xml#sword"></code> breaks if the
+    current file is moved to a sub-directory.</p>
+      <p id="idp2026517400" data-docudipity-id="e76" data-docudipity-pattern="block">Furthermore, if the <code class="code" data-docudipity-id="e255" data-docudipity-pattern="inline">&lt;codeGrp></code> is stored in a
+    separate file, the maintenance issues are almost the same as those
+    for a separate closed schema (e.g., a RELAX NG grammar), open
+    schema (e.g., a Schematron schema), or metaschema (e.g., a TEI
+    ODD): those who have reason to change the constraints expressed
+    may not have the write-permissions necessary to do so, and if they
+    do may be at risk for invalidating files other than the one being
+    worked on.</p>
+      <p id="idp2026517144" data-docudipity-id="e77" data-docudipity-pattern="block">So in some cases (in particular, the scenario sketched out
+    in <a class="xref" href="#uc" data-docudipity-id="e256" data-docudipity-pattern="inline">section “Use Case”</a>) it makes lots of sense to leave the
+    formal constraints for some aspects of a document in the metadata
+    section of that document itself, e.g. in the
+    <code class="code" data-docudipity-id="e257" data-docudipity-pattern="inline">&lt;teiHeader></code>. But having convinced ourselves there
+    is a need to be able to express constraints in a different
+    <em data-docudipity-id="e258" data-docudipity-pattern="inline">place</em> than is usual, why require a separate
+    formal construct to express the constraint? Why not include RELAX
+    NG, Schematron, or ODD markup constructs in the
+    <code class="code" data-docudipity-id="e259" data-docudipity-pattern="inline">&lt;teiHeader></code> directly?<sup class="fn-label" data-docudipity-id="e260" data-docudipity-pattern="inline"><a href="#idp2026520088" class="footnoteref" id="idp2026520088-ref" data-docudipity-id="e364" data-docudipity-pattern="inline">[11]</a></sup>
+    This is worthy of consideration, but is outside the scope of the
+    current paper.</p>
+    </section>
+    <section class="appendix" id="codeGrp2Schematron" data-docudipity-id="e10" data-docudipity-pattern="container">
+      <h1 class="title" data-docudipity-id="e78" data-docudipity-pattern="block">Appendix A. &lt;codeGrp> to Schematron</h1>
+      <p id="idp2026522136" data-docudipity-id="e79" data-docudipity-pattern="block">The following XSLT 1.0 stylesheet is a proof-of-concept
+  demonstration for transforming the <code class="code" data-docudipity-id="e261" data-docudipity-pattern="inline">&lt;codeGrp></code>
+  elements discussed above into Schematron that could be used to
+  validate that an XML instance used only the mentioned possible
+  values of the attribute specified.</p>
+      <pre class="programlisting" id="idp2026519704" data-docudipity-id="e80" data-docudipity-pattern="block">
+        <code data-docudipity-id="e262" data-docudipity-pattern="inline">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!-- Tranform my mythical &lt;codeGrp> elements into a Schematron schema -->
+&lt;!-- Copyleft 2008 Syd Bauman -->
+&lt;!-- Last updated: 2008-08-31 -->
+&lt;xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+
+  &lt;xsl:template match="/">
+    &lt;!-- only mess with &lt;codeGrp> elements; if there are none, we do nothing -->
+    &lt;!-- Note that we presume each &lt;codeGrp> has both elementTypes= and  -->
+    &lt;!-- attriubtes= specified and that their values are lists of one or more -->
+    &lt;!-- XML Names. No error-checking for this here, schema validation should -->
+    &lt;!-- have already flagged any that don't have both required attributes or -->
+    &lt;!-- have inappropriate values. -->
+    &lt;xsl:if test="//codeGrp">
+      &lt;!-- if there is one (or more) we write out a Schematron schema -->
+      &lt;sch:schema>
+        &lt;sch:ns uri="http://www.tei-c.org/ns/1.0" prefix="tei"/>
+        &lt;!-- and process each &lt;codeGrp> into it -->
+        &lt;xsl:apply-templates select="//codeGrp"/>
+      &lt;/sch:schema>
+    &lt;/xsl:if>
+  &lt;/xsl:template>
+
+  &lt;!-- Each &lt;codeGrp> becomes a Schematron &lt;pattern> -->
+  &lt;xsl:template match="codeGrp">
+    &lt;sch:pattern>
+      &lt;!-- append a blank to the GI list for easier parsing later -->
+      &lt;xsl:variable name="elementTypes" select="concat(normalize-space(@elementTypes),' ')"/>
+      &lt;!-- append a blank to the attribute name list for easier parsing later -->
+      &lt;xsl:variable name="attributes" select="concat(normalize-space(@attributes),' ')"/>
+      &lt;!-- Each GI/attribute pair becomes a Schematron &lt;rule> -->
+      &lt;!-- A little more detail: each paired combination of -->
+      &lt;!-- 1. a GI listed on my elementTypes= attribute, and -->
+      &lt;!-- 2. an attribute name listed on my attributes= attribte -->
+      &lt;!-- becomes a &lt;rule>. We do this by processing each GI in  -->
+      &lt;!-- a recursive template, which in turn calls another recursive -->
+      &lt;!-- template for the list of attributes. -->
+      &lt;xsl:call-template name="elementTypes">
+        &lt;xsl:with-param name="gis" select="$elementTypes"/>
+        &lt;xsl:with-param name="attrs" select="$attributes"/>
+      &lt;/xsl:call-template>
+    &lt;/sch:pattern>
+  &lt;/xsl:template>
+
+  &lt;!-- Each GI listed on the elementTypes= attribute gets processed separately -->
+  &lt;xsl:template name="elementTypes">
+    &lt;xsl:param name="gis"/>
+    &lt;xsl:param name="attrs"/>
+    &lt;!-- Taking advantage of that ending blank, parse off the 1st GI -->
+    &lt;xsl:variable name="this_gi" select="substring-before($gis,' ')"/>
+    &lt;xsl:variable name="rest" select="substring-after($gis,' ')"/>
+    &lt;!-- call attributes template to do the work for this particular GI -->
+    &lt;xsl:call-template name="attributes">
+      &lt;xsl:with-param name="gi" select="$this_gi"/>
+      &lt;xsl:with-param name="attrs" select="$attrs"/>
+    &lt;/xsl:call-template>
+    &lt;!-- and do the same thing (via recursion) for the rest of the GIs, if any -->
+    &lt;xsl:if test="string-length($rest) > 1">
+      &lt;xsl:call-template name="elementTypes">
+        &lt;xsl:with-param name="gis" select="$rest"/>
+        &lt;xsl:with-param name="attrs" select="$attrs"/>
+      &lt;/xsl:call-template>
+    &lt;/xsl:if>
+  &lt;/xsl:template>
+
+  &lt;!-- Each attibute name on the attributes= attribute gets processed in combination -->
+  &lt;!-- with the current GI -->
+  &lt;xsl:template name="attributes">
+    &lt;xsl:param name="gi"/>
+    &lt;xsl:param name="attrs"/>
+    &lt;!-- Taking advantage of that ending blank, parse off the 1st attribute -->
+    &lt;xsl:variable name="this_attr" select="substring-before($attrs,' ')"/>
+    &lt;xsl:variable name="rest" select="substring-after($attrs,' ')"/>
+    &lt;!-- make a rule out of it -->
+    &lt;xsl:element name="sch:rule">
+      &lt;xsl:attribute name="context">
+        &lt;!-- There must be a better way to do this ... -->
+        &lt;xsl:text>tei:&lt;/xsl:text>
+        &lt;xsl:value-of select="$gi"/>
+        &lt;xsl:text>/@&lt;/xsl:text>
+        &lt;xsl:value-of select="$this_attr"/>
+      &lt;/xsl:attribute>
+      &lt;xsl:variable name="numVals" select="count(child::*/@attrVal)"/>
+      &lt;!-- if I have no children with attrVal= specified, then don't -->
+      &lt;!-- generate any assertions (luckily an emtpy &lt;rule> is valid -->
+      &lt;!-- in Schematron). -->
+      &lt;xsl:if test="$numVals > 0">
+        &lt;xsl:element name="sch:assert">
+          &lt;!-- Probably would be better to generate this test (i.e., the expression -->
+          &lt;!-- that is the value of this output test= attribute) only once per attrVal=, -->
+          &lt;!-- rather once for each attrVal= for each GI/attr combination. -->
+          &lt;xsl:attribute name="test">
+            &lt;xsl:for-each select="child::*/@attrVal">
+              &lt;xsl:text>.='&lt;/xsl:text>
+              &lt;xsl:value-of select="."/>
+              &lt;xsl:text>'&lt;/xsl:text>
+              &lt;xsl:if test="$numVals > 1  and  position() != last()">
+                &lt;xsl:text> or &lt;/xsl:text>
+              &lt;/xsl:if>
+            &lt;/xsl:for-each>
+          &lt;/xsl:attribute>
+        &lt;/xsl:element>
+      &lt;/xsl:if>
+    &lt;/xsl:element>
+    &lt;!-- and do the same thing (via recursion) for the rest of the attributes, if any -->
+    &lt;xsl:if test="string-length($rest) > 1">
+      &lt;xsl:call-template name="attributes">
+        &lt;xsl:with-param name="gi" select="$gi"/>
+        &lt;xsl:with-param name="attrs" select="$rest"/>
+      &lt;/xsl:call-template>
+    &lt;/xsl:if>
+  &lt;/xsl:template>
+
+&lt;/xsl:stylesheet></code>
+      </pre>
+    </section>
+    <section role="doc-endnotes" class="footnotes" data-docudipity-id="e11" data-docudipity-pattern="container">
+      <section role="doc-endnote" id="idp1983102216" class="footnote" data-docudipity-id="e81" data-docudipity-pattern="container">
+        <p data-docudipity-id="e263" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e365" data-docudipity-pattern="inline"><a href="#idp1983102216-ref" class="footnoteref" data-docudipity-id="e427" data-docudipity-pattern="inline">[1]</a></sup> Piez, Wendell, “Beyond the ‘descriptive
+  vs. procedural’ distinction”, presented at Extreme Markup Languages
+  2001, Montréal, Canada. <a href="http://www.idealliance.org/papers/extreme/proceedings/html/2001/Piez01/EML2001Piez01.html" class="link" data-docudipity-id="e366" data-docudipity-pattern="inline">http://www.idealliance.org/papers/extreme/proceedings/html/2001/Piez01/EML2001Piez01.html</a>.
+  </p>
+      </section>
+      <section role="doc-endnote" id="idp2025510536" class="footnote" data-docudipity-id="e82" data-docudipity-pattern="container">
+        <p data-docudipity-id="e264" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e367" data-docudipity-pattern="inline"><a href="#idp2025510536-ref" class="footnoteref" data-docudipity-id="e428" data-docudipity-pattern="inline">[2]</a></sup> Sperberg-McQueen,
+  C. Michael. Oral conversation, and multiple oral presentations
+  throughout the 1990s. See, e.g., <a href="http://www.w3.org/People/cmsmcq/2001/darmstadt.html" class="link" data-docudipity-id="e368" data-docudipity-pattern="inline">http://www.w3.org/People/cmsmcq/2001/darmstadt.html</a>.</p>
+      </section>
+      <section role="doc-endnote" id="idp2025507720" class="footnote" data-docudipity-id="e83" data-docudipity-pattern="container">
+        <p data-docudipity-id="e265" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e369" data-docudipity-pattern="inline"><a href="#idp2025507720-ref" class="footnoteref" data-docudipity-id="e429" data-docudipity-pattern="inline">[3]</a></sup> Burnard, Lou and Syd Bauman, eds. “4.3.2 Floating Texts.”
+  <em data-docudipity-id="e370" data-docudipity-pattern="inline">TEI P5: Guidelines for Electronic Text Encoding and
+  Interchange</em>. Version 1.1.0. 2008-07-04. TEI Consortium.
+  <a href="http://www.tei-c.org/release/doc/tei-p5-doc/html/DS.html#DSFLT " class="link" data-docudipity-id="e371" data-docudipity-pattern="inline">http://www.tei-c.org/release/doc/tei-p5-doc/html/DS.html#DSFLT
+</a>  2008-08-30</p>
+      </section>
+      <section role="doc-endnote" id="idp2025511432" class="footnote" data-docudipity-id="e84" data-docudipity-pattern="container">
+        <p data-docudipity-id="e266" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e372" data-docudipity-pattern="inline"><a href="#idp2025511432-ref" class="footnoteref" data-docudipity-id="e430" data-docudipity-pattern="inline">[4]</a></sup> Burnard, Lou and Syd Bauman, eds. “23.4 Implementation of an ODD System.”
+  <em data-docudipity-id="e373" data-docudipity-pattern="inline">TEI P5: Guidelines for Electronic Text Encoding and
+  Interchange</em>. Version 1.1.0. 2008-07-04. TEI Consortium.
+  <a href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/USE.html#IM " class="link" data-docudipity-id="e374" data-docudipity-pattern="inline">http://www.tei-c.org/release/doc/tei-p5-doc/en/html/USE.html#IM
+</a>  2008-08-30</p>
+      </section>
+      <section role="doc-endnote" id="idp2025511176" class="footnote" data-docudipity-id="e85" data-docudipity-pattern="container">
+        <p data-docudipity-id="e267" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e375" data-docudipity-pattern="inline"><a href="#idp2025511176-ref" class="footnoteref" data-docudipity-id="e431" data-docudipity-pattern="inline">[5]</a></sup> Sperberg-McQueen, C. Michael and Lou Burnard. “The Design of
+  the TEI Encoding Scheme.” <em data-docudipity-id="e376" data-docudipity-pattern="inline">Computers and the
+  Humanities</em> 1995. 29 (1) p. 17–39. doi:10.1007/BF01830314</p>
+      </section>
+      <section role="doc-endnote" id="idp2025512584" class="footnote" data-docudipity-id="e86" data-docudipity-pattern="container">
+        <p data-docudipity-id="e268" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e377" data-docudipity-pattern="inline"><a href="#idp2025512584-ref" class="footnoteref" data-docudipity-id="e432" data-docudipity-pattern="inline">[6]</a></sup> Burnard, Lou, Sebastian Rahtz. “RelaxNG
+  with Son of ODD”, presented at Extreme Markup Languages 2004,
+  Montréal, Canada. <a href="http://www.mulberrytech.com/Extreme/Proceedings/html/2004/Burnard01/EML2004Burnard01.pdf" class="link" data-docudipity-id="e378" data-docudipity-pattern="inline">http://www.mulberrytech.com/Extreme/Proceedings/html/2004/Burnard01/EML2004Burnard01.pdf</a>.
+  </p>
+      </section>
+      <section role="doc-endnote" id="idp2025021960" class="footnote" data-docudipity-id="e87" data-docudipity-pattern="container">
+        <p data-docudipity-id="e269" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e379" data-docudipity-pattern="inline"><a href="#idp2025021960-ref" class="footnoteref" data-docudipity-id="e433" data-docudipity-pattern="inline">[7]</a></sup> Burnard, Lou and Syd Bauman, eds. “18 Feature Structures”
+  <em data-docudipity-id="e380" data-docudipity-pattern="inline">TEI P5: Guidelines for Electronic Text Encoding and
+  Interchange</em>. Version 1.1.0. 2008-07-04. TEI Consortium.
+  <a href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/FS.html   " class="link" data-docudipity-id="e381" data-docudipity-pattern="inline">http://www.tei-c.org/release/doc/tei-p5-doc/en/html/FS.html</a>
+  2008-08-30</p>
+      </section>
+      <section role="doc-endnote" id="idp2027597704" class="footnote" data-docudipity-id="e88" data-docudipity-pattern="container">
+        <p data-docudipity-id="e270" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e382" data-docudipity-pattern="inline"><a href="#idp2027597704-ref" class="footnoteref" data-docudipity-id="e434" data-docudipity-pattern="inline">[8]</a></sup> DTDs impose greater restrictions on what the
+      members of that list can be than the others: each possible value
+      must be an XML Name.</p>
+      </section>
+      <section role="doc-endnote" id="idp2027608968" class="footnote" data-docudipity-id="e89" data-docudipity-pattern="container">
+        <p data-docudipity-id="e271" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e383" data-docudipity-pattern="inline"><a href="#idp2027608968-ref" class="footnoteref" data-docudipity-id="e435" data-docudipity-pattern="inline">[9]</a></sup> Knuth,
+      Donald. <em data-docudipity-id="e384" data-docudipity-pattern="inline">Literate Programming</em>, ISBN
+      0-9370-7380-6.</p>
+      </section>
+      <section role="doc-endnote" id="idp2026501784" class="footnote" data-docudipity-id="e90" data-docudipity-pattern="container">
+        <p data-docudipity-id="e272" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e385" data-docudipity-pattern="inline"><a href="#idp2026501784-ref" class="footnoteref" data-docudipity-id="e436" data-docudipity-pattern="inline">[10]</a></sup> What some call
+      <em data-docudipity-id="e386" data-docudipity-pattern="inline">Syd’s rule</em>, and I have begun to call my
+      <em data-docudipity-id="e387" data-docudipity-pattern="inline">wheel re-invention prevention convention</em>:
+      <q data-docudipity-id="e388" data-docudipity-pattern="inline">unless your method is significantly and demonstrably
+      superior to the standard, you should be using the
+      standard.</q>.</p>
+      </section>
+      <section role="doc-endnote" id="idp2026520088" class="footnote" data-docudipity-id="e91" data-docudipity-pattern="container">
+        <p data-docudipity-id="e273" data-docudipity-pattern="block"><sup class="fn-label" data-docudipity-id="e389" data-docudipity-pattern="inline"><a href="#idp2026520088-ref" class="footnoteref" data-docudipity-id="e437" data-docudipity-pattern="inline">[11]</a></sup> Indeed, James
+    Cummings and I have suggested this on more than one occasion. See,
+    e.g., <a href="http://lists.village.virginia.edu/pipermail/tei-council/2005/005627.html" class="link" data-docudipity-id="e390" data-docudipity-pattern="inline">http://lists.village.virginia.edu/pipermail/tei-council/2005/005627.html</a>.</p>
+      </section>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,450 @@
+body > iframe {
+  display: none;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+textarea {
+  background: #ffffff;
+  border-radius: 0;
+  border: none;
+  border: 1px solid #ededed;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  transition: border-color 150ms ease;
+  width: 99%;
+}
+
+textarea:hover {
+  border-color: #747474;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #747474;
+}
+
+textarea::placeholder {
+  color: #747474;
+}
+
+input {
+  background: #ededed;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid #a0a0a0;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  transition: border-color 150ms ease;
+  width: 99%;
+}
+
+input:hover {
+  border-color: black;
+}
+
+input:focus {
+  outline: none;
+  border-color: black;
+}
+
+input::placeholder {
+  color: #747474;
+}
+
+label {
+  color: #727272;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+h3{
+  background-color:rgb(210, 210, 210);
+  width: fit-content;
+  border-radius: 6px;
+  padding: 1%;
+}
+
+h1{
+  white-space: nowrap;
+  overflow: hidden;              
+  -o-text-overflow: ellipsis;    
+  text-overflow:    ellipsis;
+}
+
+img{
+  width: 5%;
+  margin-bottom: -0.8%;
+}
+
+button{
+  border-radius: 6px;
+}
+
+#top{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.booksMenu{
+  position: fixed;
+  background-color: rgba(130, 130, 130, 0.9);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  width: fit-content;
+  height: fit-content;
+  padding: 10cap;
+  padding-top: 2cap;
+  padding-bottom: 5cap;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 6px;
+}
+
+.loginMenu{
+  position: fixed;
+  background-color: rgba(130, 130, 130, 0.9);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  width: fit-content;
+  height: fit-content;
+  padding: 10cap;
+  padding-top: 5cap;
+  padding-bottom: 5cap;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 6px;
+}
+
+.bookButton{
+  margin-top: 10%;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  white-space: nowrap;
+}
+
+.bookButton:hover {
+  background-color: #eaeaea;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.authorSession{
+  white-space: nowrap;
+  overflow: hidden;              
+  -o-text-overflow: ellipsis;    
+  text-overflow:    ellipsis;
+}
+
+.textareaComment{
+  background-color: #ffffff;
+  border-radius: 6px;
+  width: 96%;
+  padding: 2%;
+}
+
+.viewsSeparator{
+  display: flex;
+  background-color: #ededed;
+}
+
+.commentDiv{
+  padding: 1cap
+}
+
+.warningB{
+  display: block;
+  margin-bottom: 5px;
+}
+
+.topBar{
+  margin-top: 0.5%;
+  border-radius: 6px;
+  border-color: red;
+  border-width: 1cap;
+  width: 50%;
+  position:fixed;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50px;
+  margin-left: 40%;
+  background-color: rgba(130, 130, 130, 0.9);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.buttonTop{
+  padding-top: 4px;
+  margin-left: auto;
+  margin-right: 1%;
+  height: fit-content;
+  width: fit-content;
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  white-space: nowrap;
+}
+
+.buttonTop:hover {
+  background-color:rgb(210, 210, 210);
+  text-decoration: none;
+  transition-duration: 0.1s;}
+
+.buttonBack{
+  padding-top: 4px;
+  margin-right: auto;
+  margin-left: 1%;
+  height: fit-content;
+  width: fit-content;
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  white-space: nowrap;
+}
+
+.buttonBack:hover {
+  background-color:rgb(210, 210, 210);
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.titleIntro{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.titleTop{
+  background-color: transparent;
+  width: fit-content;
+  border-radius: 6px;
+  padding: 1%;
+  white-space: nowrap;
+  overflow: hidden;              
+  -o-text-overflow: ellipsis;    
+  text-overflow:    ellipsis;
+}
+
+.colorPick1{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: rgb(254, 243, 226);
+  border-width: 0.2cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick2{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: #FCF596;
+  border-width: 0.2cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick3{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: #FBD288;
+  border-width: 0.2cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick4{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: #FF9C73;
+  border-width: 0.2cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick5{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: #FF4545;
+  border-width: 0.2cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick6{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: rgb(175, 23, 64);
+  border-width: 0.2cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick1Picked{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: rgb(254, 243, 226);
+  border-width: 0.4cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick2Picked{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: #FCF596;
+  border-width: 0.4cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick3Picked{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: #FBD288;
+  border-width: 0.4cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick4Picked{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: #FF9C73;
+  border-width: 0.4cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick5Picked{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: #FF4545;
+  border-width: 0.4cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.colorPick6Picked{
+  border-radius: 1cap;
+  width: 2cap;
+  height: 2cap;
+  background-color: rgb(175, 23, 64);
+  border-width: 0.4cap;
+  margin-right: 0.5cap;
+  margin-left: 0.5cap;
+}
+
+.input::placeholder{
+  text-align: center;
+}
+
+.sessionSection1{
+  margin-bottom: 1cap;
+  margin-top: 0cap;
+}
+
+.sessionSection{
+  margin-bottom: 1cap;
+  margin-top: 2.5cap;
+}
+
+.buttons {
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  white-space: nowrap;
+}
+
+.buttons:hover {
+  background-color: #eaeaea;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+.sessionWarning{
+  display: flex;
+  position:fixed;
+  z-index: 100000;
+  bottom: 10px;
+  right: 10px;
+  border-color: red;
+  border-width: 10px;
+  border-radius: 6px;
+  padding: 1%;
+  background-color: rgba(130, 130, 130, 0.95);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.escWarning{
+  background-color: transparent;
+  border-color: transparent;
+  border-width: 0;
+  border-radius: 6px;
+  height:fit-content;
+  font-size: 120%;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: -10px;
+}
+
+.escWarning:hover{
+  background-color: red;
+}
+
+.badge {
+  position: relative;
+  top: -20px;
+  right: 10px;
+  padding: 2px 8px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
