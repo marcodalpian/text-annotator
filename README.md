@@ -3,6 +3,8 @@
 
 Text Annotator system, can be integrated into TypeScript web appications.
 
+![App Screenshot](app_screenshot.jpeg)
+
 Follow the `Install and run` guide to run the system without integrating it into an application.
 
 Follow the `Integration` guide to integrate the system into your Typescript web application.
